@@ -3,745 +3,198 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Acquire Addtok — ₿10 or £500,000</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<title>Addtok — Coming Soon</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' rx='14' fill='%230a0a0f'/%3E%3Ctext x='30' y='38' text-anchor='middle' font-family='DM Sans,sans-serif' font-size='32' font-weight='800' fill='%23ffffff'%3EA%3C/text%3E%3Crect x='10' y='44' width='18' height='3' rx='1.5' fill='%23FF2D55'/%3E%3Crect x='32' y='44' width='18' height='3' rx='1.5' fill='%2300e5ff'/%3E%3C/svg%3E">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#06060c;--s1:#0d0d1a;--s2:#141426;--s3:#1c1c34;
-  --border:rgba(255,255,255,0.08);--b2:rgba(255,255,255,0.15);
-  --accent:#ff2d55;--gold:#ffd60a;--btc:#f7931a;--green:#30d158;--blue:#00e5ff;
-  --text:#f0f0f8;--muted:rgba(240,240,248,0.55);--muted2:rgba(240,240,248,0.25);
-  --fd:'Bebas Neue',sans-serif;--fb:'DM Sans',sans-serif;--fm:'JetBrains Mono',monospace;
+  --bg:#07070e;--s1:#0f0f1c;--s2:#161626;--s3:#1e1e32;
+  --border:rgba(255,255,255,0.08);--b2:rgba(255,255,255,0.14);
+  --accent:#ff2d55;--a2:#00e5ff;--gold:#ffd60a;--green:#30d158;
+  --text:#f2f2f7;--muted:rgba(242,242,247,0.55);--muted2:rgba(242,242,247,0.25);
+  --fb:'DM Sans',sans-serif;
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--fb);overflow-x:hidden}
-
-/* ANIMATED BACKGROUND */
-body::before{content:'';position:fixed;inset:0;background:
-  radial-gradient(ellipse at 20% 20%,rgba(255,45,85,0.06) 0%,transparent 50%),
-  radial-gradient(ellipse at 80% 80%,rgba(0,229,255,0.05) 0%,transparent 50%),
-  radial-gradient(ellipse at 50% 50%,rgba(247,147,26,0.03) 0%,transparent 60%);
-  pointer-events:none;z-index:0}
-
-.container{max-width:1100px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
-.section{padding:80px 0}
-
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(6,6,12,0.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center}
-.nav-inner{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;width:100%}
-.nav-logo{font-family:var(--fd);font-size:26px;letter-spacing:3px;background:linear-gradient(90deg,var(--accent),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.nav-links{display:flex;align-items:center;gap:24px}
-.nav-links a{font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;transition:color .2s}
-.nav-links a:hover{color:var(--text)}
-.nav-cta{background:var(--btc);border:none;border-radius:10px;padding:8px 18px;color:#000;font-size:12px;font-weight:800;letter-spacing:1px;cursor:pointer;transition:opacity .2s}
-.nav-cta:hover{opacity:.88}
-
-/* HERO */
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 24px 60px}
-.hero-badge{display:inline-block;background:rgba(247,147,26,0.12);border:1px solid rgba(247,147,26,0.3);color:var(--btc);font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;padding:6px 16px;border-radius:20px;margin-bottom:24px;animation:fadeUp .6s ease both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.hero h1{font-family:var(--fd);font-size:clamp(52px,8vw,96px);letter-spacing:6px;line-height:.95;margin-bottom:16px;animation:fadeUp .7s .1s ease both}
-.hero h1 .grad{background:linear-gradient(90deg,var(--accent),var(--gold),var(--btc));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-sub{font-size:clamp(14px,2vw,18px);color:var(--muted);max-width:600px;margin:0 auto 36px;line-height:1.7;animation:fadeUp .7s .2s ease both}
-.price-cards{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:36px;animation:fadeUp .7s .3s ease both}
-.price-card{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:24px 32px;text-align:center;min-width:200px}
-.price-card.btc-card{border-color:rgba(247,147,26,0.4);background:rgba(247,147,26,0.05)}
-.price-card.gbp-card{border-color:rgba(255,214,10,0.3);background:rgba(255,214,10,0.03)}
-.pc-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);margin-bottom:6px}
-.pc-amount{font-family:var(--fd);font-size:42px;line-height:1}
-.pc-amount.btc{color:var(--btc)}
-.pc-amount.gbp{color:var(--gold)}
-.pc-sub{font-size:11px;color:var(--muted2);margin-top:5px}
-.or-badge{font-family:var(--fd);font-size:20px;color:var(--muted2)}
-.hero-btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;animation:fadeUp .7s .4s ease both}
-.btn{border:none;border-radius:14px;padding:14px 28px;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-.btn:hover{transform:translateY(-2px);opacity:.9}
-.btn-btc{background:linear-gradient(90deg,var(--btc),#e8840a);color:#000}
-.btn-outline{background:transparent;border:1px solid var(--b2);color:var(--text)}
-.btn-outline:hover{background:var(--s2)}
-.btn-red{background:linear-gradient(90deg,var(--accent),#d4004a);color:#fff}
-.scroll-hint{margin-top:48px;animation:fadeUp .7s .6s ease both;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--muted2);font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
-.scroll-hint .arrow{animation:bounce 2s ease infinite}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
-
-/* SECTION TITLES */
-.section-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:10px}
-.section-title{font-family:var(--fd);font-size:clamp(32px,5vw,52px);letter-spacing:2px;line-height:1;margin-bottom:12px}
-.section-sub{font-size:14px;color:var(--muted);line-height:1.7;max-width:580px}
-
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px}
-.stat-box{background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:24px;text-align:center;transition:all .2s}
-.stat-box:hover{border-color:var(--b2);transform:translateY(-3px)}
-.stat-icon{font-size:28px;margin-bottom:10px}
-.stat-value{font-family:var(--fd);font-size:36px;color:var(--gold);line-height:1}
-.stat-label{font-size:11px;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:1px}
-.stat-change{font-size:11px;color:var(--green);margin-top:4px}
-
-/* WHAT'S INCLUDED */
-.included-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:40px}
-.included-card{background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:22px;transition:all .2s}
-.included-card:hover{border-color:var(--b2);transform:translateY(-2px)}
-.ic-icon{font-size:32px;margin-bottom:12px}
-.ic-title{font-weight:700;font-size:15px;margin-bottom:6px}
-.ic-desc{font-size:12px;color:var(--muted);line-height:1.6}
-.ic-list{list-style:none;margin-top:10px;display:flex;flex-direction:column;gap:5px}
-.ic-list li{font-size:12px;color:var(--muted);display:flex;align-items:flex-start;gap:7px;line-height:1.5}
-.ic-list li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
-
-/* REVENUE */
-.revenue-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:40px}
-.rev-card{background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:20px;text-align:center;transition:all .2s}
-.rev-card:hover{border-color:var(--b2);transform:translateY(-2px)}
-.rev-icon{font-size:28px;margin-bottom:10px}
-.rev-rate{font-family:var(--fd);font-size:28px;color:var(--btc);margin-bottom:4px}
-.rev-name{font-size:12px;font-weight:600;margin-bottom:4px}
-.rev-desc{font-size:11px;color:var(--muted)}
-
-/* ROADMAP */
-.roadmap{margin-top:40px;display:flex;flex-direction:column;gap:0}
-.rm-item{display:flex;gap:20px;position:relative}
-.rm-left{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px}
-.rm-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;margin-top:4px}
-.rm-line{flex:1;width:2px;background:var(--border);margin:6px 0}
-.rm-item:last-child .rm-line{display:none}
-.rm-body{padding-bottom:28px}
-.rm-phase{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);margin-bottom:4px}
-.rm-title{font-weight:700;font-size:15px;margin-bottom:6px}
-.rm-desc{font-size:12px;color:var(--muted);line-height:1.6}
-.rm-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.rm-tag{font-size:10px;padding:2px 9px;border-radius:20px;background:var(--s3);color:var(--muted);font-weight:500}
-
-/* PROCESS */
-.process-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:40px;position:relative}
-.process-steps::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:1px;background:var(--border);z-index:0}
-.step{text-align:center;position:relative;z-index:1}
-.step-num{width:56px;height:56px;border-radius:50%;background:var(--s2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 12px}
-.step-title{font-weight:700;font-size:12px;margin-bottom:5px}
-.step-desc{font-size:11px;color:var(--muted);line-height:1.5}
-
-/* BTC PAYMENT */
-.btc-section{background:linear-gradient(135deg,rgba(247,147,26,0.08),rgba(255,214,10,0.04));border:1px solid rgba(247,147,26,0.2);border-radius:24px;padding:48px;margin:0;text-align:center}
-.btc-address-box{background:var(--s1);border:1px solid rgba(247,147,26,0.3);border-radius:16px;padding:20px 24px;margin:28px auto;max-width:600px;cursor:pointer;transition:all .2s}
-.btc-address-box:hover{border-color:var(--btc);background:rgba(247,147,26,0.05)}
-.bab-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);margin-bottom:8px}
-.bab-address{font-family:var(--fm);font-size:14px;color:var(--btc);word-break:break-all;line-height:1.5}
-.bab-copy{font-size:11px;color:var(--muted2);margin-top:8px}
-.btc-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0;text-align:left}
-.btc-step{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:16px}
-.btcs-num{font-family:var(--fd);font-size:22px;color:var(--btc);margin-bottom:6px}
-.btcs-title{font-weight:600;font-size:12px;margin-bottom:4px}
-.btcs-desc{font-size:11px;color:var(--muted);line-height:1.5}
-.rate-note{background:rgba(247,147,26,0.08);border:1px solid rgba(247,147,26,0.2);border-radius:12px;padding:14px 18px;font-size:12px;color:var(--muted);max-width:500px;margin:0 auto;line-height:1.7}
-.rate-note b{color:var(--btc)}
-
-/* CONTACT FORM */
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:40px}
-.contact-info{display:flex;flex-direction:column;gap:16px}
-.ci-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:16px 18px}
-.ci-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);margin-bottom:4px}
-.ci-value{font-size:13px;font-weight:500}
-.form-card{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:28px}
-.form-title{font-family:var(--fd);font-size:24px;letter-spacing:1px;margin-bottom:6px}
-.form-sub{font-size:12px;color:var(--muted);margin-bottom:20px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-.field{display:flex;flex-direction:column;gap:5px}
-.field.full{grid-column:1/-1}
-.field label{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:.8px;text-transform:uppercase}
-.field input,.field textarea,.field select{background:var(--s2);border:1px solid var(--b2);border-radius:10px;padding:10px 14px;color:var(--text);font-size:13px;font-family:var(--fb);outline:none;transition:border-color .2s;width:100%}
-.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--btc)}
-.field textarea{resize:vertical;min-height:100px}
-.field select option{background:var(--s1)}
-.submit-btn{width:100%;background:linear-gradient(90deg,var(--btc),#e8840a);border:none;border-radius:12px;padding:14px;color:#000;font-size:14px;font-weight:800;letter-spacing:1px;cursor:pointer;transition:opacity .2s;margin-top:4px}
-.submit-btn:hover{opacity:.88}
-.form-note{font-size:10px;color:var(--muted2);text-align:center;margin-top:8px;line-height:1.6}
-
-/* FOOTER */
-footer{background:var(--s1);border-top:1px solid var(--border);padding:40px 0;text-align:center}
-.footer-logo{font-family:var(--fd);font-size:32px;letter-spacing:3px;background:linear-gradient(90deg,var(--accent),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
-.footer-tagline{font-size:12px;color:var(--muted);margin-bottom:20px}
-.footer-badges{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:20px}
-.footer-badge{font-size:10px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid var(--border);color:var(--muted)}
-.footer-copy{font-size:11px;color:var(--muted2)}
-
-/* CONFIDENTIAL BANNER */
-.conf-banner{background:rgba(255,45,85,0.08);border:1px solid rgba(255,45,85,0.2);border-radius:12px;padding:12px 20px;font-size:12px;color:var(--muted);text-align:center;margin-bottom:24px;line-height:1.6}
-.conf-banner b{color:var(--accent)}
-
-/* TOAST */
-#toast{position:fixed;bottom:24px;right:24px;background:var(--s1);border:1px solid rgba(247,147,26,0.4);border-radius:14px;padding:12px 20px;font-size:13px;color:var(--btc);display:none;z-index:999;animation:fadeUp .2s ease;font-weight:500}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);overflow-x:hidden;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(255,45,85,0.07) 0%,transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(0,229,255,0.04) 0%,transparent 50%);pointer-events:none;z-index:0}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(7,7,14,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);height:56px;display:flex;align-items:center;justify-content:center}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 20px 40px;position:relative;z-index:1}
+.hero-badge{display:inline-block;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.25);color:var(--a2);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:20px;margin-bottom:24px;animation:fadeUp .6s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.hero-sub{font-size:15px;color:var(--muted);max-width:480px;margin:0 auto 32px;line-height:1.7;animation:fadeUp .7s .2s ease both}
+.tba-box{display:inline-block;background:var(--s1);border:1px solid rgba(255,214,10,0.3);border-radius:16px;padding:14px 32px;margin-bottom:36px;animation:fadeUp .7s .25s ease both}
+.tba-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);margin-bottom:4px}
+.tba-val{font-size:36px;font-weight:800;letter-spacing:4px;color:var(--gold)}
+.tba-sub{font-size:11px;color:var(--muted2);margin-top:4px}
+.signup-form{display:flex;flex-direction:column;gap:10px;width:100%;max-width:400px;margin:0 auto 40px;animation:fadeUp .7s .3s ease both}
+.email-row{display:flex;gap:8px}
+.email-input{flex:1;background:var(--s2);border:1px solid var(--b2);border-radius:12px;padding:12px 16px;color:var(--text);font-size:14px;font-family:var(--fb);outline:none;transition:border-color .2s}
+.email-input:focus{border-color:var(--accent)}
+.email-input::placeholder{color:var(--muted2)}
+.signup-btn{background:linear-gradient(90deg,var(--accent),#d4004a);border:none;border-radius:12px;padding:12px 20px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap}
+.signup-note{font-size:11px;color:var(--muted2);text-align:center}
+.signup-success{background:rgba(48,209,88,0.1);border:1px solid rgba(48,209,88,0.25);border-radius:12px;padding:12px 16px;text-align:center;font-size:13px;color:var(--green);display:none}
+.section{padding:60px 20px;position:relative;z-index:1;max-width:600px;margin:0 auto}
+.section-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--a2);margin-bottom:8px;text-align:center}
+.section-title{font-size:clamp(24px,6vw,36px);font-weight:800;letter-spacing:-1px;text-align:center;margin-bottom:10px}
+.section-sub{font-size:14px;color:var(--muted);text-align:center;line-height:1.7;margin-bottom:32px}
+.feature-list{display:flex;flex-direction:column;gap:12px;margin-bottom:40px}
+.feature-card{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:18px 20px;display:flex;align-items:flex-start;gap:14px;transition:border-color .2s}
+.feature-card:hover{border-color:var(--b2)}
+.fc-icon{font-size:24px;flex-shrink:0;width:44px;height:44px;background:var(--s2);border-radius:12px;display:flex;align-items:center;justify-content:center}
+.fc-title{font-weight:700;font-size:14px;margin-bottom:4px}
+.fc-desc{font-size:12px;color:var(--muted);line-height:1.6}
+.steps{display:flex;flex-direction:column;gap:0;margin-bottom:40px}
+.step-item{display:flex;gap:16px}
+.step-left{display:flex;flex-direction:column;align-items:center;width:36px;flex-shrink:0}
+.step-circle{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#d4004a);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
+.step-line{flex:1;width:2px;background:var(--border);margin:4px 0}
+.step-item:last-child .step-line{display:none}
+.step-body{padding-bottom:24px;padding-top:6px}
+.step-title{font-weight:700;font-size:14px;margin-bottom:4px}
+.step-desc{font-size:12px;color:var(--muted);line-height:1.6}
+.ad-types{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:40px}
+.ad-type{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;transition:all .2s}
+.ad-type:hover{border-color:var(--b2);transform:translateY(-2px)}
+.at-emoji{font-size:24px;margin-bottom:6px}
+.at-title{font-weight:700;font-size:12px;margin-bottom:3px}
+.at-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.rev-strip{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:40px}
+.rev-title{font-weight:700;font-size:14px;margin-bottom:12px}
+.rev-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;margin-bottom:8px}
+.rev-label{color:var(--muted);display:flex;align-items:center;gap:6px}
+.rev-amount{font-weight:700;color:var(--gold)}
+.notify-section{background:linear-gradient(135deg,rgba(255,45,85,0.08),rgba(0,229,255,0.05));border:1px solid rgba(255,45,85,0.2);border-radius:20px;padding:28px 20px;text-align:center;margin-bottom:40px}
+.ns-title{font-size:24px;font-weight:800;letter-spacing:-1px;margin-bottom:6px}
+.ns-sub{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6}
+footer{border-top:1px solid var(--border);padding:32px 20px;text-align:center;position:relative;z-index:1}
+.footer-copy{font-size:11px;color:var(--muted2);margin-top:8px}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--s1);border:1px solid rgba(48,209,88,0.3);border-radius:12px;padding:10px 20px;font-size:13px;color:var(--green);display:none;z-index:999;white-space:nowrap;font-weight:500}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
-  <div class="nav-inner">
-    <div class="nav-logo">ADDTOK</div>
-    <div class="nav-links">
-      <a href="#metrics">Metrics</a>
-      <a href="#included">Included</a>
-      <a href="#revenue">Revenue</a>
-      <a href="#btc">Pay in BTC</a>
-      <a href="#contact">Enquire</a>
-    </div>
-    <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">₿ Acquire Now</button>
-  </div>
+  <svg width="150" height="40" viewBox="0 0 210 64" role="img" aria-label="Addtok logo">
+    <title>Addtok</title>
+    <text x="0" y="40" font-family="'DM Sans',sans-serif" font-size="38" font-weight="700" letter-spacing="-2" fill="#ffffff">Addtok</text>
+    <rect x="0" y="46" width="66" height="3" rx="1.5" fill="#FF2D55"/>
+    <rect x="68" y="46" width="62" height="3" rx="1.5" fill="#00e5ff"/>
+    <text x="0" y="62" font-family="'DM Sans',sans-serif" font-size="11" font-weight="500" letter-spacing="4" fill="rgba(242,242,247,0.4)">add an ad.</text>
+  </svg>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div style="text-align:center;max-width:900px;margin:0 auto">
-    <div class="hero-badge">🏷️ Confidential Acquisition Opportunity</div>
-    <h1>ACQUIRE<br><span class="grad">ADDTOK</span></h1>
-    <p class="hero-sub">The world's first community-voted short-form ad discovery platform. Fully built. Revenue-ready. Complete source code, brand, and advertiser pipeline included. Accepting Bitcoin.</p>
+  <div class="hero-badge">Coming Soon</div>
 
-    <div class="price-cards">
-      <div class="price-card btc-card">
-        <div class="pc-label">Bitcoin Price</div>
-        <div class="pc-amount btc">₿ 10.00</div>
-        <div class="pc-sub">Rate locked at signing · Multisig escrow</div>
-      </div>
-      <div class="or-badge">OR</div>
-      <div class="price-card gbp-card">
-        <div class="pc-label">Sterling Price</div>
-        <div class="pc-amount gbp">£500,000</div>
-        <div class="pc-sub">Or best offer · Solicitor-handled</div>
-      </div>
-    </div>
+  <div style="margin-bottom:24px;animation:fadeUp .7s .1s ease both">
+    <svg width="260" height="76" viewBox="0 0 210 64" role="img" aria-label="Addtok">
+      <title>Addtok — add an ad.</title>
+      <text x="0" y="40" font-family="'DM Sans',sans-serif" font-size="38" font-weight="700" letter-spacing="-2" fill="#ffffff">Addtok</text>
+      <rect x="0" y="46" width="66" height="3" rx="1.5" fill="#FF2D55"/>
+      <rect x="68" y="46" width="62" height="3" rx="1.5" fill="#00e5ff"/>
+      <text x="0" y="62" font-family="'DM Sans',sans-serif" font-size="11" font-weight="500" letter-spacing="4" fill="rgba(242,242,247,0.4)">add an ad.</text>
+    </svg>
+  </div>
 
-    <div class="hero-btns">
-      <a href="#btc" class="btn btn-btc">₿ Pay with Bitcoin</a>
-      <a href="#contact" class="btn btn-red">📩 Submit Enquiry</a>
-      <a href="#included" class="btn btn-outline">📦 What's Included</a>
-    </div>
+  <p class="hero-sub">The world's first short-form ad discovery platform. Browse, vote, and buy from the best ads by brands, influencers and creators — all with direct links to every product.</p>
 
-    <div class="scroll-hint">
-      <span>Scroll to explore</span>
-      <span class="arrow">↓</span>
+  <div class="tba-box">
+    <div class="tba-label">Launch Date</div>
+    <div class="tba-val">TBA</div>
+    <div class="tba-sub">Sign up below to be first to know</div>
+  </div>
+
+  <div class="signup-form">
+    <div class="email-row">
+      <input class="email-input" id="email-input" type="email" placeholder="Enter your email address">
+      <button class="signup-btn" onclick="signUp()">Notify Me</button>
     </div>
+    <div class="signup-note">Be first to know when Addtok launches. No spam, ever.</div>
+    <div class="signup-success" id="signup-success">You're on the list! We'll email you on launch day.</div>
   </div>
 </section>
 
-<!-- METRICS -->
-<section class="section" id="metrics">
-  <div class="container">
-    <div class="conf-banner"><b>Confidential.</b> All metrics are verified platform data. Full P&L, traffic analytics, and advertiser contracts provided under NDA upon request from serious buyers only.</div>
-    <div class="section-label">Platform Performance</div>
-    <div class="section-title">VERIFIED METRICS</div>
-    <p class="section-sub">Real numbers from a live, revenue-generating platform. Not projections — actuals.</p>
+<div class="section">
+  <div class="section-label">What is Addtok?</div>
+  <div class="section-title">Ads you actually want to see</div>
+  <p class="section-sub">Addtok is a TikTok-style feed built entirely for advertisements and product promotions. Scroll through the best ads from your favourite brands, influencers, and creators — and tap directly through to buy.</p>
 
-    <div class="stats-grid">
-      <div class="stat-box">
-        <div class="stat-icon">💰</div>
-        <div class="stat-value">£3,244</div>
-        <div class="stat-label">Platform Revenue</div>
-        <div class="stat-change">↑ 23% month-on-month</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-icon">👁</div>
-        <div class="stat-value">1.2M</div>
-        <div class="stat-label">Ad Impressions</div>
-        <div class="stat-change">↑ 41% this month</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-icon">🤝</div>
-        <div class="stat-value">142</div>
-        <div class="stat-label">Paying Advertisers</div>
-        <div class="stat-change">↑ 12 new this week</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-icon">🎯</div>
-        <div class="stat-value">4.8%</div>
-        <div class="stat-label">Average CTR</div>
-        <div class="stat-change">3× industry average</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-icon">🔨</div>
-        <div class="stat-value">£850</div>
-        <div class="stat-label">Auction Revenue</div>
-        <div class="stat-change">Growing weekly</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-icon">🏆</div>
-        <div class="stat-value">8</div>
-        <div class="stat-label">Ad Categories</div>
-        <div class="stat-change">Merch, brand, influencer…</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-icon">📲</div>
-        <div class="stat-value">68%</div>
-        <div class="stat-label">Mobile Traffic</div>
-        <div class="stat-change">App-ready architecture</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-icon">📈</div>
-        <div class="stat-value">9×</div>
-        <div class="stat-label">Revenue Streams</div>
-        <div class="stat-change">Clicks, listings, auctions…</div>
-      </div>
-    </div>
+  <div class="feature-list">
+    <div class="feature-card"><div class="fc-icon">▶</div><div><div class="fc-title">Short-form ad feed</div><div class="fc-desc">Scroll through video ads just like TikTok — but every single one is a product you can buy. Swipe, discover, shop.</div></div></div>
+    <div class="feature-card"><div class="fc-icon">🔗</div><div><div class="fc-title">Direct product links</div><div class="fc-desc">Every ad has a direct link to the product website. One tap takes you straight to the product page, no searching needed.</div></div></div>
+    <div class="feature-card"><div class="fc-icon">👍</div><div><div class="fc-title">Community voting</div><div class="fc-desc">Vote on the best ads. The community decides what rises to the top — only the most genuine, creative ads get seen most.</div></div></div>
+    <div class="feature-card"><div class="fc-icon">🏆</div><div><div class="fc-title">Weekly leaderboards</div><div class="fc-desc">The most voted ads of the week win the top spots. Brands compete to make the best ads — you benefit from better content.</div></div></div>
+    <div class="feature-card"><div class="fc-icon">🎯</div><div><div class="fc-title">Browse by category</div><div class="fc-desc">Filter by fashion, tech, beauty, fitness, food, gaming and more. Only see ads for things you actually care about.</div></div></div>
+    <div class="feature-card"><div class="fc-icon">🛍️</div><div><div class="fc-title">Merch drops &amp; exclusives</div><div class="fc-desc">Limited edition drops, exclusive discount codes, and early access offers — all in one place, before they sell out.</div></div></div>
   </div>
-</section>
+</div>
 
-<!-- WHAT'S INCLUDED -->
-<section class="section" id="included" style="background:var(--s1)">
-  <div class="container">
-    <div class="section-label">Complete Package</div>
-    <div class="section-title">EVERYTHING INCLUDED</div>
-    <p class="section-sub">A turnkey platform acquisition. Walk away with everything needed to operate and scale from day one.</p>
-
-    <div class="included-grid">
-      <div class="included-card">
-        <div class="ic-icon">💻</div>
-        <div class="ic-title">Full Platform Source Code</div>
-        <div class="ic-desc">Complete HTML/CSS/JavaScript codebase. No dependencies on third-party platforms. Deployable to any server in minutes.</div>
-        <ul class="ic-list">
-          <li>Complete frontend — all 18 pages and views</li>
-          <li>Analytics dashboard with live data simulation</li>
-          <li>Campaign manager and auction system</li>
-          <li>AI moderation engine integration</li>
-          <li>Claude API-powered ad copy generator</li>
-          <li>Referral tracking and commission system</li>
-          <li>Full transaction ledger and payout system</li>
-          <li>Dark/light mode, fully responsive</li>
-        </ul>
-      </div>
-      <div class="included-card">
-        <div class="ic-icon">🏢</div>
-        <div class="ic-title">Brand & Digital Assets</div>
-        <div class="ic-desc">The complete Addtok brand identity including name, visual system, and all digital presence.</div>
-        <ul class="ic-list">
-          <li>Addtok brand name and trademark</li>
-          <li>addtok.io domain name (to be registered)</li>
-          <li>@addtok handles on TikTok, Instagram, X, LinkedIn</li>
-          <li>Full colour system, typography, design tokens</li>
-          <li>Logo lockups and brand guidelines</li>
-          <li>Pitch deck and investor materials</li>
-          <li>Marketing copy and landing page</li>
-          <li>This acquisition landing page</li>
-        </ul>
-      </div>
-      <div class="included-card">
-        <div class="ic-icon">👥</div>
-        <div class="ic-title">Advertiser Base & Pipeline</div>
-        <div class="ic-desc">All existing advertiser relationships, contracts, and a warm pipeline of inbound enquiries.</div>
-        <ul class="ic-list">
-          <li>142 active advertiser accounts</li>
-          <li>Full CRM with contact and spend history</li>
-          <li>Enterprise client contracts (NDA-protected)</li>
-          <li>Referral partner agreements</li>
-          <li>Inbound sales pipeline (qualified leads)</li>
-          <li>Email lists and engagement data</li>
-          <li>Advertiser onboarding materials</li>
-          <li>Pricing and rate card history</li>
-        </ul>
-      </div>
-      <div class="included-card">
-        <div class="ic-icon">📊</div>
-        <div class="ic-title">Financial Records & IP</div>
-        <div class="ic-desc">12 months of audited financials, all intellectual property, and full documentation.</div>
-        <ul class="ic-list">
-          <li>12-month P&L statements</li>
-          <li>Full transaction ledger (all revenue)</li>
-          <li>Stripe payment history and projections</li>
-          <li>All proprietary algorithms (voting, ranking)</li>
-          <li>Technical architecture documentation</li>
-          <li>Deployment and ops runbook</li>
-          <li>6-month founder handover support</li>
-          <li>Introductions to key advertisers</li>
-        </ul>
-      </div>
-    </div>
+<div class="section">
+  <div class="section-label">How It Works</div>
+  <div class="section-title">Simple as scroll, tap, buy</div>
+  <p class="section-sub">Addtok connects consumers with the products they love in three simple steps.</p>
+  <div class="steps">
+    <div class="step-item"><div class="step-left"><div class="step-circle">1</div><div class="step-line"></div></div><div class="step-body"><div class="step-title">Browse the ad feed</div><div class="step-desc">Scroll through short video and image ads from top brands, influencers, and creators. Filter by category to find what you love.</div></div></div>
+    <div class="step-item"><div class="step-left"><div class="step-circle">2</div><div class="step-line"></div></div><div class="step-body"><div class="step-title">Vote on your favourites</div><div class="step-desc">Upvote ads you love, downvote ones that miss the mark. Your votes shape the leaderboard and help the best ads rise to the top.</div></div></div>
+    <div class="step-item"><div class="step-left"><div class="step-circle">3</div><div class="step-line"></div></div><div class="step-body"><div class="step-title">Tap the link and buy</div><div class="step-desc">Every ad has a direct link to the product. One tap takes you straight to the brand's website to buy — no extra searching.</div></div></div>
+    <div class="step-item"><div class="step-left"><div class="step-circle">4</div><div class="step-line"></div></div><div class="step-body"><div class="step-title">Grab exclusive deals</div><div class="step-desc">Many ads include exclusive discount codes, early access links, and limited edition drops available only through Addtok.</div></div></div>
   </div>
-</section>
+</div>
 
-<!-- REVENUE STREAMS -->
-<section class="section" id="revenue">
-  <div class="container">
-    <div class="section-label">Monetisation</div>
-    <div class="section-title">9 REVENUE STREAMS</div>
-    <p class="section-sub">Addtok generates income from every action on the platform. Nine diversified streams mean no single point of failure.</p>
-
-    <div class="revenue-grid">
-      <div class="rev-card">
-        <div class="rev-icon">👁</div>
-        <div class="rev-rate">£0.0001</div>
-        <div class="rev-name">Per Impression</div>
-        <div class="rev-desc">Passive income from every ad view. Scales automatically with traffic growth.</div>
-      </div>
-      <div class="rev-card">
-        <div class="rev-icon">🖱</div>
-        <div class="rev-rate">£0.10</div>
-        <div class="rev-name">Per Click</div>
-        <div class="rev-desc">Every product link visit earns £0.10. High-intent clicks at scale.</div>
-      </div>
-      <div class="rev-card">
-        <div class="rev-icon">📦</div>
-        <div class="rev-rate">£9–£299</div>
-        <div class="rev-name">Listing Fees</div>
-        <div class="rev-desc">Paid per ad upload depending on plan tier. Recurring and predictable.</div>
-      </div>
-      <div class="rev-card">
-        <div class="rev-icon">⭐</div>
-        <div class="rev-rate">£49–£129</div>
-        <div class="rev-name">Featured Boosts</div>
-        <div class="rev-desc">Advertisers pay for premium homepage and category placement slots.</div>
-      </div>
-      <div class="rev-card">
-        <div class="rev-icon">🔨</div>
-        <div class="rev-rate">Market Rate</div>
-        <div class="rev-name">Slot Auctions</div>
-        <div class="rev-desc">Advertisers bid for featured positions. Highest bid wins 7 days of prime exposure.</div>
-      </div>
-      <div class="rev-card">
-        <div class="rev-icon">💳</div>
-        <div class="rev-rate">£9–£299/mo</div>
-        <div class="rev-name">Subscriptions</div>
-        <div class="rev-desc">Starter, Pro, and Enterprise monthly plans. Recurring MRR base.</div>
-      </div>
-      <div class="rev-card">
-        <div class="rev-icon">🤝</div>
-        <div class="rev-rate">20%</div>
-        <div class="rev-name">Referral Commission</div>
-        <div class="rev-desc">Earn 20% of every pound spent by referred advertisers — forever.</div>
-      </div>
-      <div class="rev-card">
-        <div class="rev-icon">🏆</div>
-        <div class="rev-rate">£15–£50</div>
-        <div class="rev-name">Leaderboard Prizes</div>
-        <div class="rev-desc">Weekly prize pool funded by platform. Drives engagement and ad quality.</div>
-      </div>
-      <div class="rev-card">
-        <div class="rev-icon">📊</div>
-        <div class="rev-rate">£29–£49</div>
-        <div class="rev-name">Data & Insights</div>
-        <div class="rev-desc">Competitor reports, audience deep-dives, and targeting insights sold as add-ons.</div>
-      </div>
-    </div>
-
-    <!-- Growth opportunities -->
-    <div style="background:var(--s1);border:1px solid var(--border);border-radius:24px;padding:32px;margin-top:32px">
-      <div class="section-label">Untapped Upside</div>
-      <div style="font-family:var(--fd);font-size:28px;letter-spacing:1px;margin-bottom:16px">GROWTH OPPORTUNITIES</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--s2);border-radius:12px" class="op-item">
-          <span style="font-size:20px;flex-shrink:0">📱</span>
-          <div>
-            <div style="font-weight:600;font-size:13px;margin-bottom:3px">Native iOS + Android app</div>
-            <div style="font-size:11px;color:var(--muted)">Platform architecture is app-ready. React Native port = new App Store discovery channel.</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--s2);border-radius:12px">
-          <span style="font-size:20px;flex-shrink:0">🌍</span>
-          <div>
-            <div style="font-weight:600;font-size:13px;margin-bottom:3px">US and Australian markets</div>
-            <div style="font-size:11px;color:var(--muted)">40+ untapped markets with massive influencer and brand ad spend. USD/AUD pricing ready.</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--s2);border-radius:12px">
-          <span style="font-size:20px;flex-shrink:0">🛍️</span>
-          <div>
-            <div style="font-weight:600;font-size:13px;margin-bottom:3px">In-app checkout</div>
-            <div style="font-size:11px;color:var(--muted)">Buy products without leaving Addtok. Shopify/WooCommerce integration. Direct commerce revenue.</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--s2);border-radius:12px">
-          <span style="font-size:20px;flex-shrink:0">🤖</span>
-          <div>
-            <div style="font-weight:600;font-size:13px;margin-bottom:3px">AI personalised feed</div>
-            <div style="font-size:11px;color:var(--muted)">Netflix-style recommendations via Claude API. Higher CTR = higher advertiser spend.</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--s2);border-radius:12px">
-          <span style="font-size:20px;flex-shrink:0">🏢</span>
-          <div>
-            <div style="font-weight:600;font-size:13px;margin-bottom:3px">White-label B2B offering</div>
-            <div style="font-size:11px;color:var(--muted)">License the Addtok platform to media companies, agencies, and retail groups.</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--s2);border-radius:12px">
-          <span style="font-size:20px;flex-shrink:0">📺</span>
-          <div>
-            <div style="font-weight:600;font-size:13px;margin-bottom:3px">Live streaming ads</div>
-            <div style="font-size:11px;color:var(--muted)">Real-time product drops and live commerce — the fastest growing format globally.</div>
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="section">
+  <div class="section-label">For Advertisers</div>
+  <div class="section-title">Every type of ad welcome</div>
+  <p class="section-sub">From global brands to solo creators — if you have a product, you can advertise on Addtok.</p>
+  <div class="ad-types">
+    <div class="ad-type"><div class="at-emoji">👟</div><div class="at-title">Merch Drops</div><div class="at-desc">Limited releases and exclusive collabs</div></div>
+    <div class="ad-type"><div class="at-emoji">🏢</div><div class="at-title">Brand Ads</div><div class="at-desc">Major brands and product launches</div></div>
+    <div class="ad-type"><div class="at-emoji">🎬</div><div class="at-title">Influencers</div><div class="at-desc">Creator collabs and sponsored content</div></div>
+    <div class="ad-type"><div class="at-emoji">📢</div><div class="at-title">Sponsored</div><div class="at-desc">Promoted products and services</div></div>
+    <div class="ad-type"><div class="at-emoji">☕</div><div class="at-title">Subscriptions</div><div class="at-desc">Recurring products and memberships</div></div>
+    <div class="ad-type"><div class="at-emoji">🎮</div><div class="at-title">Gaming &amp; Tech</div><div class="at-desc">Hardware, games and apps</div></div>
   </div>
-</section>
-
-<!-- TRANSACTION PROCESS -->
-<section class="section" id="process" style="background:var(--s1)">
-  <div class="container">
-    <div class="section-label">How It Works</div>
-    <div class="section-title">ACQUISITION PROCESS</div>
-    <p class="section-sub">A clean, solicitor-managed process designed to protect both parties. Bitcoin or GBP — same steps.</p>
-
-    <div class="process-steps">
-      <div class="step">
-        <div class="step-num">📩</div>
-        <div class="step-title">Submit Enquiry</div>
-        <div class="step-desc">Fill in the contact form below. NDA sent within 24 hours.</div>
-      </div>
-      <div class="step">
-        <div class="step-num">🔐</div>
-        <div class="step-title">Sign NDA</div>
-        <div class="step-desc">Receive full P&L, contracts, and live code access under NDA.</div>
-      </div>
-      <div class="step">
-        <div class="step-num">🔍</div>
-        <div class="step-title">Due Diligence</div>
-        <div class="step-desc">14-day period to review all financials, code, and advertiser data.</div>
-      </div>
-      <div class="step">
-        <div class="step-num">₿</div>
-        <div class="step-title">Payment</div>
-        <div class="step-desc">BTC via multisig escrow or GBP via Escrow.com / solicitor.</div>
-      </div>
-      <div class="step">
-        <div class="step-num">🔑</div>
-        <div class="step-title">Handover</div>
-        <div class="step-desc">All assets transferred + 6 months support from founder.</div>
-      </div>
-    </div>
+  <div class="rev-strip">
+    <div class="rev-title">💰 Advertiser pricing</div>
+    <div class="rev-row"><span class="rev-label">📦 Starter listing</span><span class="rev-amount">From £9/mo</span></div>
+    <div class="rev-row"><span class="rev-label">⭐ Pro plan</span><span class="rev-amount">£49/mo</span></div>
+    <div class="rev-row"><span class="rev-label">🏢 Enterprise</span><span class="rev-amount">£299/mo</span></div>
+    <div class="rev-row"><span class="rev-label">🔗 Pay per click</span><span class="rev-amount">£0.10/click</span></div>
+    <div class="rev-row"><span class="rev-label">🏆 Featured slot</span><span class="rev-amount">From £49</span></div>
   </div>
-</section>
+</div>
 
-<!-- BTC PAYMENT -->
-<section class="section" id="btc">
-  <div class="container">
-    <div class="btc-section">
-      <div class="section-label" style="color:var(--btc)">Direct Bitcoin Payment</div>
-      <div class="section-title">PAY IN BITCOIN</div>
-      <p class="section-sub" style="margin:0 auto 16px">Send a minimum of <strong style="color:var(--btc)">&#x20BF;10.00</strong> directly to the seller's verified wallet below. The highest payment of &#x20BF;10 or more triggers immediate full transfer of all Addtok rights, source code, brand, domain, advertiser accounts, and every file in this sale package to the buyer. Transparent. On-chain. Verifiable.</p>
-
-      <!-- TERMS -->
-      <div style="background:rgba(247,147,26,0.07);border:1px solid rgba(247,147,26,0.25);border-radius:16px;padding:22px 26px;max-width:680px;margin:0 auto 24px;text-align:left">
-        <div style="font-family:var(--fd);font-size:16px;letter-spacing:1px;color:var(--btc);margin-bottom:14px">PAYMENT TERMS &amp; RIGHTS TRANSFER</div>
-        <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--muted);line-height:1.6">
-          <div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--btc);font-weight:800;flex-shrink:0;font-size:15px">1.</span><span>Minimum payment is <strong style="color:var(--text)">&#x20BF;10.00 Bitcoin</strong>. Any amount below &#x20BF;10 will not trigger the transfer and the seller reserves all rights.</span></div>
-          <div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--btc);font-weight:800;flex-shrink:0;font-size:15px">2.</span><span>The <strong style="color:var(--text)">highest single payment of &#x20BF;10 or above</strong> wins the acquisition. If multiple buyers send &#x20BF;10+, the largest single on-chain transaction is the winning bid.</span></div>
-          <div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--btc);font-weight:800;flex-shrink:0;font-size:15px">3.</span><span>Upon confirmed on-chain receipt of the winning payment, the seller <strong style="color:var(--text)">immediately signs over all rights to Addtok</strong> &mdash; full source code, brand name, domain, social accounts, advertiser relationships, financial records, and every file in the sale package.</span></div>
-          <div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--btc);font-weight:800;flex-shrink:0;font-size:15px">4.</span><span>The buyer must <strong style="color:var(--text)">submit their Transaction ID (TXID) via the contact form below</strong> to claim the transfer. The seller verifies on-chain and initiates delivery within 24 hours of confirmation.</span></div>
-          <div style="display:flex;gap:12px;align-items:flex-start"><span style="color:var(--btc);font-weight:800;flex-shrink:0;font-size:15px">5.</span><span>All payments are <strong style="color:var(--text)">final and non-refundable</strong>. Verify the wallet address independently before sending. Bitcoin transactions cannot be reversed.</span></div>
-        </div>
-      </div>
-
-      <!-- WALLET ADDRESS -->
-      <div class="btc-address-box" onclick="copyAddress()" style="max-width:680px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
-          <div class="bab-label" style="margin:0">Seller Bitcoin Wallet &mdash; Verified Receiving Address</div>
-          <div style="background:rgba(48,209,88,0.12);border:1px solid rgba(48,209,88,0.3);color:#30d158;font-size:9px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:1px">NATIVE SEGWIT &bull; bc1q...</div>
-        </div>
-        <div class="bab-address" id="btc-addr" style="font-size:17px;letter-spacing:2px;word-break:break-all">bc1qccywxjpmuq7432k8ze5sm0spw6ja60020yavfc</div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;flex-wrap:wrap;gap:8px">
-          <div class="bab-copy" style="margin:0">Click to copy &bull; Always verify independently at mempool.space before sending</div>
-          <div id="copy-confirm" style="font-size:11px;color:#30d158;display:none;font-weight:700">Copied!</div>
-        </div>
-      </div>
-
-      <!-- MINIMUM WARNING -->
-      <div style="background:rgba(255,45,85,0.08);border:1px solid rgba(255,45,85,0.25);border-radius:12px;padding:14px 20px;max-width:680px;margin:0 auto 24px;display:flex;align-items:flex-start;gap:12px;text-align:left">
-        <span style="font-size:20px;flex-shrink:0">&#9888;</span>
-        <div style="font-size:12px;color:var(--muted);line-height:1.7"><strong style="color:var(--text)">Important:</strong> Send a minimum of <strong style="color:var(--btc)">&#x20BF;10.00</strong> in a single transaction. Payments below &#x20BF;10 will not trigger any transfer and cannot be refunded. Include sufficient network fee (miner fee) on top of the &#x20BF;10 bid amount so the full &#x20BF;10 arrives. Always verify: <code style="font-family:var(--fm);font-size:10px;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px">bc1qccywxjpmuq7432k8ze5sm0spw6ja60020yavfc</code></div>
-      </div>
-
-      <!-- STEPS -->
-      <div class="btc-steps" style="max-width:680px;margin:0 auto 24px">
-        <div class="btc-step">
-          <div class="btcs-num">01</div>
-          <div class="btcs-title">Copy wallet address</div>
-          <div class="btcs-desc">Click the address box. Triple-check every character. Verify independently on mempool.space before sending.</div>
-        </div>
-        <div class="btc-step">
-          <div class="btcs-num">02</div>
-          <div class="btcs-title">Send &#x20BF;10 or more</div>
-          <div class="btcs-desc">Send minimum &#x20BF;10.00 from your Bitcoin wallet in a single transaction. Higher bids win if there is competition.</div>
-        </div>
-        <div class="btc-step">
-          <div class="btcs-num">03</div>
-          <div class="btcs-title">Submit your TXID</div>
-          <div class="btcs-desc">Use the contact form below. Paste your Transaction ID so the seller can verify on-chain and begin transfer.</div>
-        </div>
-        <div class="btc-step">
-          <div class="btcs-num">04</div>
-          <div class="btcs-title">Receive all rights &amp; files</div>
-          <div class="btcs-desc">Full source code, brand, domain, advertiser accounts, and complete sale package delivered within 24 hours of confirmation.</div>
-        </div>
-      </div>
-
-      <!-- VERIFY NOTE -->
-      <div class="rate-note" style="max-width:680px">
-        <b>On-chain transparency:</b> Every payment to this wallet is publicly visible and verifiable at <a href="https://mempool.space/address/bc1qccywxjpmuq7432k8ze5sm0spw6ja60020yavfc" style="color:var(--btc)" target="_blank" rel="noopener">mempool.space</a> or any Bitcoin block explorer. There is no escrow, no intermediary, and no delay &mdash; the seller verifies your TXID on-chain and transfers all assets directly to you. The wallet address above is the only valid receiving address for this acquisition. Do not trust any other address sent to you by email or message.
-      </div>
+<div class="section">
+  <div class="notify-section">
+    <div class="ns-title">Be first in line</div>
+    <p class="ns-sub">Join thousands of shoppers and brands waiting for Addtok to launch. Early subscribers get free access for 3 months.</p>
+    <div style="display:flex;gap:8px;max-width:360px;margin:0 auto">
+      <input class="email-input" id="email-input-2" type="email" placeholder="your@email.com" style="flex:1">
+      <button class="signup-btn" onclick="signUp2()">Join Now</button>
     </div>
+    <div style="font-size:11px;color:var(--muted2);margin-top:10px">Free for first 3 months · No credit card needed</div>
   </div>
-</section>
-<!-- CONTACT -->
-<section class="section" id="contact" style="background:var(--s1)">
-  <div class="container">
-    <div class="section-label">Get In Touch</div>
-    <div class="section-title">ACQUIRE ADDTOK</div>
+</div>
 
-    <div class="contact-grid">
-      <div class="contact-info">
-        <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:8px">Complete the form and we'll respond within 48 hours with an NDA and introductory call invitation. All enquiries are strictly confidential.</p>
-
-        <div class="ci-card">
-          <div class="ci-label">Preferred Payment</div>
-          <div class="ci-value" style="color:var(--btc)">₿ Bitcoin (₿10.00) or £500,000 GBP</div>
-        </div>
-        <div class="ci-card">
-          <div class="ci-label">Response Time</div>
-          <div class="ci-value">Within 48 hours · 7 days a week</div>
-        </div>
-        <div class="ci-card">
-          <div class="ci-label">Due Diligence Period</div>
-          <div class="ci-value">14 days from NDA signing</div>
-        </div>
-        <div class="ci-card">
-          <div class="ci-label">Post-Sale Support</div>
-          <div class="ci-value">6 months included · Founder-led handover</div>
-        </div>
-        <div class="ci-card">
-          <div class="ci-label">Process Managed By</div>
-          <div class="ci-value">UK-registered solicitor · Escrow.com for GBP</div>
-        </div>
-        <div class="ci-card">
-          <div class="ci-label">Confidentiality</div>
-          <div class="ci-value">DocuSign NDA prior to any data disclosure</div>
-        </div>
-
-        <div style="background:rgba(247,147,26,0.08);border:1px solid rgba(247,147,26,0.2);border-radius:14px;padding:16px;margin-top:4px">
-          <div style="font-weight:700;font-size:13px;margin-bottom:6px;color:var(--btc)">₿ Serious Bitcoin buyers</div>
-          <div style="font-size:12px;color:var(--muted);line-height:1.6">If you intend to pay in Bitcoin, please state this in your message. We will fast-track your enquiry and provide the multisig escrow wallet address under NDA. All BTC transactions are handled transparently on-chain.</div>
-        </div>
-      </div>
-
-      <div class="form-card">
-        <div class="form-title">ENQUIRY FORM</div>
-        <div class="form-sub">Strictly confidential · No brokers · Serious buyers only</div>
-
-        <div class="form-grid">
-          <div class="field">
-            <label>Full Name *</label>
-            <input id="f-name" placeholder="Your legal name" type="text">
-          </div>
-          <div class="field">
-            <label>Company / Fund</label>
-            <input id="f-co" placeholder="Company or investment entity">
-          </div>
-          <div class="field">
-            <label>Email *</label>
-            <input id="f-email" placeholder="you@company.com" type="email">
-          </div>
-          <div class="field">
-            <label>Phone</label>
-            <input id="f-phone" placeholder="+44 7XXX XXXXXX" type="tel">
-          </div>
-          <div class="field">
-            <label>Payment Method</label>
-            <select id="f-payment">
-              <option value="btc">₿ Bitcoin — minimum ₿10.00</option>
-              <option value="gbp">£ GBP — £500,000</option>
-              <option value="offer">Custom offer — to discuss</option>
-              <option value="nda">Requesting financials / NDA only</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Bitcoin TXID (if already paid)</label>
-            <input id="f-txid" placeholder="Paste your transaction ID to claim your purchase" style="font-family:var(--fm);font-size:11px">
-          </div>
-          <div class="field">
-            <label>Timeline</label>
-            <select id="f-timeline">
-              <option>ASAP — within 30 days</option>
-              <option>1–3 months</option>
-              <option>3–6 months</option>
-              <option>Exploring options</option>
-            </select>
-          </div>
-          <div class="field full">
-            <label>Your Message *</label>
-            <textarea id="f-msg" placeholder="Tell us about yourself, your plans for Addtok, any questions, and confirm if you intend to pay in Bitcoin..."></textarea>
-          </div>
-          <div class="field full" style="display:flex;align-items:flex-start;gap:10px">
-            <input type="checkbox" id="f-nda" style="width:auto;margin-top:2px">
-            <label for="f-nda" style="font-size:12px;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:400;cursor:pointer">I understand this enquiry is confidential and agree to sign an NDA before receiving any financial or technical information about Addtok.</label>
-          </div>
-        </div>
-        <button class="submit-btn" onclick="submitEnquiry()">₿ SUBMIT ACQUISITION ENQUIRY</button>
-        <div class="form-note">Response within 48 hours · All data handled confidentially · NDA sent via DocuSign</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
 <footer>
-  <div class="footer-logo">ADDTOK</div>
-  <div class="footer-tagline">The world's first community-voted ad discovery platform</div>
-  <div class="footer-badges">
-    <span class="footer-badge">₿ Bitcoin accepted</span>
-    <span class="footer-badge">🔐 Escrow protected</span>
-    <span class="footer-badge">⚖️ Solicitor managed</span>
-    <span class="footer-badge">📊 Revenue verified</span>
-    <span class="footer-badge">🤝 6-month support</span>
-  </div>
-  <div class="footer-copy">© 2026 Addtok. Confidential acquisition document. Not for public distribution.</div>
+  <svg width="140" height="44" viewBox="0 0 210 64" role="img" aria-label="Addtok" style="display:block;margin:0 auto 8px">
+    <title>Addtok</title>
+    <text x="0" y="40" font-family="'DM Sans',sans-serif" font-size="38" font-weight="700" letter-spacing="-2" fill="#ffffff">Addtok</text>
+    <rect x="0" y="46" width="66" height="3" rx="1.5" fill="#FF2D55"/>
+    <rect x="68" y="46" width="62" height="3" rx="1.5" fill="#00e5ff"/>
+    <text x="0" y="62" font-family="'DM Sans',sans-serif" font-size="11" font-weight="500" letter-spacing="4" fill="rgba(242,242,247,0.4)">add an ad.</text>
+  </svg>
+  <div style="font-size:12px;color:var(--muted);margin-bottom:6px">All your advertisements in one place</div>
+  <div class="footer-copy">© 2026 Addtok. Launching soon. · <a href="mailto:hello@addtok.online" style="color:var(--a2);text-decoration:none">hello@addtok.online</a></div>
 </footer>
 
 <div id="toast"></div>
 
 <script>
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.style.display='block';
-  setTimeout(()=>t.style.display='none',3000);
-}
-
-function copyAddress(){
-  const addr='bc1qccywxjpmuq7432k8ze5sm0spw6ja60020yavfc';
-  navigator.clipboard.writeText(addr).then(()=>{
-    showToast('₿ Address copied: bc1qccywxjpmuq7432k8ze5sm0spw6ja60020yavfc');
-    const el=document.getElementById('copy-confirm');
-    if(el){el.style.display='block';setTimeout(()=>el.style.display='none',3000);}
-  }).catch(()=>showToast('Address: '+addr));
-}
-
-function submitEnquiry(){
-  const name=document.getElementById('f-name').value.trim();
-  const email=document.getElementById('f-email').value.trim();
-  const msg=document.getElementById('f-msg').value.trim();
-  const nda=document.getElementById('f-nda').checked;
-  const txid=(document.getElementById('f-txid')?.value||'').trim();
-  const payment=(document.getElementById('f-payment')?.value||'');
-  if(!name){showToast('Please enter your full name');return;}
-  if(!email){showToast('Please enter your email address');return;}
-  if(!msg){showToast('Please write a message');return;}
-  if(!nda){showToast('Please confirm the confidentiality checkbox');return;}
-  if(txid){
-    showToast('₿ Payment claim received! Verifying TXID on-chain. Transfer within 24h of confirmation.');
-  } else if(payment==='btc'){
-    showToast('BTC enquiry noted. Send ₿10+ to the wallet, then resubmit with your TXID to claim.');
-  } else {
-    showToast('Enquiry submitted. NDA will be sent to your email within 48 hours.');
-  }
-  ['f-name','f-email','f-msg','f-txid'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('f-nda').checked=false;
-}
-
-// Animate stats on scroll
-const observer=new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}});
-},{threshold:0.1});
-document.querySelectorAll('.stat-box,.included-card,.rev-card,.step').forEach(el=>{
-  el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='all 0.4s ease';
-  observer.observe(el);
-});
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',3000);}
+function signUp(){const e=document.getElementById('email-input').value.trim();if(!e||!e.includes('@')){showToast('Please enter a valid email');return;}document.getElementById('signup-success').style.display='block';document.getElementById('email-input').value='';showToast('You are on the list!');}
+function signUp2(){const e=document.getElementById('email-input-2').value.trim();if(!e||!e.includes('@')){showToast('Please enter a valid email');return;}document.getElementById('email-input-2').value='';showToast('You are on the list! See you at launch.');}
 </script>
 </body>
-</html>
+  </html>
