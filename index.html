@@ -270,10 +270,14 @@ footer{border-top:1px solid var(--border);padding:32px 20px;text-align:center;po
         </div>
         <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted)">
           <span style="color:var(--accent);font-weight:700;flex-shrink:0">✓</span>
-          <span><strong style="color:var(--text)">Powered by Stripe</strong> — secure card payments, instant billing, full transaction history in your dashboard.</span>
+          <span><strong style="color:var(--text)">Powered by Stripe</strong> — the same payment infrastructure used by TikTok, Google and Meta. Secure card payments, automatic billing per click, full transaction history in your dashboard.</span>
         </div>
       </div>
-      <div style="margin-top:12px;padding:10px 14px;background:rgba(255,255,255,0.03);border-radius:10px;font-size:10px;color:var(--muted);line-height:1.6;border:1px solid rgba(255,255,255,0.06)">
+      <div style="margin-top:12px;display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(99,91,255,0.06);border-radius:10px;border:1px solid rgba(99,91,255,0.2)">
+        <div style="font-size:18px;font-weight:900;color:#635bff;letter-spacing:2px;flex-shrink:0">stripe</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.5">Addtok payments are processed securely by Stripe — trusted by millions of businesses worldwide. Your card details are never stored by Addtok.</div>
+      </div>
+      <div style="margin-top:10px;padding:10px 14px;background:rgba(255,255,255,0.03);border-radius:10px;font-size:10px;color:var(--muted);line-height:1.6;border:1px solid rgba(255,255,255,0.06)">
         * All prices are estimates based on current UK market rates. Final Addtok pricing confirmed at launch. Questions? <a href="mailto:hello.addtok@gmail.com" style="color:var(--a2)">hello.addtok@gmail.com</a>
       </div>
     </div>
@@ -312,4 +316,4 @@ function signUp(){const e=document.getElementById('email-input').value.trim();if
 function signUp2(){const e=document.getElementById('email-input-2').value.trim();if(!e||!e.includes('@')){showToast('Please enter a valid email');return;}document.getElementById('email-input-2').value='';showToast('You are on the list! See you at launch.');}
 </script>
 </body>
-</html>
+      </html>
