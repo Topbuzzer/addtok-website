@@ -2,337 +2,400 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Addtok — Coming Soon</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' rx='14' fill='%231a1a3a'/%3E%3Ctext x='30' y='38' text-anchor='middle' font-family='DM Sans,sans-serif' font-size='32' font-weight='800' fill='%23ffffff'%3EA%3C/text%3E%3Crect x='10' y='44' width='18' height='3' rx='1.5' fill='%23FF2D55'/%3E%3Crect x='32' y='44' width='18' height='3' rx='1.5' fill='%2300e5ff'/%3E%3C/svg%3E">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Addtok — Private Test Build</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#1a1a3a;--c1:#22224a;--c2:#2a2a58;
-  --rd:#ff2d55;--cy:#00e5ff;--gd:#ffd60a;--gr:#30d158;--st:#635bff;
-  --tx:#f2f2f7;--t2:rgba(242,242,247,.68);--t3:rgba(242,242,247,.38);
-  --bo:rgba(255,255,255,.1);--b2:rgba(255,255,255,.18);
-  --f:'DM Sans',sans-serif;
+  --bg:#0d0d1a;--c1:#12122a;--c2:#1a1a38;
+  --rd:#ff2d55;--cy:#00e5ff;--pu:#bf5af2;--gd:#ffd60a;--gr:#30d158;
+  --tx:#f2f2f7;--t2:rgba(242,242,247,.65);--t3:rgba(242,242,247,.35);
+  --bo:rgba(255,255,255,.08);
+  --f:'SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 }
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--tx);font-family:var(--f);overflow-x:hidden;min-height:100vh}
-body::before{content:'';position:fixed;inset:0;background:
-  radial-gradient(ellipse at 50% 0%,rgba(255,45,85,0.18) 0%,transparent 55%),
-  radial-gradient(ellipse at 90% 90%,rgba(0,229,255,0.1) 0%,transparent 50%),
-  radial-gradient(ellipse at 10% 60%,rgba(191,90,242,0.06) 0%,transparent 45%);
-  pointer-events:none;z-index:0}
+html,body{min-height:100vh;background:var(--bg);color:var(--tx);font-family:var(--f);overflow-x:hidden}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(26,26,58,0.92);backdrop-filter:blur(20px);border-bottom:2px solid var(--rd);height:58px;display:flex;align-items:center;justify-content:center}
+/* ── BACKGROUND ── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%,rgba(255,45,85,.12) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 90%,rgba(191,90,242,.1) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 40% at 60% 40%,rgba(0,229,255,.07) 0%,transparent 50%);
+  pointer-events:none;
+}
 
-/* HERO */
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:88px 20px 60px;position:relative;z-index:1;max-width:560px;margin:0 auto}
-.badge{display:inline-block;background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.25);color:var(--cy);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 18px;border-radius:20px;margin-bottom:28px;animation:up .6s ease both}
-@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.hero p{font-size:16px;color:var(--t2);max-width:460px;margin:0 auto 36px;line-height:1.75;animation:up .7s .2s ease both}
-.tba{display:inline-block;background:var(--c1);border:1px solid rgba(255,214,10,.3);border-radius:18px;padding:16px 36px;margin-bottom:40px;animation:up .7s .25s ease both}
-.tba-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:4px}
-.tba-val{font-size:38px;font-weight:800;letter-spacing:4px;color:var(--gd);line-height:1}
-.tba-sub{font-size:11px;color:var(--t3);margin-top:5px}
+/* ── LOCK SCREEN ── */
+#lock{
+  position:fixed;inset:0;z-index:100;
+  background:rgba(13,13,26,.97);
+  display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(20px);
+  transition:opacity .4s;
+}
+#lock.hidden{opacity:0;pointer-events:none}
+.lock-box{
+  background:var(--c1);border:1px solid var(--bo);
+  border-radius:24px;padding:36px 32px;width:90%;max-width:360px;
+  text-align:center;
+  box-shadow:0 32px 80px rgba(0,0,0,.6);
+}
+.lock-logo{font-size:28px;font-weight:900;letter-spacing:-1px;margin-bottom:4px}
+.lock-logo span{color:var(--rd)}
+.lock-sub{font-size:12px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:28px}
+.lock-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,214,10,.1);border:1px solid rgba(255,214,10,.25);
+  border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;
+  color:var(--gd);margin-bottom:24px;letter-spacing:.3px;
+}
+.lock-input{
+  width:100%;background:rgba(255,255,255,.05);
+  border:1.5px solid var(--bo);border-radius:14px;
+  padding:14px 16px;font-size:15px;color:var(--tx);
+  font-family:var(--f);margin-bottom:12px;
+  transition:border-color .2s;outline:none;
+  text-align:center;letter-spacing:3px;
+}
+.lock-input:focus{border-color:var(--rd)}
+.lock-input::placeholder{letter-spacing:1px;color:var(--t3);font-size:13px}
+.lock-btn{
+  width:100%;padding:14px;border:none;border-radius:14px;
+  background:linear-gradient(135deg,var(--rd),var(--pu));
+  color:#fff;font-size:15px;font-weight:800;
+  cursor:pointer;font-family:var(--f);
+  transition:opacity .15s,transform .15s;
+}
+.lock-btn:active{opacity:.85;transform:scale(.98)}
+.lock-err{
+  font-size:12px;color:var(--rd);margin-top:10px;
+  height:16px;transition:opacity .2s;
+}
 
-/* SIGNUP */
-.signup{width:100%;max-width:400px;margin:0 auto 16px;animation:up .7s .3s ease both}
-.signup-row{display:flex;gap:8px}
-.si{flex:1;background:var(--c1);border:1.5px solid var(--bo);border-radius:14px;padding:13px 16px;color:var(--tx);font-size:14px;font-family:var(--f);outline:none;transition:border-color .2s;min-width:0}
-.si:focus{border-color:var(--rd)}
-.si::placeholder{color:var(--t3)}
-.sb{background:linear-gradient(90deg,var(--rd),#d4004a);border:none;border-radius:14px;padding:13px 20px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:var(--f);transition:opacity .15s}
-.sb:hover{opacity:.88}
-.signup-note{font-size:11px;color:var(--t3);text-align:center;margin-top:8px}
-.signup-ok{background:rgba(48,209,88,.1);border:1px solid rgba(48,209,88,.25);border-radius:12px;padding:11px 16px;text-align:center;font-size:13px;color:var(--gr);display:none;margin-top:8px;font-weight:500}
+/* ── MAIN CONTENT ── */
+#app{position:relative;z-index:1;min-height:100vh;padding:0 0 60px}
 
-/* SECTIONS */
-.wrap{position:relative;z-index:1;max-width:580px;margin:0 auto;padding:0 20px}
-.sec{padding:64px 0}
-.sec-lbl{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--cy);margin-bottom:10px;text-align:center}
-.sec-title{font-size:clamp(26px,6vw,38px);font-weight:800;letter-spacing:-1px;text-align:center;margin-bottom:12px;line-height:1.2}
-.sec-sub{font-size:14px;color:var(--t2);text-align:center;line-height:1.75;margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto}
-hr.div{border:none;border-top:1px solid var(--bo);margin:0}
+/* ── HEADER ── */
+.header{
+  padding:28px 20px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo{font-size:26px;font-weight:900;letter-spacing:-1px}
+.logo span{color:var(--rd)}
+.logo-sub{font-size:9px;color:var(--t3);letter-spacing:2px;display:block;text-transform:uppercase}
+.test-badge{
+  background:rgba(255,214,10,.12);border:1px solid rgba(255,214,10,.3);
+  border-radius:20px;padding:5px 12px;
+  font-size:10px;font-weight:800;color:var(--gd);letter-spacing:.5px;
+}
 
-/* FEATURE CARDS */
-.features{display:flex;flex-direction:column;gap:10px;margin-bottom:0}
-.fc{background:var(--c1);border:1px solid var(--bo);border-radius:16px;padding:18px 20px;display:flex;align-items:flex-start;gap:14px;transition:border-color .2s}
-.fc:hover{border-color:var(--b2)}
-.fc-ico{font-size:22px;width:44px;height:44px;background:var(--c2);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.fc-t{font-weight:700;font-size:14px;margin-bottom:4px}
-.fc-d{font-size:13px;color:var(--t2);line-height:1.65}
+/* ── HERO ── */
+.hero{padding:10px 20px 32px;text-align:center}
+.hero-title{
+  font-size:32px;font-weight:900;line-height:1.1;
+  letter-spacing:-1px;margin-bottom:10px;
+}
+.hero-title em{
+  font-style:normal;
+  background:linear-gradient(135deg,var(--rd),var(--pu));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero-sub{font-size:14px;color:var(--t2);line-height:1.6;max-width:300px;margin:0 auto 20px}
+.version-row{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  flex-wrap:wrap;margin-bottom:0;
+}
+.vtag{
+  background:var(--c1);border:1px solid var(--bo);
+  border-radius:20px;padding:3px 10px;
+  font-size:10px;font-weight:700;color:var(--t2);
+}
 
-/* STEPS */
-.steps{display:flex;flex-direction:column}
-.step{display:flex;gap:16px}
-.step-l{display:flex;flex-direction:column;align-items:center;width:38px;flex-shrink:0}
-.step-n{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--rd),#d4004a);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
-.step-line{flex:1;width:2px;background:var(--bo);margin:4px 0}
-.step:last-child .step-line{display:none}
-.step-body{padding-bottom:28px;padding-top:6px}
-.step-t{font-weight:700;font-size:14px;margin-bottom:5px}
-.step-d{font-size:13px;color:var(--t2);line-height:1.65}
+/* ── SECTION ── */
+.section{padding:0 16px;margin-bottom:24px}
+.sec-title{
+  font-size:11px;font-weight:800;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--t3);
+  padding:0 4px;margin-bottom:10px;
+}
 
-/* AD TYPES */
-.ad-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:36px}
-.at{background:var(--c1);border:1px solid var(--bo);border-radius:14px;padding:16px;text-align:center;transition:all .2s}
-.at:hover{border-color:var(--b2);transform:translateY(-2px)}
-.at-em{font-size:26px;margin-bottom:7px}
-.at-t{font-weight:700;font-size:13px;margin-bottom:3px}
-.at-d{font-size:11px;color:var(--t2);line-height:1.5}
+/* ── PLATFORM CARDS ── */
+.platform-cards{display:flex;flex-direction:column;gap:10px}
+.pcard{
+  background:var(--c1);border:1px solid var(--bo);
+  border-radius:18px;padding:0;overflow:hidden;
+  cursor:pointer;transition:transform .15s,border-color .2s;
+  text-decoration:none;color:inherit;display:block;
+}
+.pcard:active{transform:scale(.98)}
+.pcard-inner{display:flex;align-items:center;gap:14px;padding:16px}
+.pcard-icon{
+  width:52px;height:52px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;flex-shrink:0;
+}
+.pcard-text{flex:1;min-width:0}
+.pcard-name{font-size:15px;font-weight:800;margin-bottom:2px}
+.pcard-desc{font-size:12px;color:var(--t2);line-height:1.4}
+.pcard-tags{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.pcard-tag{
+  background:rgba(255,255,255,.06);border-radius:6px;
+  padding:2px 7px;font-size:9px;font-weight:700;color:var(--t3);
+}
+.pcard-arrow{
+  font-size:18px;color:var(--t3);flex-shrink:0;
+  transition:transform .15s,color .15s;
+}
+.pcard:hover .pcard-arrow,.pcard:active .pcard-arrow{
+  transform:translateX(3px);color:var(--rd);
+}
+.pcard-bar{height:3px;width:100%}
 
-/* PRICING */
-.price-card{background:var(--c1);border:1px solid var(--bo);border-radius:16px;padding:20px;margin-bottom:0}
-.price-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:8px 0;border-bottom:1px solid var(--bo)}
-.price-row:last-child{border-bottom:none}
-.price-lbl{color:var(--t2);display:flex;align-items:center;gap:6px}
-.price-val{font-weight:700;color:var(--gd)}
+/* ── USER APP CARD (featured) ── */
+.pcard.featured{
+  border-color:rgba(255,45,85,.3);
+  background:linear-gradient(135deg,rgba(255,45,85,.08),rgba(191,90,242,.05));
+}
+.pcard.featured .pcard-icon{background:linear-gradient(135deg,rgba(255,45,85,.2),rgba(191,90,242,.15))}
+.pcard.featured .pcard-bar{background:linear-gradient(90deg,var(--rd),var(--pu))}
 
-/* PAYMENT CARDS */
-.pay-card{border-radius:16px;padding:20px;margin-bottom:12px}
-.pay-card.shoppers{background:var(--c1);border:1px solid rgba(0,229,255,.2);border-left:3px solid var(--cy)}
-.pay-card.advertisers{background:var(--c1);border:1px solid rgba(255,45,85,.2);border-left:3px solid var(--rd)}
-.pay-hd{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.pay-ico{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.pay-badge{margin-left:auto;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;white-space:nowrap}
-.pay-items{display:flex;flex-direction:column;gap:9px}
-.pi{display:flex;gap:10px;font-size:13px;color:var(--t2);line-height:1.55}
-.pi strong{color:var(--tx)}
-.stripe-badge{display:flex;align-items:center;gap:12px;background:rgba(99,91,255,.08);border:1px solid rgba(99,91,255,.18);border-radius:12px;padding:11px 14px;margin-top:14px}
-.stripe-logo{font-size:18px;font-weight:900;letter-spacing:2px;color:var(--st);flex-shrink:0}
+.pcard.admin .pcard-icon{background:rgba(0,229,255,.1)}
+.pcard.admin{border-color:rgba(0,229,255,.2)}
+.pcard.admin .pcard-bar{background:linear-gradient(90deg,var(--cy),var(--gr))}
 
-/* NOTIFY */
-.notify{background:linear-gradient(135deg,rgba(255,45,85,.1),rgba(0,229,255,.06));border:2px solid rgba(255,45,85,.2);border-radius:22px;padding:32px 24px;text-align:center;margin-bottom:0}
-.notify-t{font-size:clamp(22px,5vw,32px);font-weight:800;letter-spacing:-1px;margin-bottom:8px}
-.notify-s{font-size:13px;color:var(--t2);margin-bottom:22px;line-height:1.65;max-width:360px;margin-left:auto;margin-right:auto}
+.pcard.adv .pcard-icon{background:rgba(255,214,10,.1)}
+.pcard.adv{border-color:rgba(255,214,10,.2)}
+.pcard.adv .pcard-bar{background:linear-gradient(90deg,var(--gd),rgba(255,159,10,.8))}
 
-/* FOOTER */
-footer{border-top:1px solid var(--bo);padding:36px 20px;text-align:center;position:relative;z-index:1}
+.pcard.onb .pcard-icon{background:rgba(191,90,242,.1)}
+.pcard.onb{border-color:rgba(191,90,242,.2)}
+.pcard.onb .pcard-bar{background:linear-gradient(90deg,var(--pu),rgba(99,91,255,.8))}
 
-/* TOAST */
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--c1);border:1px solid rgba(48,209,88,.3);border-radius:14px;padding:11px 22px;font-size:13px;color:var(--gr);display:none;z-index:999;white-space:nowrap;font-weight:600;box-shadow:0 8px 28px rgba(0,0,0,.4)}
+/* ── STATUS SECTION ── */
+.status-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat-card{
+  background:var(--c1);border:1px solid var(--bo);
+  border-radius:14px;padding:14px;text-align:center;
+}
+.stat-val{font-size:22px;font-weight:900;margin-bottom:2px}
+.stat-label{font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
 
-@media(max-width:480px){
-  .signup-row{flex-direction:column}
-  .ad-grid{grid-template-columns:1fr 1fr}
+/* ── TEST NOTES ── */
+.notes-card{
+  background:rgba(255,214,10,.04);border:1px solid rgba(255,214,10,.15);
+  border-radius:16px;padding:16px;
+}
+.notes-title{font-size:12px;font-weight:800;color:var(--gd);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.note-item{
+  display:flex;align-items:flex-start;gap:8px;
+  font-size:12px;color:var(--t2);line-height:1.5;margin-bottom:6px;
+}
+.note-dot{color:var(--gd);flex-shrink:0;margin-top:2px}
+
+/* ── FOOTER ── */
+.footer{
+  text-align:center;padding:20px;
+  font-size:11px;color:var(--t3);
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <svg width="140" height="40" viewBox="0 0 210 64" aria-label="Addtok">
-    <text x="0" y="40" font-family="'DM Sans',sans-serif" font-size="38" font-weight="700" letter-spacing="-2" fill="#fff">Addtok</text>
-    <rect x="0" y="46" width="66" height="3" rx="1.5" fill="#FF2D55"/>
-    <rect x="68" y="46" width="62" height="3" rx="1.5" fill="#00e5ff"/>
-    <text x="0" y="62" font-family="'DM Sans',sans-serif" font-size="11" font-weight="500" letter-spacing="4" fill="rgba(242,242,247,.35)">add an ad.</text>
-  </svg>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="badge">Coming Soon</div>
-
-  <svg width="280" height="76" viewBox="0 0 210 64" aria-label="Addtok" style="margin-bottom:24px;animation:up .7s .1s ease both">
-    <text x="0" y="40" font-family="'DM Sans',sans-serif" font-size="38" font-weight="700" letter-spacing="-2" fill="#fff">Addtok</text>
-    <rect x="0" y="46" width="66" height="3" rx="1.5" fill="#FF2D55"/>
-    <rect x="68" y="46" width="62" height="3" rx="1.5" fill="#00e5ff"/>
-    <text x="0" y="62" font-family="'DM Sans',sans-serif" font-size="11" font-weight="500" letter-spacing="4" fill="rgba(242,242,247,.35)">add an ad.</text>
-  </svg>
-
-  <p>The world's first short-form ad discovery platform. Browse, vote, and buy from the best ads by brands, influencers and creators — all with direct links to every product.</p>
-
-  <div class="tba">
-    <div class="tba-lbl">Launch Date</div>
-    <div class="tba-val">TBA</div>
-    <div class="tba-sub">Sign up below to be first to know</div>
-  </div>
-
-  <div class="signup">
-    <div class="signup-row">
-      <input class="si" id="email1" type="email" placeholder="Enter your email address">
-      <button class="sb" onclick="signUp('email1','ok1')">Notify Me</button>
-    </div>
-    <div class="signup-note">Be first to know when Addtok launches. No spam, ever.</div>
-    <div class="signup-ok" id="ok1">✅ You're on the list! We'll email you on launch day.</div>
-  </div>
-</section>
-
-<hr class="div">
-
-<!-- WHAT IS ADDTOK -->
-<div class="wrap">
-  <div class="sec">
-    <div class="sec-lbl">What is Addtok?</div>
-    <div class="sec-title">Ads you actually want to see</div>
-    <p class="sec-sub">Addtok is a short-form feed built entirely for ads and product promotions. Scroll through the best ads from brands, influencers and creators — and tap directly through to buy.</p>
-    <div class="features">
-      <div class="fc"><div class="fc-ico">▶</div><div><div class="fc-t">Short-form ad feed</div><div class="fc-d">Scroll through video ads just like TikTok — but every single one is a product you can buy. Swipe, discover, shop.</div></div></div>
-      <div class="fc"><div class="fc-ico">🔗</div><div><div class="fc-t">Direct product links</div><div class="fc-d">Every ad has a direct link to the product website. One tap takes you straight to the product page — no searching needed.</div></div></div>
-      <div class="fc"><div class="fc-ico">👍</div><div><div class="fc-t">Community voting</div><div class="fc-d">Vote on the best ads. The community decides what rises to the top — only the most genuine, creative ads get seen most.</div></div></div>
-      <div class="fc"><div class="fc-ico">🏆</div><div><div class="fc-t">Weekly leaderboards</div><div class="fc-d">The most voted ads of the week win the top spots. Brands compete to make the best ads — you benefit from better content.</div></div></div>
-      <div class="fc"><div class="fc-ico">🎯</div><div><div class="fc-t">Browse by category</div><div class="fc-d">Filter by fashion, tech, beauty, fitness, food, gaming and more. Only see ads for things you actually care about.</div></div></div>
-      <div class="fc"><div class="fc-ico">🛍️</div><div><div class="fc-t">Merch drops &amp; exclusives</div><div class="fc-d">Limited edition drops, early access offers, and exclusive deals — all in one place, before they sell out.</div></div></div>
-      <div class="fc" style="border-color:rgba(255,214,10,.25);background:linear-gradient(135deg,rgba(255,214,10,.06),var(--c1))"><div class="fc-ico" style="background:rgba(255,214,10,.1)">⚔️</div><div><div class="fc-t">Ad Battles</div><div class="fc-d">Two ads go head to head — the community votes for the winner. The winning ad earns featured placement for 24 hours. Only on Addtok.</div></div></div>
-      <div class="fc" style="border-color:rgba(255,45,85,.25);background:linear-gradient(135deg,rgba(255,45,85,.06),var(--c1))"><div class="fc-ico" style="background:rgba(255,45,85,.1)">⭐</div><div><div class="fc-t">Ad of the Day</div><div class="fc-d">Every 24 hours the community crowns one ad as the best of the day. Brands compete hard for the crown — you get the best content.</div></div></div>
-      <div class="fc" style="border-color:rgba(0,229,255,.25);background:linear-gradient(135deg,rgba(0,229,255,.05),var(--c1))"><div class="fc-ico" style="background:rgba(0,229,255,.1)">⭐</div><div><div class="fc-t">Points &amp; Streaks</div><div class="fc-d">Earn Addtok points every time you vote, react, save or visit a product. Build daily streaks, climb the leaderboard and win prizes.</div></div></div>
-      <div class="fc" style="border-color:rgba(191,90,242,.25);background:linear-gradient(135deg,rgba(191,90,242,.06),var(--c1))"><div class="fc-ico" style="background:rgba(191,90,242,.1)">▶</div><div><div class="fc-t">Discovery Mode</div><div class="fc-d">Full-screen swipe mode — flick through ads one by one, vote, save or visit with a single tap. The most immersive way to shop.</div></div></div>
-    </div>
+<!-- LOCK SCREEN -->
+<div id="lock">
+  <div class="lock-box">
+    <div class="lock-logo">Add<span>tok</span></div>
+    <div class="lock-sub">Private Test Build</div>
+    <div class="lock-badge">&#x1F512; Founder Access Only</div>
+    <input class="lock-input" id="pw-input" type="password" placeholder="Enter access code" autocomplete="off">
+    <button class="lock-btn" onclick="checkPw()">Enter Platform &#8594;</button>
+    <div class="lock-err" id="pw-err"></div>
   </div>
 </div>
 
-<hr class="div">
+<!-- MAIN APP -->
+<div id="app">
 
-<!-- HOW IT WORKS -->
-<div class="wrap">
-  <div class="sec">
-    <div class="sec-lbl">How It Works</div>
-    <div class="sec-title">Simple as scroll, tap, buy</div>
-    <p class="sec-sub">Addtok connects consumers with the products they love in three simple steps.</p>
-    <div class="steps">
-      <div class="step"><div class="step-l"><div class="step-n">1</div><div class="step-line"></div></div><div class="step-body"><div class="step-t">Browse the ad feed</div><div class="step-d">Scroll through short video ads from top brands, influencers and creators. Filter by category to find what you love.</div></div></div>
-      <div class="step"><div class="step-l"><div class="step-n">2</div><div class="step-line"></div></div><div class="step-body"><div class="step-t">Vote on your favourites</div><div class="step-d">Upvote ads you love, downvote ones that miss the mark. Your votes shape the leaderboard and help the best ads rise to the top.</div></div></div>
-      <div class="step"><div class="step-l"><div class="step-n">3</div><div class="step-line"></div></div><div class="step-body"><div class="step-t">Tap the link and buy</div><div class="step-d">Every ad has a direct link to the product. One tap takes you straight to the brand's website to buy — no extra searching.</div></div></div>
-      <div class="step"><div class="step-l"><div class="step-n">4</div></div><div class="step-body"><div class="step-t">Earn points and rewards</div><div class="step-d">Vote, react, and discover products to earn Addtok points. Climb the leaderboard and unlock rewards every week.</div></div></div>
+  <div class="header">
+    <div>
+      <div class="logo">Add<span>tok</span></div>
+      <span class="logo-sub">add an ad.</span>
+    </div>
+    <div class="test-badge">&#x1F9EA; TEST BUILD</div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-title">Your platform,<br><em>ready to test.</em></div>
+    <div class="hero-sub">All 4 parts of Addtok live and connected. Tap any card to open it.</div>
+    <div class="version-row">
+      <span class="vtag">&#x1F4E6; Session 6 Build</span>
+      <span class="vtag">&#x1F4F1; Mobile-first</span>
+      <span class="vtag">&#x2705; 4 platforms</span>
     </div>
   </div>
-</div>
 
-<hr class="div">
+  <!-- PLATFORM LINKS -->
+  <div class="section">
+    <div class="sec-title">&#x1F9E9; Platform</div>
+    <div class="platform-cards">
 
-<!-- FOR ADVERTISERS -->
-<div class="wrap">
-  <div class="sec">
-    <div class="sec-lbl">For Advertisers</div>
-    <div class="sec-title">Every type of ad welcome</div>
-    <p class="sec-sub">From global brands to solo creators — if you have a product, you can advertise on Addtok.</p>
-    <div class="ad-grid">
-      <div class="at"><div class="at-em">👟</div><div class="at-t">Merch Drops</div><div class="at-d">Limited releases and exclusive collabs</div></div>
-      <div class="at"><div class="at-em">🏢</div><div class="at-t">Brand Ads</div><div class="at-d">Major brands and product launches</div></div>
-      <div class="at"><div class="at-em">🎬</div><div class="at-t">Influencers</div><div class="at-d">Creator collabs and sponsored content</div></div>
-      <div class="at"><div class="at-em">📢</div><div class="at-t">Sponsored</div><div class="at-d">Promoted products and services</div></div>
-      <div class="at"><div class="at-em">☕</div><div class="at-t">Subscriptions</div><div class="at-d">Recurring products and memberships</div></div>
-      <div class="at"><div class="at-em">🎮</div><div class="at-t">Gaming &amp; Tech</div><div class="at-d">Hardware, games and apps</div></div>
-    </div>
-    <div class="price-card">
-      <div style="font-size:14px;font-weight:700;margin-bottom:14px">💰 Advertiser pricing <span style="font-size:10px;font-weight:400;color:var(--t3)">indicative — final prices TBC at launch</span></div>
-      <div class="price-row"><span class="price-lbl">🖱 Cost per click (CPC)</span><span class="price-val" style="color:var(--t2)">est. £0.30 – £1.20</span></div>
-      <div class="price-row"><span class="price-lbl">🟢 Minimum daily cap</span><span class="price-val" style="color:var(--t2)">est. £5 / day</span></div>
-      <div class="price-row"><span class="price-lbl">📦 Small business</span><span class="price-val" style="color:var(--t2)">est. £150 – £500 / mo</span></div>
-      <div class="price-row"><span class="price-lbl">📈 Growing brand</span><span class="price-val" style="color:var(--t2)">est. £500 – £2,000 / mo</span></div>
-      <div class="price-row"><span class="price-lbl">💳 No subscriptions</span><span class="price-val" style="color:var(--gr)">Pay per click only</span></div>
-      <div style="margin-top:12px;font-size:10px;color:var(--t3);line-height:1.6">* All prices are estimates based on current UK market rates. Final pricing confirmed at launch.</div>
-    </div>
-  </div>
-</div>
+      <a class="pcard featured" href="addtok-user-app.html">
+        <div class="pcard-inner">
+          <div class="pcard-icon">&#x1F4F1;</div>
+          <div class="pcard-text">
+            <div class="pcard-name">Addtok User App</div>
+            <div class="pcard-desc">The main feed — vote on ads, earn points, spin, react, discover drops</div>
+            <div class="pcard-tags">
+              <span class="pcard-tag">Feed</span>
+              <span class="pcard-tag">Video Ads</span>
+              <span class="pcard-tag">Drops</span>
+              <span class="pcard-tag">Points Shop</span>
+              <span class="pcard-tag">Reactions</span>
+            </div>
+          </div>
+          <div class="pcard-arrow">&#8250;</div>
+        </div>
+        <div class="pcard-bar"></div>
+      </a>
 
-<hr class="div">
+      <a class="pcard adv" href="addtok-advertiser-dashboard.html">
+        <div class="pcard-inner">
+          <div class="pcard-icon">&#x1F4CA;</div>
+          <div class="pcard-text">
+            <div class="pcard-name">Advertiser Dashboard</div>
+            <div class="pcard-desc">Create and manage ads, view analytics, set drops, manage stock, check collab requests</div>
+            <div class="pcard-tags">
+              <span class="pcard-tag">Analytics</span>
+              <span class="pcard-tag">Stock Alerts</span>
+              <span class="pcard-tag">Video Ads</span>
+              <span class="pcard-tag">Drops</span>
+            </div>
+          </div>
+          <div class="pcard-arrow">&#8250;</div>
+        </div>
+        <div class="pcard-bar"></div>
+      </a>
 
-<!-- FOR CREATORS -->
-<div class="wrap">
-  <div class="sec">
-    <div class="sec-lbl">For Creators &amp; Influencers</div>
-    <div class="sec-title">Turn your influence into income</div>
-    <p class="sec-sub">Are you a creator or influencer with products to promote? Addtok gives you your own ad space to showcase brand deals, merch drops and sponsored content — with direct links straight to the products.</p>
-    <div class="features">
-      <div class="fc"><div class="fc-ico">🎬</div><div><div class="fc-t">Showcase your brand deals</div><div class="fc-d">Upload your sponsored content to Addtok. Your audience can discover, vote, and tap straight through to buy.</div></div></div>
-      <div class="fc"><div class="fc-ico">👑</div><div><div class="fc-t">Feature your merch drops</div><div class="fc-d">Launching a limited merch drop? List it on Addtok and reach thousands of engaged shoppers already in buying mode.</div></div></div>
-      <div class="fc"><div class="fc-ico">💰</div><div><div class="fc-t">Earn from every click</div><div class="fc-d">Every time someone taps your product link from Addtok, you pay only for that click. No hidden fees, no agency cut.</div></div></div>
-      <div class="fc"><div class="fc-ico">📊</div><div><div class="fc-t">See what's working</div><div class="fc-d">Track views, clicks, votes, reactions and approval ratings on all your ads in one real-time dashboard.</div></div></div>
-    </div>
-  </div>
-</div>
+      <a class="pcard onb" href="addtok-advertiser-onboarding.html">
+        <div class="pcard-inner">
+          <div class="pcard-icon">&#x1F680;</div>
+          <div class="pcard-text">
+            <div class="pcard-name">Advertiser Onboarding</div>
+            <div class="pcard-desc">The sign-up flow for new advertisers — brand setup, ad creation, plan selection</div>
+            <div class="pcard-tags">
+              <span class="pcard-tag">Sign-up Flow</span>
+              <span class="pcard-tag">AI Content Check</span>
+              <span class="pcard-tag">Drops Scheduling</span>
+            </div>
+          </div>
+          <div class="pcard-arrow">&#8250;</div>
+        </div>
+        <div class="pcard-bar"></div>
+      </a>
 
-<hr class="div">
+      <a class="pcard admin" href="addtok-admin-dashboard.html">
+        <div class="pcard-inner">
+          <div class="pcard-icon">&#x1F6E1;&#xFE0F;</div>
+          <div class="pcard-text">
+            <div class="pcard-name">Admin Dashboard</div>
+            <div class="pcard-desc">Platform control — approve ads, manage users, monitor AI queue, view platform stats</div>
+            <div class="pcard-tags">
+              <span class="pcard-tag">Ad Approval</span>
+              <span class="pcard-tag">AI Queue</span>
+              <span class="pcard-tag">Tournament</span>
+              <span class="pcard-tag">Platform Stats</span>
+            </div>
+          </div>
+          <div class="pcard-arrow">&#8250;</div>
+        </div>
+        <div class="pcard-bar"></div>
+      </a>
 
-<!-- PAYMENTS -->
-<div class="wrap">
-  <div class="sec">
-    <div class="sec-lbl">Payments</div>
-    <div class="sec-title">How payments work</div>
-    <p class="sec-sub">Simple and transparent — whether you're a shopper or an advertiser.</p>
-
-    <div class="pay-card shoppers">
-      <div class="pay-hd">
-        <div class="pay-ico" style="background:rgba(0,229,255,.1)">🛍️</div>
-        <div><div style="font-weight:700;font-size:15px">For Shoppers</div><div style="font-size:11px;color:var(--t3)">Browsing and buying on Addtok</div></div>
-        <div class="pay-badge" style="background:rgba(48,209,88,.1);border:1px solid rgba(48,209,88,.25);color:var(--gr)">FREE</div>
-      </div>
-      <div class="pay-items">
-        <div class="pi"><span style="color:var(--cy);font-weight:700;flex-shrink:0">✓</span><span><strong>Completely free</strong> to browse, vote, and discover ads — no account needed.</span></div>
-        <div class="pi"><span style="color:var(--cy);font-weight:700;flex-shrink:0">✓</span><span><strong>Tap any ad</strong> to go directly to the brand's own website or product page.</span></div>
-        <div class="pi"><span style="color:var(--cy);font-weight:700;flex-shrink:0">✓</span><span><strong>Pay the brand directly</strong> on their website — Addtok never touches your payment or card details.</span></div>
-      </div>
-    </div>
-
-    <div class="pay-card advertisers">
-      <div class="pay-hd">
-        <div class="pay-ico" style="background:rgba(255,45,85,.1)">📢</div>
-        <div><div style="font-weight:700;font-size:15px">For Advertisers</div><div style="font-size:11px;color:var(--t3)">Running ads on Addtok</div></div>
-        <div class="pay-badge" style="background:rgba(255,214,10,.1);border:1px solid rgba(255,214,10,.25);color:var(--gd)">PAY AS YOU GO</div>
-      </div>
-      <div class="pay-items">
-        <div class="pi"><span style="color:var(--rd);font-weight:700;flex-shrink:0">✓</span><span><strong>Pay per click only</strong> — every time a user taps your product link and lands on your website, you pay Addtok a small fee. No click, no charge.</span></div>
-        <div class="pi"><span style="color:var(--rd);font-weight:700;flex-shrink:0">✓</span><span><strong>No monthly subscription</strong> — no fixed costs. Your spend is controlled entirely by clicks received.</span></div>
-        <div class="pi"><span style="color:var(--rd);font-weight:700;flex-shrink:0">✓</span><span><strong>Set a daily cap</strong> — choose your daily budget. Your ad pauses automatically when the cap is reached.</span></div>
-        <div class="pi"><span style="color:var(--rd);font-weight:700;flex-shrink:0">✓</span><span><strong>est. £0.30–£1.20 per click</strong> — competitive UK rate. Final pricing confirmed at launch.</span></div>
-        <div class="pi"><span style="color:var(--rd);font-weight:700;flex-shrink:0">✓</span><span><strong>Powered by Stripe</strong> — the same infrastructure used by TikTok, Google and Meta. Secure, automatic, instant.</span></div>
-      </div>
-      <div class="stripe-badge">
-        <div class="stripe-logo">stripe</div>
-        <div style="font-size:11px;color:var(--t2);line-height:1.55">Payments processed securely by Stripe. Your card details are never stored by Addtok.</div>
-      </div>
-      <div style="margin-top:10px;font-size:10px;color:var(--t3);line-height:1.6">* All prices are estimates. Final pricing confirmed at launch. Questions? <a href="mailto:hello.addtok@gmail.com" style="color:var(--cy)">hello.addtok@gmail.com</a></div>
     </div>
   </div>
-</div>
 
-<hr class="div">
-
-<!-- NOTIFY -->
-<div class="wrap">
-  <div class="sec">
-    <div class="notify">
-      <div class="notify-t">Be first in line</div>
-      <p class="notify-s">Join thousands of shoppers and brands already waiting for Addtok to launch. Be the first to know when we go live.</p>
-      <div style="display:flex;gap:8px;max-width:360px;margin:0 auto 8px">
-        <input class="si" id="email2" type="email" placeholder="your@email.com" style="flex:1">
-        <button class="sb" onclick="signUp('email2','ok2')">Join Now</button>
+  <!-- STATS -->
+  <div class="section">
+    <div class="sec-title">&#x1F4CB; Build Stats</div>
+    <div class="status-grid">
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--rd)">8</div>
+        <div class="stat-label">Live Ads</div>
       </div>
-      <div class="signup-ok" id="ok2" style="max-width:360px;margin:0 auto">✅ You're on the list! See you at launch.</div>
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--cy)">3</div>
+        <div class="stat-label">Video Ads</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--gd)">3</div>
+        <div class="stat-label">Active Drops</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--pu)">6</div>
+        <div class="stat-label">Shop Rewards</div>
+      </div>
     </div>
   </div>
+
+  <!-- TEST NOTES -->
+  <div class="section">
+    <div class="sec-title">&#x1F4DD; Test Checklist</div>
+    <div class="notes-card">
+      <div class="notes-title">&#x1F9EA; Things to test</div>
+      <div class="note-item"><div class="note-dot">&#x25B8;</div><div>Vote on ads — 20/day cap, 1 per ad (toggleable)</div></div>
+      <div class="note-item"><div class="note-dot">&#x25B8;</div><div>Filter tabs — Hot, Drops, Merch, Sponsor, Influencer</div></div>
+      <div class="note-item"><div class="note-dot">&#x25B8;</div><div>Video ads (Air Phantom X, GlowLab, ElectraRide) — tap to watch</div></div>
+      <div class="note-item"><div class="note-dot">&#x25B8;</div><div>Spin the Ad — select a category then spin</div></div>
+      <div class="note-item"><div class="note-dot">&#x25B8;</div><div>Points Shop via Me tab — redeem rewards</div></div>
+      <div class="note-item"><div class="note-dot">&#x25B8;</div><div>Reactions — floating emoji animations on tap</div></div>
+      <div class="note-item"><div class="note-dot">&#x25B8;</div><div>Drops tab — countdown timers on limited ads</div></div>
+      <div class="note-item"><div class="note-dot">&#x25B8;</div><div>Advertiser dashboard — create ad with stock + drop + video</div></div>
+      <div class="note-item"><div class="note-dot">&#x25B8;</div><div>Advertiser alerts — collab requests + stock warnings</div></div>
+      <div class="note-item"><div class="note-dot">&#x25B8;</div><div>Discover mode — swipe through ads</div></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Addtok &copy; 2025 &mdash; Private test build &mdash; Not for distribution
+  </div>
+
 </div>
-
-<!-- FOOTER -->
-<footer>
-  <svg width="130" height="42" viewBox="0 0 210 64" aria-label="Addtok" style="display:block;margin:0 auto 10px">
-    <text x="0" y="40" font-family="'DM Sans',sans-serif" font-size="38" font-weight="700" letter-spacing="-2" fill="#fff">Addtok</text>
-    <rect x="0" y="46" width="66" height="3" rx="1.5" fill="#FF2D55"/>
-    <rect x="68" y="46" width="62" height="3" rx="1.5" fill="#00e5ff"/>
-    <text x="0" y="62" font-family="'DM Sans',sans-serif" font-size="11" font-weight="500" letter-spacing="4" fill="rgba(242,242,247,.3)">add an ad.</text>
-  </svg>
-  <div style="font-size:13px;color:var(--t2);margin-bottom:6px">All your advertisements in one place.</div>
-  <div style="font-size:11px;color:var(--t3)">© 2026 Addtok. Launching soon. · <a href="https://addtok.online" style="color:var(--cy);text-decoration:none">addtok.online</a> · <a href="mailto:hello.addtok@gmail.com" style="color:var(--cy);text-decoration:none">hello.addtok@gmail.com</a></div>
-</footer>
-
-<div id="toast"></div>
 
 <script>
-function showToast(msg){
-  var t=document.getElementById('toast');
-  t.textContent=msg;t.style.display='block';
-  setTimeout(function(){t.style.display='none';},3000);
+var ACCESS_CODE = 'topbuzzer2025';
+
+function checkPw(){
+  var val = document.getElementById('pw-input').value.trim();
+  var err = document.getElementById('pw-err');
+  if(val === ACCESS_CODE){
+    document.getElementById('lock').classList.add('hidden');
+    sessionStorage.setItem('at_auth','1');
+    err.textContent = '';
+  } else {
+    err.textContent = 'Incorrect access code';
+    var input = document.getElementById('pw-input');
+    input.style.borderColor = '#ff2d55';
+    setTimeout(function(){input.style.borderColor='';},1500);
+  }
 }
-function signUp(inputId,okId){
-  var e=document.getElementById(inputId).value.trim();
-  if(!e||!e.includes('@')){showToast('Please enter a valid email address');return;}
-  document.getElementById(inputId).value='';
-  document.getElementById(okId).style.display='block';
-  showToast('You are on the list!');
+
+// Allow Enter key
+document.getElementById('pw-input').addEventListener('keydown', function(e){
+  if(e.key === 'Enter') checkPw();
+});
+
+// Auto-unlock if already authenticated this session
+if(sessionStorage.getItem('at_auth') === '1'){
+  document.getElementById('lock').classList.add('hidden');
+}
+
+// Lock button in top right (optional - remove if not needed)
+function lockPlatform(){
+  sessionStorage.removeItem('at_auth');
+  location.reload();
 }
 </script>
+
 </body>
 </html>

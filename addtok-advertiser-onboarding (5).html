@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Addtok — Advertise</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' rx='14' fill='%231a1a3a'/%3E%3Ctext x='30' y='38' text-anchor='middle' font-family='DM Sans,sans-serif' font-size='32' font-weight='800' fill='%23ffffff'%3EA%3C/text%3E%3Crect x='10' y='44' width='18' height='3' rx='1.5' fill='%23FF2D55'/%3E%3Crect x='32' y='44' width='18' height='3' rx='1.5' fill='%2300e5ff'/%3E%3C/svg%3E">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#1a1a3a;--card:#22224a;--card2:#2a2a58;
+  --border:rgba(255,255,255,0.1);--b2:rgba(255,255,255,0.18);
+  --red:#ff2d55;--cyan:#00e5ff;--gold:#ffd60a;--green:#30d158;--stripe:#635bff;
+  --text:#f2f2f7;--t2:rgba(242,242,247,0.7);--t3:rgba(242,242,247,0.4);
+  --fb:'DM Sans',sans-serif;--r:12px;--r2:18px;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--fb);-webkit-tap-highlight-color:transparent}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(255,45,85,0.18) 0%,transparent 55%),radial-gradient(ellipse at 100% 100%,rgba(0,229,255,0.1) 0%,transparent 50%);pointer-events:none;z-index:0}
+button,input,select,textarea{font-family:var(--fb);-webkit-appearance:none}
+button{cursor:pointer;border:none}
+::-webkit-scrollbar{display:none}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:10;background:rgba(26,26,58,0.97);backdrop-filter:blur(20px);border-bottom:2px solid var(--red);min-height:60px;display:flex;align-items:center;padding:0 14px;gap:10px}
+.back{width:36px;height:36px;border-radius:50%;background:rgba(255,45,85,.12);border:1px solid rgba(255,45,85,.25);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--red);flex-shrink:0;cursor:pointer}
+.step-dots{flex:1;display:flex;gap:5px;justify-content:center}
+.dot{flex:1;max-width:36px;height:4px;border-radius:2px;background:var(--card2);transition:background .3s}
+.dot.done{background:var(--green)}
+.dot.active{background:var(--red)}
+
+/* PROGRESS */
+.prog{height:3px;background:var(--card);position:sticky;top:56px;z-index:9}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--cyan));transition:width .4s}
+
+/* WRAP */
+.wrap{padding:28px 18px 50px;max-width:460px;margin:0 auto;position:relative;z-index:1}
+
+/* HEADER */
+.step-hd{margin-bottom:28px}
+.step-lbl{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+.step-title{font-size:24px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px}
+.step-sub{font-size:14px;color:var(--t2);line-height:1.65}
+
+/* FIELDS */
+.field{margin-bottom:18px}
+.field label{display:block;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--t2);margin-bottom:7px}
+.field input,.field select,.field textarea{width:100%;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:13px 16px;color:var(--text);font-size:15px;outline:none;transition:border-color .2s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--red)}
+.field textarea{resize:none;height:100px;line-height:1.6}
+.field select option{background:var(--card)}
+.field .hint{font-size:11px;color:var(--t3);margin-top:6px;line-height:1.5}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* BUTTONS */
+.btn-primary{width:100%;background:linear-gradient(90deg,var(--red),#d4004a);border:none;border-radius:var(--r2);padding:15px;color:#fff;font-size:16px;font-weight:800;letter-spacing:.2px;margin-top:6px;transition:opacity .15s}
+.btn-primary:active{opacity:.88}
+.btn-secondary{width:100%;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:13px;color:var(--text);font-size:14px;font-weight:600;margin-top:10px;transition:opacity .15s}
+.btn-secondary:active{opacity:.85}
+
+/* TYPE CARDS */
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.tc{background:var(--card);border:2px solid var(--border);border-radius:var(--r2);padding:18px 14px;cursor:pointer;text-align:center;transition:all .15s}
+.tc:active{transform:scale(.98)}
+.tc.sel{border-color:var(--red);background:rgba(255,45,85,.08)}
+.tc .tci{font-size:34px;margin-bottom:10px}
+.tc .tcn{font-size:14px;font-weight:700;margin-bottom:4px}
+.tc.sel .tcn{color:var(--red)}
+.tc .tcd{font-size:11px;color:var(--t3);line-height:1.4}
+
+/* PLAN CARDS */
+.plan{background:var(--card);border:2px solid var(--border);border-radius:var(--r2);padding:20px;margin-bottom:12px;cursor:pointer;transition:all .15s;position:relative}
+.plan.sel{border-color:var(--cyan)}
+.plan.pop::before{content:'Most popular';position:absolute;top:-1px;right:16px;background:var(--cyan);color:#000;font-size:9px;font-weight:800;letter-spacing:.8px;padding:3px 10px;border-radius:0 0 8px 8px;text-transform:uppercase}
+.plan-name{font-size:17px;font-weight:800;margin-bottom:4px}
+.plan-price{font-size:13px;color:var(--gold);margin-bottom:12px;font-weight:500}
+.plan-feats{display:flex;flex-direction:column;gap:6px}
+.pf{font-size:12px;color:var(--t2);display:flex;gap:7px}
+.pf span{color:var(--green);flex-shrink:0}
+
+/* UPLOAD */
+.upload{border:2px dashed var(--b2);border-radius:var(--r2);padding:32px 20px;text-align:center;cursor:pointer;background:var(--card);margin-bottom:18px}
+.upload:active{border-color:var(--red)}
+.upload .ui{font-size:44px;margin-bottom:10px}
+.upload .ut{font-size:15px;font-weight:700;margin-bottom:5px}
+.upload .us{font-size:12px;color:var(--t3)}
+
+/* PRICING PREVIEW */
+.price-preview{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:16px;margin-bottom:18px}
+.pp-row{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid var(--border)}
+.pp-row:last-child{border-bottom:none}
+.pp-row .lbl{color:var(--t2)}
+.pp-row .val{font-weight:700;color:var(--gold)}
+.pp-note{font-size:11px;color:var(--t3);margin-top:10px;line-height:1.6;padding-top:10px;border-top:1px solid var(--border)}
+
+/* STRIPE */
+.stripe-wrap{background:rgba(99,91,255,.08);border:1.5px solid rgba(99,91,255,.2);border-radius:var(--r2);padding:14px 16px;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.stripe-logo{font-size:20px;font-weight:900;letter-spacing:2px;color:var(--stripe);flex-shrink:0}
+.stripe-note{font-size:12px;color:var(--t2);line-height:1.55}
+.secure-row{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;color:var(--t3);margin-top:12px}
+
+/* SUCCESS */
+.success{padding:32px 18px 50px;text-align:center;max-width:460px;margin:0 auto;position:relative;z-index:1}
+.s-icon{font-size:80px;margin-bottom:20px;animation:pop .5s cubic-bezier(.4,0,.2,1)}
+@keyframes pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.s-title{font-size:26px;font-weight:800;letter-spacing:-.5px;margin-bottom:10px}
+.s-sub{font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:28px}
+.checklist{background:var(--card);border:1.5px solid rgba(48,209,88,.2);border-radius:var(--r2);padding:18px;margin-bottom:20px;text-align:left}
+.ci{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.ci:last-child{border-bottom:none}
+.ci-check{color:var(--green);font-weight:700;flex-shrink:0;font-size:15px}
+.ci-text{font-size:13px;color:var(--t2);line-height:1.55}
+.ci-text b{color:var(--text)}
+
+/* UNIQUE FEATURE CARDS */
+.feat-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r2);padding:18px;margin-bottom:14px;text-align:left}
+.feat-title{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.grade-display{display:flex;align-items:center;gap:18px;margin-bottom:14px}
+.grade-big{font-size:72px;font-weight:800;line-height:1;color:var(--green)}
+.grade-info{flex:1}
+.grade-info .gi-title{font-size:15px;font-weight:700;margin-bottom:4px}
+.grade-info .gi-sub{font-size:12px;color:var(--t2);line-height:1.55}
+.feedback-list{display:flex;flex-direction:column;gap:8px;background:var(--card2);border-radius:var(--r);padding:12px}
+.fb-item{display:flex;gap:9px;align-items:flex-start;font-size:12px;line-height:1.55}
+.fb-item b{font-weight:600}
+.reaction-list{display:flex;flex-direction:column}
+.ri{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+.ri:last-child{border-bottom:none}
+.ri-icon{font-size:18px;flex-shrink:0;width:24px;text-align:center}
+.ri-time{font-size:10px;color:var(--t3);margin-left:auto;flex-shrink:0}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-right:4px}
+.bench-item{margin-bottom:12px}
+.bench-labels{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}
+.bench-track{height:8px;background:var(--card2);border-radius:4px;overflow:hidden;position:relative}
+.bench-you{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--red),var(--cyan));position:absolute;top:0;left:0}
+.bench-avg{height:100%;border-radius:4px;background:var(--t3);opacity:.4;position:absolute;top:0;left:0}
+.time-bars{display:flex;align-items:flex-end;gap:4px;height:56px;margin-bottom:8px}
+.tb{flex:1;border-radius:3px 3px 0 0;transition:height .5s}
+.tb.peak{background:var(--red)}
+.tb.good{background:var(--cyan)}
+.tb.low{background:var(--card2)}
+.tb-label{font-size:8px;color:var(--t3);text-align:center;margin-top:4px}
+
+/* TOAST */
+
+.tst{background:var(--card);border-radius:14px;padding:11px 16px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;animation:tIn .2s ease;box-shadow:0 8px 32px rgba(0,0,0,.5);margin-bottom:6px}
+.tst.suc{border:1px solid rgba(48,209,88,.35);color:var(--green)}
+.tst.info{border:1px solid rgba(0,229,255,.35);color:var(--cyan)}
+.tst.err{border:1px solid rgba(255,45,85,.35);color:var(--red)}
+@keyframes tIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes tOut{to{opacity:0;transform:translateY(8px)}}
+
+.fi{margin-bottom:16px}.fi label{display:block;font-size:12px;font-weight:600;color:var(--t2);margin-bottom:6px}
+.fi input,.fi textarea{width:100%;background:var(--card2);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px;color:var(--text);font-size:14px;font-family:var(--fb);outline:none;box-sizing:border-box;-webkit-appearance:none}
+.fi textarea{min-height:80px;resize:none}.fi input:focus,.fi textarea:focus{border-color:var(--red)}
+.fi-pfx{display:flex;align-items:center;background:var(--card2);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden}
+.fi-pfx .pfx{padding:0 10px 0 14px;color:var(--t3);font-size:14px;font-weight:600;flex-shrink:0}
+.fi-pfx input{border:none;border-radius:0;background:transparent;padding:12px 14px 12px 4px;flex:1}
+.upload-area{background:var(--card);border:2px dashed var(--border);border-radius:var(--r2);padding:32px 20px;text-align:center;cursor:pointer;margin-bottom:16px}
+.tb{border-radius:3px 3px 0 0;min-height:4px}.tb.low{background:rgba(255,255,255,.2)}.tb.good{background:var(--cyan)}.tb.peak{background:var(--red)}
+.tb-label{font-size:9px;color:var(--t3);margin-top:3px;text-align:center}
+.tct{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:999;pointer-events:none;width:calc(100% - 36px);max-width:340px}
+.plan{position:relative}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <button class="back" onclick="prev()">&#8592;</button>
+  <div style="display:flex;flex-direction:column;align-items:center;flex:1">
+    <div style="display:flex;align-items:baseline;gap:0">
+      <span style="font-size:20px;font-weight:800;letter-spacing:-1px;color:#fff;line-height:1">Addtok</span>
+    </div>
+    <div style="display:flex;gap:2px;margin-top:2px">
+      <span style="width:38px;height:2.5px;border-radius:2px;background:#FF2D55;display:block"></span>
+      <span style="width:34px;height:2.5px;border-radius:2px;background:#00e5ff;display:block"></span>
+    </div>
+    <span style="font-size:9px;font-weight:600;letter-spacing:2px;color:rgba(255,255,255,.35);margin-top:2px">add an ad.</span>
+  </div>
+  <div class="step-dots" id="dots"></div>
+  <div style="width:36px"></div>
+</div>
+<div class="prog"><div class="prog-fill" id="prog"></div></div>
+<div id="body"></div>
+<script>
+var step=1,TOTAL=6;
+var F={type:'',name:'',handle:'',email:'',phone:'',website:'',bio:'',plan:'growth',budget:'20',adTitle:'',adDesc:'',adUrl:'',adType:'merch',adEmoji:'📦',adTags:'',cardName:'',cardNum:'',cardExp:'',cardCvc:''};
+
+function toast(msg,type='info'){
+  var c=document.getElementById('tc'),el=document.createElement('div');
+  el.className='tst '+type;el.innerHTML=(type==='suc'?'✅':type==='err'?'❌':'ℹ️')+' '+msg;c.appendChild(el);
+  setTimeout(function(){el.style.animation='tOut .2s ease forwards';setTimeout(function(){el.remove();},200);},2800);
+}
+
+function setDots(){
+  var dh='';for(var di=0;di<TOTAL;di++){dh+='<div class="dot '+(di+1<step?'done':di+1===step?'active':'')+'"></div>';}document.getElementById('dots').innerHTML=dh;
+  document.getElementById('prog').style.width=Math.round(step/TOTAL*100)+'%';
+}
+
+function next(){if(!validate())return;if(step<TOTAL){step++;render();scrollTo(0,0);}}
+function prev(){if(step>1){step--;render();scrollTo(0,0);}else history.back();}
+
+function vpCheck(url){
+  var el=document.getElementById('vp-check');
+  if(!el)return;
+  if(!url){el.innerHTML='';return;}
+  var p='',ok=false;
+  if(url.indexOf('youtube')>=0||url.indexOf('youtu.be')>=0){p='YouTube';ok=true;}
+  else if(url.indexOf('tiktok')>=0){p='TikTok';ok=true;}
+  else if(url.indexOf('vimeo')>=0){p='Vimeo';ok=true;}
+  else if(url.match(/\.(mp4|webm)/i)){p='Video File';ok=true;}
+  if(ok){
+    el.innerHTML='<div style="padding:5px 10px;background:rgba(48,209,88,.08);border:1px solid rgba(48,209,88,.2);border-radius:8px;font-size:11px;color:#30d158">&#10003; '+p+' detected — will show as Video Ad</div>';
+  } else if(url.length>5){
+    el.innerHTML='<div style="padding:5px 10px;background:rgba(255,214,10,.06);border:1px solid rgba(255,214,10,.2);border-radius:8px;font-size:11px;color:rgba(255,255,255,.5)">Paste a YouTube, TikTok or Vimeo URL</div>';
+  }
+}
+window.vpCheck=vpCheck;
+window.next=next;window.prev=prev;
+
+
+function sf(k,v){F[k]=v;}
+function sel(type){F.type=type;var _tcs=document.querySelectorAll('.tc');for(var _ti=0;_ti<_tcs.length;_ti++){_tcs[_ti].classList.remove('sel');}var _te=document.getElementById('t-'+type);if(_te)_te.classList.add('sel');}
+window.sf=sf;window.sel=sel;window.selPlan=selPlan;window.updPP=updPP;
+
+function updPP(){
+  var b=parseInt(F.budget)||20;
+  var el=document.getElementById('pp-preview');
+  if(el){el.innerHTML='<div class="pp-row"><span class="lbl">Daily spend cap</span><span class="val">est. £'+(b)+'/day</span></div>'+'<div class="pp-row"><span class="lbl">Est. clicks/day</span><span class="val">est. '+(Math.floor(b/0.45))+' clicks</span></div>'+'<div class="pp-row"><span class="lbl">Est. monthly spend</span><span class="val">est. £'+(b*30)+'/month</span></div>'+'<div class="pp-note">Estimates only. You only pay when users click your link.</div>';}
+}
+
+function render(){
+  setDots();
+  var pages={1:p1,2:p2,3:p3,4:p4,5:p5,6:p6};
+  document.getElementById('body').innerHTML=(pages[step]||p1)();
+  if(step===4)updPP();
+}
+
+function p1(){
+  var types=[
+    {id:'brand',em:'&#x1F3E2;',name:'Brand',desc:'Company or business with products'},
+    {id:'influencer',em:'&#x1F3AC;',name:'Influencer',desc:'Creator with audience and brand deals'},
+    {id:'merch',em:'&#x1F45F;',name:'Merch Drop',desc:'Limited releases and exclusive items'},
+    {id:'sponsor',em:'&#x1F4E2;',name:'Sponsored',desc:'App, subscription or service'}
+  ];
+  var grid='';
+  for(var i=0;i<types.length;i++){
+    var t=types[i];
+    var isSel=F.type===t.id;
+    grid+='<div class="tc'+(isSel?' sel':'')+'" id="t-'+t.id+'" onclick="sel(\''+t.id+'\')">'+'<div class="tci">'+t.em+'</div><div class="tcn">'+t.name+'</div><div class="tcd">'+t.desc+'</div></div>';
+  }
+  return '<div class="wrap">'+
+    '<div class="step-hd"><div class="step-lbl">STEP '+step+' OF '+TOTAL+'</div>'+
+    '<div class="step-title">What are you?</div>'+
+    '<div class="step-sub">Choose your advertiser type so we can set up your account correctly.</div></div>'+
+    '<div class="type-grid">'+grid+'</div>'+
+    '<button class="btn-primary" onclick="next()">Continue &#8594;</button></div>';
+}
+
+
+
+function p2(){
+  return '<div class="wrap">'+
+    '<div class="step-hd"><div class="step-lbl">STEP '+step+' OF '+TOTAL+'</div>'+
+    '<div class="step-title">Your account</div>'+
+    '<div class="step-sub">Create your Addtok advertiser profile.</div></div>'+
+    '<div class="field"><label>Brand or creator name *</label>'+
+      '<input id="fi-name" placeholder="e.g. NikeUK or Emma Ray" value="'+F.name+'" oninput="sf(\'name\',this.value)"></div>'+
+    '<div class="field"><label>Addtok handle</label>'+
+      '<input id="fi-handle" placeholder="@yourbrand" value="'+F.handle+'" oninput="sf(\'handle\',this.value)">'+
+      '<div class="hint">Your public @handle on Addtok</div></div>'+
+    '<div class="field"><label>Email address *</label>'+
+      '<input id="fi-email" type="email" placeholder="hello@yourbrand.com" value="'+F.email+'" oninput="sf(\'email\',this.value)"></div>'+
+    '<div class="field"><label>Phone</label>'+
+      '<input type="tel" placeholder="+44 7700 900000" value="'+F.phone+'" oninput="sf(\'phone\',this.value)"></div>'+
+    '<div class="field"><label>Website</label>'+
+      '<input id="fi-url" type="url" placeholder="https://yourbrand.com" value="'+(F.url||'')+'" oninput="sf(\'url\',this.value)"></div>'+
+    '<div class="field"><label>Bio</label>'+
+      '<textarea placeholder="Tell users about your brand..." oninput="sf(\'bio\',this.value)">'+F.bio+'</textarea></div>'+
+    '<button class="btn-primary" onclick="next()">Continue &#8594;</button></div>';
+}
+
+function p3(){
+  return '<div class="wrap"><div class="step-hd"><div class="step-lbl">STEP '+(step)+' OF '+(TOTAL)+'</div><div class="step-title">Choose your plan</div><div class="step-sub">Pay per click only. No monthly fees.</div></div><div class="plans">'+planCardsHtml()+'</div><div style="font-size:11px;color:var(--t3);text-align:center;margin-bottom:16px">Estimates only. Final pricing at launch.</div><button class="btn-primary" onclick="next()">Continue &#8594;</button></div>';
+}
+
+function p4(){
+  return '<div class="wrap">'+
+    '<div class="step-hd"><div class="step-lbl">STEP '+step+' OF '+TOTAL+'</div>'+
+    '<div class="step-title">Create your ad</div>'+
+    '<div class="step-sub">This is what users see in their feed.</div></div>'+
+    '<div class="field"><label>Ad title *</label>'+
+      '<input id="fi-title" placeholder="e.g. Air Phantom X - Limited Drop" value="'+(F.adTitle||F.title||'')+'" oninput="sf(\'adTitle\',this.value)">'+
+      '<button onclick="aiGenerateTitle()" style="width:100%;margin-top:6px;background:linear-gradient(90deg,rgba(99,91,255,.3),rgba(191,90,242,.2));border:1px solid rgba(99,91,255,.4);border-radius:var(--r);padding:8px;color:#a78bfa;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--fb)">&#x2728; AI Generate Title</button>'+
+    '</div>'+
+    '<div class="field"><label>Product URL *</label>'+
+      '<input id="fi-url" type="url" placeholder="https://yoursite.com/product" value="'+(F.adUrl||F.url||'')+'" oninput="sf(\'adUrl\',this.value)">'+
+    '</div>'+
+    '<div class="field"><label>Description</label>'+
+      '<textarea id="fi-desc" placeholder="What makes your product special?" oninput="sf(\'adDesc\',this.value)">'+(F.adDesc||F.desc||'')+'</textarea>'+
+      '<button onclick="aiWriteDesc()" style="width:100%;margin-top:6px;background:linear-gradient(90deg,rgba(99,91,255,.3),rgba(191,90,242,.2));border:1px solid rgba(99,91,255,.4);border-radius:var(--r);padding:8px;color:#a78bfa;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--fb)">&#x2728; AI Write Description</button>'+
+    '</div>'+
+    '<div id="ai-check-result"></div>'+
+    '<div class="field" style="background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.12);border-radius:var(--r);padding:12px;margin-bottom:10px">'+'<label style="display:flex;align-items:center;gap:6px;margin-bottom:8px">'+'<span style="background:rgba(0,229,255,.15);border:1px solid rgba(0,229,255,.3);border-radius:5px;padding:2px 7px;font-size:9px;font-weight:800;color:var(--cy)">&#x1F4A7; DROP</span>'+'<span style="font-size:13px;font-weight:700">Limited Drop</span>'+'<span style="font-size:11px;color:var(--t3);font-weight:400">optional</span>'+'</label>'+'<select id="fi-drop" onchange="sf(\'dropHours\',parseInt(this.value)||0)">'+'<option value="0">No — standard ad</option>'+'<option value="24">24-hour drop</option>'+'<option value="12">12-hour drop</option>'+'<option value="6">6-hour flash drop</option>'+'</select>'+'</div>'+'<button onclick="aiContentCheck()" style="width:100%;background:rgba(191,90,242,.1);border:1px solid rgba(191,90,242,.3);border-radius:var(--r);padding:10px;color:#bf5af2;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--fb);margin-bottom:10px">&#x1F916; AI Content Check</button>'+
+    '<div class="field" style="background:rgba(255,214,10,.04);border:1px solid rgba(255,214,10,.12);border-radius:var(--r);padding:12px;margin-bottom:10px">'+'<label style="display:flex;align-items:center;gap:6px;margin-bottom:8px">'+'<span style="background:rgba(255,214,10,.15);border:1px solid rgba(255,214,10,.3);border-radius:5px;padding:2px 7px;font-size:9px;font-weight:800;color:#ffd60a">&#x1F4E6; STOCK</span>'+'<span style="font-size:13px;font-weight:700">Inventory</span>'+'<span style="font-size:11px;color:var(--t3);font-weight:400">optional — for physical products</span>'+'</label>'+'<input id="fi-stock" type="number" min="0" placeholder="e.g. 500 — leave blank for unlimited" oninput="sf(\'stock\',parseInt(this.value)||null)">'+'</div>'+'<div class="field" style="background:rgba(255,45,85,.04);border:1px solid rgba(255,45,85,.12);border-radius:var(--r);padding:12px;margin-bottom:10px">'+
+      '<label style="display:flex;align-items:center;gap:6px;margin-bottom:8px">'+
+        '<span style="background:rgba(255,45,85,.15);border:1px solid rgba(255,45,85,.3);border-radius:5px;padding:2px 7px;font-size:9px;font-weight:800;color:var(--red)">&#x1F4F9; VIDEO</span>'+
+        '<span style="font-size:13px;font-weight:700">Video Ad</span>'+
+        '<span style="font-size:11px;color:var(--t3);font-weight:400">optional — 3x more engagement</span>'+
+      '</label>'+
+      '<input id="fi-video" type="url" placeholder="Paste YouTube, TikTok or Vimeo link..." oninput="sf(\'videoUrl\',this.value);vpCheck(this.value)">'+
+      '<div id="vp-check" style="margin-top:6px;min-height:0"></div>'+
+    '</div>'+
+    '<div style="background:rgba(255,214,10,.04);border:1px solid rgba(255,214,10,.12);border-radius:var(--r);padding:12px;margin-bottom:10px">'+
+    '<div style="font-size:12px;font-weight:700;color:var(--gd);margin-bottom:8px">&#127991;&#65039; Exclusive Deal (optional)</div>'+
+    '<input id="fi-deal" type="text" placeholder="Deal code e.g. ADDTOK15" style="text-transform:uppercase;margin-bottom:6px" oninput="sf(\'dealCode\',this.value.toUpperCase())">'+
+    '<input id="fi-deal-desc" type="text" placeholder="Deal description e.g. 15% off first order" oninput="sf(\'dealDesc\',this.value)">'+
+    '<div style="font-size:11px;color:var(--t3);margin-top:6px">Ads with deal codes get 2.4x more engagement on Addtok</div>'+
+  '</div>'+
+  '<button class="btn-primary" onclick="next()">Continue &#8594;</button></div>';
+}
+
+
+function p6(){
+  return '<div class="success"><div class="s-icon">🎉</div><div class="s-title">You are live on Addtok!</div><div class="s-sub">Your ad is under AI review and will be live shortly.</div>'+
+    '<div class="feat-card"><div class="feat-title"><span class="live-dot"></span> Live Reaction Feed</div><div class="reaction-list">'+rxnCardsHtml()+'</div></div>'+
+    '<div class="feat-card"><div class="feat-title">📊 How you compare</div>'+benchCardsHtml()+'</div>'+
+    '<div class="feat-card"><div class="feat-title">⌛ Best time to run ads</div><div class="time-bars">'+timeBarsHtml()+'</div><div style="font-size:12px;color:var(--t2);margin-top:8px">Peak: <b style="color:var(--gold)">6pm-10pm UK</b> — 3x more clicks.</div></div>'+
+    '<div style="background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.2);border-radius:14px;padding:14px;margin-bottom:16px"><div style="font-size:12px;font-weight:700;color:#00e5ff;margin-bottom:5px">💬 Support</div><div style="font-size:11px;color:rgba(242,242,247,.7)">Questions? <a href="mailto:hello.addtok@gmail.com" style="color:#00e5ff">hello.addtok@gmail.com</a></div></div>'+
+    '<button class="btn-primary" onclick="showDashboardMsg()">Go to Dashboard →</button>'+
+    '<div style="text-align:center;padding:16px 0 8px"><svg width="110" height="36" viewBox="0 0 210 64" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto 4px"><text x="0" y="40" font-family="DM Sans,sans-serif" font-size="38" font-weight="700" letter-spacing="-2" fill="#fff">Addtok</text><rect x="0" y="46" width="66" height="3" rx="1.5" fill="#FF2D55"/><rect x="68" y="46" width="62" height="3" rx="1.5" fill="#00e5ff"/></svg><div style="font-size:10px;color:var(--t3);letter-spacing:2px">add an ad. · addtok.online</div></div>'+
+  '</div>';
+}
+
+function submit(){
+  if(!validate())return;
+  toast('Setting up your account…','info');
+  setTimeout(function(){step=6;render();scrollTo(0,0);},1000);
+}
+window.submit=submit;
+
+function planCardsHtml(){
+  var plans=[
+    {id:'starter',name:'Starter',price:'est. £5-£20/day',feats:['Pay per click only','est. £0.30-£1.20/click','Basic analytics','Standard placement'],pop:false},
+    {id:'growth',name:'Growth',price:'est. £20-£100/day',feats:['Pay per click only','est. £0.30-£0.90/click','Full analytics dashboard','Priority placement','Featured slot access'],pop:true},
+    {id:'pro',name:'Pro',price:'est. £100+/day',feats:['Pay per click only','Best click rates','Advanced analytics','Top placement + weekly featured','Priority support via email'],pop:false}
+  ];
+  var h='';
+  for(var pi=0;pi<plans.length;pi++){
+    var p=plans[pi];
+    var feats='';
+    for(var fi=0;fi<p.feats.length;fi++){feats+='<div class="pf"><span>✓</span>'+p.feats[fi]+'</div>';}
+    var isSel=F.plan===p.id;
+    var selAttr=isSel?' style="border-color:var(--red);background:rgba(255,45,85,.09);box-shadow:0 0 0 1px var(--red)"':'';
+    var tick=isSel?'<div style="position:absolute;top:12px;right:12px;width:24px;height:24px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff">✓</div>':'';
+    var popBadge=p.pop?'<div class="pop-badge">MOST POPULAR</div>':'';
+    h+='<div id="pl-'+p.id+'" class="plan'+(p.pop?' pop':'')+(isSel?' sel':'')+'" data-pid="'+p.id+'" onclick="selPlan(this.dataset.pid)"'+selAttr+'>'+popBadge+tick+'<div class="plan-name">'+p.name+'</div><div class="plan-price">'+p.price+'</div><div class="plan-feats">'+feats+'</div></div>';
+  }
+  return h;
+}
+function rxnCardsHtml(){
+  var items=[['👍','Someone upvoted your ad','Just now'],['🔖','Someone bookmarked','2s ago'],['🖱','Someone visited your page','5s ago'],['🛒','Someone confirmed a purchase!','1m ago']];
+  var h='';for(var i=0;i<items.length;i++){h+='<div class="ri"><span class="ri-icon">'+items[i][0]+'</span><span style="color:var(--t2)">'+items[i][1]+'</span><span class="ri-time">'+items[i][2]+'</span></div>';}
+  return h;
+}
+function benchCardsHtml(){
+  var rows=[['CTR',73,32,'7.3%','3.2%'],['Approval',94,78,'94%','78%'],['Views/day',100,39,'12,400','4,800']];
+  var h='';for(var i=0;i<rows.length;i++){var r=rows[i];h+='<div class="bench-item"><div class="bench-labels"><span style="color:var(--t2)">'+r[0]+'</span><span><b style="color:var(--cyan)">'+r[3]+'</b> <span style="color:var(--t3)">'+r[4]+' avg</span></span></div><div class="bench-track"><div class="bench-avg" style="width:'+r[2]+'%"></div><div class="bench-you" style="width:'+r[1]+'%"></div></div></div>';}
+  return h;
+}
+function timeBarsHtml(){
+  var bars=[['6am',15,'low'],['9am',30,'good'],['12pm',44,'good'],['3pm',38,'good'],['6pm',72,'peak'],['8pm',68,'peak'],['10pm',45,'good'],['12am',18,'low']];
+  var h='';for(var i=0;i<bars.length;i++){var b=bars[i];h+='<div style="flex:1;display:flex;flex-direction:column;align-items:center"><div class="tb '+b[2]+'" style="width:100%;height:'+Math.round(b[1]/72*52)+'px"></div><div class="tb-label">'+b[0]+'</div></div>';}
+  return h;
+}
+function showDashboardMsg(){
+  var msg=document.createElement('div');
+  msg.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:#1a1a3a;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center';
+  msg.innerHTML='<div style="font-size:64px;margin-bottom:20px">🎉</div>'+
+    '<div style="font-size:24px;font-weight:800;color:#fff;margin-bottom:10px">You are all set!</div>'+
+    '<div style="font-size:14px;color:rgba(242,242,247,.7);line-height:1.8;margin-bottom:28px;max-width:300px">Your ad is under review. Taking you to your dashboard...</div>'+
+    '<div style="background:rgba(48,209,88,.1);border:1px solid rgba(48,209,88,.3);border-radius:12px;padding:12px 24px;color:#30d158;font-size:14px;font-weight:700">✓ Ad submitted</div>'+
+    '<div style="margin-top:24px;width:44px;height:44px;border:3px solid rgba(255,255,255,.1);border-top-color:#FF2D55;border-radius:50%;animation:spin .8s linear infinite"></div>';
+  document.body.appendChild(msg);
+  var qs='name='+encodeURIComponent(F.name||'Advertiser')+
+    '&handle='+encodeURIComponent(F.handle||'')+
+    '&email='+encodeURIComponent(F.email||'')+
+    '&plan='+encodeURIComponent(F.plan||'growth')+
+    '&adTitle='+encodeURIComponent(F.adTitle||F.title||'')+
+    '&adUrl='+encodeURIComponent(F.adUrl||F.url||'')+
+    '&adType='+encodeURIComponent(F.adType||'brand')+
+    '&budget='+encodeURIComponent(F.budget||'20')+
+    '&new=1';
+  setTimeout(function(){
+    window.location.href='addtok-advertiser-dashboard.html?'+qs;
+  },2200);
+}
+function openSupport(){
+  var a=document.createElement('a');a.href='mailto:hello.addtok@gmail.com?subject=Addtok+Advertiser+Support';document.body.appendChild(a);a.click();document.body.removeChild(a);
+}
+function selPlan(p){
+  F.plan=p;
+  var _pls=document.querySelectorAll('.plan');for(var _pli=0;_pli<_pls.length;_pli++){var _pc=_pls[_pli];_pc.classList.remove('sel');_pc.style.borderColor='';_pc.style.background='';_pc.style.boxShadow='';var _pt=_pc.querySelector('.plan-tick');if(_pt)_pt.remove();}
+  var el=document.getElementById('pl-'+p);
+  if(el){
+    el.classList.add('sel');
+    el.style.borderColor='var(--red)';
+    el.style.background='rgba(255,45,85,.09)';
+    el.style.boxShadow='0 0 0 1px var(--red)';
+    var tick=document.createElement('div');
+    tick.className='plan-tick';
+    tick.style.cssText='position:absolute;top:12px;right:12px;width:24px;height:24px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff';
+    tick.innerHTML='✓';
+    el.appendChild(tick);
+  }
+  updPP();
+}
+// AI TOOLS
+function aiGenerateTitle(){
+  var nameEl=document.getElementById('fi-name');
+  var urlEl=document.getElementById('fi-url');
+  var name=(nameEl?nameEl.value:null)||F.name||'Your Brand';
+  var urlVal=(urlEl?urlEl.value:null)||F.adUrl||F.url||'';
+  var type=F.type||'brand';
+  var plan=F.plan||'growth';
+  // Extract domain for smarter titles
+  var domain='';
+  try{if(urlVal){domain=urlVal.replace('https://','').replace('http://','').split('/')[0].replace('www.','').split('.')[0];}}catch(e){}
+  var brandWord=domain||name;
+  // Templates tuned by type AND plan tier
+  var templates={
+    brand:[brandWord+' — New Drop Just Landed',
+           'Discover '+brandWord+' · Tap to Shop',
+           brandWord+' | Addtok Exclusive Offer',
+           'Shop '+brandWord+' · Limited Time',
+           'New from '+brandWord+' · Available Now',
+           brandWord+' — See What Everyone Is Talking About'],
+    influencer:[name+' x Addtok · Exclusive Drop',
+                'Only on Addtok — '+name+' Collab',
+                name+' · Limited Release',
+                'The '+name+' Collection Has Landed',
+                name+' Recommends · Tap to See Why'],
+    merch:[brandWord+' Merch — Limited Run',
+           'Exclusive '+brandWord+' Drop · While Stocks Last',
+           brandWord+' · Rare Drop — Get Yours Now',
+           'Limited Edition '+brandWord+' · Only on Addtok',
+           brandWord+' Merch · Selling Fast'],
+    sponsor:['Try '+brandWord+' Free Today',
+             brandWord+' — Special Addtok Offer Inside',
+             'Addtok Exclusive: '+brandWord,
+             brandWord+' · Thousands of Happy Customers',
+             'Start with '+brandWord+' Today · No Hidden Fees']
+  };
+  var opts=templates[type]||templates['brand'];
+  // Cycle through options on repeat taps
+  var stored=0;try{stored=parseInt(sessionStorage.getItem('titleIdx')||'0');}catch(e){}
+  var pick=opts[stored%opts.length];
+  try{sessionStorage.setItem('titleIdx',(stored+1)+'');}catch(e){}
+  var el=document.getElementById('fi-title');
+  if(el){el.value=pick;}
+  F.title=pick;F.adTitle=pick;
+  toast('AI title generated! Tap again for a different option.','suc');
+}
+function aiWriteDesc(){
+  var type=F.type||'brand';
+  var name=F.name||'us';
+  var hasDeal=F.adTags&&F.adTags.toLowerCase().indexOf('deal')>=0;
+  var templates={
+    brand:['Tap to explore our latest collection. Quality you can see, prices you will love.',
+           'Find your next favourite product. Click to visit our store and see what everyone is talking about.',
+           'New arrivals just dropped. Tap to shop before they sell out.',
+           'Trusted by thousands of customers. Tap to see our latest range.'],
+    influencer:['Created with love and tested by thousands. Tap to get yours today.',
+                'This is the collab you have been waiting for. Limited availability — tap now.',
+                'Exclusive to Addtok users. Tap to claim your special offer.',
+                'Recommended by '+name+'. Tap to discover why.'],
+    merch:['Limited run. Once they are gone, they are gone. Tap to grab yours now.',
+           'Drops are rare. This one is special. Tap to be one of the first to own it.',
+           'Exclusive merch drop — only available for a limited time.',
+           'Designed for the culture. Tap to shop the drop.'],
+    sponsor:['Start free today. No credit card needed. Tap to try it out.',
+             'Join thousands already using it. Tap to see why everyone loves it.',
+             'Special Addtok offer inside. Tap to claim your exclusive discount.',
+             'Used by thousands. Loved by all. Tap to get started.']
+  };
+  var opts=templates[type]||templates['brand'];
+  if(hasDeal) opts=['Exclusive Addtok discount inside — tap to grab the code before it expires.'].concat(opts);
+  var stored=0;try{stored=parseInt(sessionStorage.getItem('descIdx')||'0');}catch(e){}
+  var desc=opts[stored%opts.length];
+  try{sessionStorage.setItem('descIdx',(stored+1)+'');}catch(e){}
+  var el=document.getElementById('fi-desc');
+  if(el){el.value=desc;}
+  F.adDesc=desc;
+  toast('AI description written! Tap again for a different option.','suc');
+}
+function aiContentCheck(){
+  var titleEl=document.getElementById('fi-title');
+  var urlEl=document.getElementById('fi-url');
+  var descEl=document.getElementById('fi-desc');
+  var title=(titleEl?titleEl.value:null)||F.adTitle||F.title||'';
+  var url=(urlEl?urlEl.value:null)||F.adUrl||F.url||'';
+  var desc=(descEl?descEl.value:null)||F.adDesc||'';
+  if(titleEl){F.title=titleEl.value;F.adTitle=titleEl.value;}
+  if(urlEl){F.url=urlEl.value;F.adUrl=urlEl.value;}
+
+  var issues=[];var warnings=[];var passes=[];
+
+  // Title checks
+  if(!title){issues.push('Ad title is required — this is the first thing users see');}
+  else if(title.length<10){issues.push('Title too short ('+title.length+' chars) — aim for 20-50 characters');}
+  else if(title.length>60){warnings.push('Title is long ('+title.length+' chars) — under 50 works best on mobile');}
+  else{passes.push('Title length is good ('+title.length+' chars)');}
+
+  if(title&&title===title.toUpperCase()&&title.length>4){warnings.push('Avoid ALL CAPS — it feels like shouting to users');}
+  else if(title&&title.length>4){passes.push('Title casing looks natural');}
+
+  // Power words check
+  var powerWords=['limited','exclusive','only','free','new','drop','now','today'];
+  var hasPower=false;
+  for(var pw=0;pw<powerWords.length;pw++){
+    if(title.toLowerCase().indexOf(powerWords[pw])>=0){hasPower=true;break;}
+  }
+  if(hasPower){passes.push('Title has a strong hook word — boosts CTR by up to 23%');}
+  else{warnings.push('Add a hook word like Limited, Exclusive, or New to boost CTR');}
+
+  // URL checks
+  if(!url){issues.push('Product URL is required — this is where users click through to');}
+  else if(!url.startsWith('https://')){issues.push('URL must start with https:// for security (Stripe requires this)');}
+  else{passes.push('Product URL format is correct');}
+
+  // Description checks
+  if(desc&&desc.length>0){
+    if(desc.length<20){warnings.push('Description is very short — aim for 1-2 full sentences');}
+    else if(desc.length>200){warnings.push('Description is long — under 150 characters works best');}
+    else{passes.push('Description length is good');}
+    if(desc.indexOf('.')<0&&desc.indexOf('!')<0){warnings.push('End your description with punctuation for a polished look');}
+  } else {
+    warnings.push('Adding a description increases approval rating by 18%');
+  }
+
+  // Forbidden/misleading words
+  var forbidden=['guaranteed','#1 in the world','best ever','free money','win cash','miracle','cure','100% guaranteed'];
+  for(var fi=0;fi<forbidden.length;fi++){
+    if(title.toLowerCase().indexOf(forbidden[fi])>=0||desc.toLowerCase().indexOf(forbidden[fi])>=0){
+      issues.push('Remove misleading claim: "'+forbidden[fi]+'"');
+    }
+  }
+
+  // Grade calculation - weighted
+  var score=100;
+  score-=issues.length*22;
+  score-=warnings.length*7;
+  score=Math.max(0,Math.min(100,score));
+  var grade=score>=90?'A':score>=75?'B':score>=60?'C':score>=45?'D':'F';
+  var gc2={A:'#30d158',B:'#00e5ff',C:'#ffd60a',D:'#ff9f0a',F:'#ff2d55'};
+  var gDesc={A:'Excellent — will likely get top placement',B:'Good — should be approved quickly',C:'Average — consider improving before submitting',D:'Needs work — low approval chances','F':'Will likely be rejected — please fix issues'};
+
+  var html='<div style="background:var(--card2);border-radius:14px;padding:16px;margin-bottom:16px">'+
+    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">'+
+      '<div style="font-size:14px;font-weight:700">🤖 AI Content Check</div>'+
+      '<div style="background:'+gc2[grade]+';color:#000;font-weight:800;font-size:13px;padding:3px 12px;border-radius:20px">Grade '+grade+'</div>'+
+    '</div>'+
+    '<div style="font-size:12px;color:var(--t2);margin-bottom:12px">'+gDesc[grade]+'</div>';
+
+  if(issues.length){
+    html+='<div style="font-size:12px;font-weight:700;color:#FF2D55;margin-bottom:6px">❌ Must fix ('+issues.length+'):</div>';
+    for(var i=0;i<issues.length;i++)html+='<div style="font-size:12px;color:var(--t2);margin-bottom:5px;padding-left:8px">• '+issues[i]+'</div>';
+  }
+  if(warnings.length){
+    html+='<div style="font-size:12px;font-weight:700;color:var(--gold);margin-bottom:6px;margin-top:10px">⚠️ Suggestions ('+warnings.length+'):</div>';
+    for(var i=0;i<warnings.length;i++)html+='<div style="font-size:12px;color:var(--t2);margin-bottom:5px;padding-left:8px">• '+warnings[i]+'</div>';
+  }
+  if(passes.length){
+    html+='<div style="font-size:12px;font-weight:700;color:#30d158;margin-bottom:6px;margin-top:10px">✅ Looking good ('+passes.length+'):</div>';
+    for(var i=0;i<passes.length;i++)html+='<div style="font-size:12px;color:var(--t2);margin-bottom:5px;padding-left:8px">• '+passes[i]+'</div>';
+  }
+  html+='</div>';
+
+  var el=document.getElementById('ai-check-result');
+  if(el)el.innerHTML=html;
+  toast('AI check complete — Grade '+grade+' predicted','suc');
+}
+function aiRecommendBudget(){
+  var type=F.type||'brand';
+  var plan=F.plan||'growth';
+  var dayOfWeek=new Date().getDay();
+  var isWeekend=(dayOfWeek===0||dayOfWeek===6);
+  var isEvening=(new Date().getHours()>=18&&new Date().getHours()<=22);
+  // Base matrix by plan+type
+  var base={
+    starter:{brand:12,influencer:18,merch:20,sponsor:8},
+    growth: {brand:40,influencer:55,merch:65,sponsor:30},
+    pro:    {brand:130,influencer:180,merch:160,sponsor:110}
+  };
+  var rec=(base[plan]&&base[plan][type])?base[plan][type]:30;
+  // Boost for peak times
+  var boost='';
+  if(isWeekend){rec=Math.round(rec*1.2);boost=' (weekend boost +20%)';}
+  else if(isEvening){rec=Math.round(rec*1.15);boost=' (evening peak +15%)';}
+  var el=document.getElementById('fi-budget');
+  if(el){el.value=rec;sf('budget',rec);}
+  F.budget=rec;
+  if(typeof updPP==='function')updPP();
+  toast('£'+rec+'/day recommended for your '+plan+' plan'+boost,'suc');
+}
+function validate(){
+  if(step===1&&!F.type){toast('Please choose your advertiser type','err');return false;}
+  if(step===2){
+    var n=document.getElementById('fi-name');var e=document.getElementById('fi-email');
+    if(n&&n.value)F.name=n.value;if(e&&e.value)F.email=e.value;
+    if(!F.name||!F.name.trim()||!F.email||!F.email.includes('@')){toast('Please fill in your name and email','err');return false;}
+  }
+  if(step===4){
+    var t=document.getElementById('fi-title');var u=document.getElementById('fi-url');
+    if(t&&t.value){F.title=t.value;F.adTitle=t.value;}if(u&&u.value){F.url=u.value;F.adUrl=u.value;}
+    if((!F.adTitle||!F.adTitle.trim())&&(!F.title||!F.title.trim())){toast('Please fill in ad title and product URL','err');return false;}
+  }
+  if(step===3&&!F.plan){F.plan='growth';}
+  if(step===5&&(!F.cardName||!F.cardName.trim()||!F.cardNum||!F.cardNum.trim())){toast('Please fill in your card details','err');return false;}
+  return true;
+}
+window.showDashboardMsg=showDashboardMsg;window.openSupport=openSupport;
+window.selPlan=selPlan;window.sel=sel;
+function vpCheck(url){
+  var el=document.getElementById('vp-check');
+  if(!el)return;
+  if(!url){el.innerHTML='';return;}
+  var p='',ok=false;
+  if(url.indexOf('youtube')>=0||url.indexOf('youtu.be')>=0){p='YouTube';ok=true;}
+  else if(url.indexOf('tiktok')>=0){p='TikTok';ok=true;}
+  else if(url.indexOf('vimeo')>=0){p='Vimeo';ok=true;}
+  else if(url.match(/\.(mp4|webm)/i)){p='Video File';ok=true;}
+  if(ok){
+    el.innerHTML='<div style="padding:5px 10px;background:rgba(48,209,88,.08);border:1px solid rgba(48,209,88,.2);border-radius:8px;font-size:11px;color:#30d158">&#10003; '+p+' detected — will show as Video Ad</div>';
+  } else if(url.length>5){
+    el.innerHTML='<div style="padding:5px 10px;background:rgba(255,214,10,.06);border:1px solid rgba(255,214,10,.2);border-radius:8px;font-size:11px;color:rgba(255,255,255,.5)">Paste a YouTube, TikTok or Vimeo URL</div>';
+  }
+}
+window.vpCheck=vpCheck;
+window.next=next;window.prev=prev;
+window.aiGenerateTitle=aiGenerateTitle;window.aiWriteDesc=aiWriteDesc;
+window.aiContentCheck=aiContentCheck;window.aiRecommendBudget=aiRecommendBudget;
+window.submit=submit;window.sf=sf;window.updPP=updPP;window.validate=validate;
+
+render();
+PP=updPP;window.validate=validate;
+
+render();
+PP=updPP;window.validate=validate;
+
+render();function p5(){
+  return '<div class="wrap">'+
+    '<div class="step-hd"><div class="step-lbl">STEP '+step+' OF '+TOTAL+'</div>'+
+    '<div class="step-title">Budget & billing</div>'+
+    '<div class="step-sub">You only pay when users click your ad. No monthly fees.</div></div>'+
+    '<div class="field"><label>Daily budget cap (GBP)</label>'+
+      '<div style="display:flex;align-items:center;gap:8px">'+
+        '<span style="color:var(--t3);font-size:14px;padding:0 4px">&#163;</span>'+
+        '<input id="fi-budget" type="number" min="5" placeholder="20" value="'+F.budget+'" oninput="sf(\'budget\',this.value)" style="flex:1">'+
+      '</div>'+
+      '<button onclick="aiRecommendBudget()" style="width:100%;margin-top:6px;background:linear-gradient(90deg,rgba(99,91,255,.3),rgba(191,90,242,.2));border:1px solid rgba(99,91,255,.4);border-radius:var(--r);padding:8px;color:#a78bfa;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--fb)">&#x1F916; AI Recommend Budget</button>'+
+    '</div>'+
+    '<div id="pp-preview" style="background:var(--card2);border-radius:var(--r);padding:12px 14px;margin-bottom:14px"></div>'+
+    '<div class="field"><label>Cardholder name</label>'+
+      '<input id="fi-cn" placeholder="Name as it appears on card" value="'+F.cardName+'" oninput="sf(\'cardName\',this.value)">'+
+    '</div>'+
+    '<div class="field"><label>Card number</label>'+
+      '<input id="fi-card" type="tel" placeholder="1234 5678 9012 3456" maxlength="19" value="'+F.cardNum+'" oninput="sf(\'cardNum\',this.value)">'+
+    '</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">'+
+      '<div class="field"><label>Expiry</label><input id="fi-exp" placeholder="MM/YY" value="'+F.cardExp+'" oninput="sf(\'cardExp\',this.value)"></div>'+
+      '<div class="field"><label>CVV</label><input id="fi-cvv" type="tel" placeholder="123" maxlength="4" value="'+F.cardCvv+'" oninput="sf(\'cardCvv\',this.value)"></div>'+
+    '</div>'+
+    '<div style="font-size:11px;color:var(--t3);text-align:center;margin-bottom:16px">&#x1F512; Card details secured by Stripe. Not charged until Addtok launches.</div>'+
+    '<button class="btn-primary" onclick="next()">Review & Submit &#8594;</button></div>';
+}
+
+
+function prev(){if(step>1){step--;render();scrollTo(0,0);}else history.back();}
+
+function vpCheck(url){
+  var el=document.getElementById('vp-check');
+  if(!el)return;
+  if(!url){el.innerHTML='';return;}
+  var p='',ok=false;
+  if(url.indexOf('youtube')>=0||url.indexOf('youtu.be')>=0){p='YouTube';ok=true;}
+  else if(url.indexOf('tiktok')>=0){p='TikTok';ok=true;}
+  else if(url.indexOf('vimeo')>=0){p='Vimeo';ok=true;}
+  else if(url.match(/\.(mp4|webm)/i)){p='Video File';ok=true;}
+  if(ok){
+    el.innerHTML='<div style="padding:5px 10px;background:rgba(48,209,88,.08);border:1px solid rgba(48,209,88,.2);border-radius:8px;font-size:11px;color:#30d158">&#10003; '+p+' detected — will show as Video Ad</div>';
+  } else if(url.length>5){
+    el.innerHTML='<div style="padding:5px 10px;background:rgba(255,214,10,.06);border:1px solid rgba(255,214,10,.2);border-radius:8px;font-size:11px;color:rgba(255,255,255,.5)">Paste a YouTube, TikTok or Vimeo URL</div>';
+  }
+}
+window.vpCheck=vpCheck;
+window.next=next;window.prev=prev;
+
+
+function sf(k,v){F[k]=v;}
+function sel(type){F.type=type;var _tcs=document.querySelectorAll('.tc');for(var _ti=0;_ti<_tcs.length;_ti++){_tcs[_ti].classList.remove('sel');}var _te=document.getElementById('t-'+type);if(_te)_te.classList.add('sel');}
+window.sf=sf;window.sel=sel;window.selPlan=selPlan;window.updPP=updPP;
+
+function updPP(){
+  var b=parseInt(F.budget)||20;
+  var el=document.getElementById('pp-preview');
+  if(el){el.innerHTML='<div class="pp-row"><span class="lbl">Daily spend cap</span><span class="val">est. £'+(b)+'/day</span></div>'+'<div class="pp-row"><span class="lbl">Est. clicks/day</span><span class="val">est. '+(Math.floor(b/0.45))+' clicks</span></div>'+'<div class="pp-row"><span class="lbl">Est. monthly spend</span><span class="val">est. £'+(b*30)+'/month</span></div>'+'<div class="pp-note">Estimates only. You only pay when users click your link.</div>';}
+}
+
+function render(){
+  setDots();
+  var pages={1:p1,2:p2,3:p3,4:p4,5:p5,6:p6};
+  document.getElementById('body').innerHTML=(pages[step]||p1)();
+  if(step===4)updPP();
+}
+
+function p1(){
+  var types=[
+    {id:'brand',em:'&#x1F3E2;',name:'Brand',desc:'Company or business with products'},
+    {id:'influencer',em:'&#x1F3AC;',name:'Influencer',desc:'Creator with audience and brand deals'},
+    {id:'merch',em:'&#x1F45F;',name:'Merch Drop',desc:'Limited releases and exclusive items'},
+    {id:'sponsor',em:'&#x1F4E2;',name:'Sponsored',desc:'App, subscription or service'}
+  ];
+  var grid='';
+  for(var i=0;i<types.length;i++){
+    var t=types[i];
+    var isSel=F.type===t.id;
+    grid+='<div class="tc'+(isSel?' sel':'')+'" id="t-'+t.id+'" onclick="sel(\''+t.id+'\')">'+'<div class="tci">'+t.em+'</div><div class="tcn">'+t.name+'</div><div class="tcd">'+t.desc+'</div></div>';
+  }
+  return '<div class="wrap">'+
+    '<div class="step-hd"><div class="step-lbl">STEP '+step+' OF '+TOTAL+'</div>'+
+    '<div class="step-title">What are you?</div>'+
+    '<div class="step-sub">Choose your advertiser type so we can set up your account correctly.</div></div>'+
+    '<div class="type-grid">'+grid+'</div>'+
+    '<button class="btn-primary" onclick="next()">Continue &#8594;</button></div>';
+}
+
+
+function p3(){
+  return '<div class="wrap"><div class="step-hd"><div class="step-lbl">STEP '+(step)+' OF '+(TOTAL)+'</div><div class="step-title">Choose your plan</div><div class="step-sub">Pay per click only. No monthly fees.</div></div><div class="plans">'+planCardsHtml()+'</div><div style="font-size:11px;color:var(--t3);text-align:center;margin-bottom:16px">Estimates only. Final pricing at launch.</div><button class="btn-primary" onclick="next()">Continue &#8594;</button></div>';
+}
+
+function p4(){
+  return '<div class="wrap">'+
+    '<div class="step-hd"><div class="step-lbl">STEP '+step+' OF '+TOTAL+'</div>'+
+    '<div class="step-title">Create your ad</div>'+
+    '<div class="step-sub">This is what users see in their feed.</div></div>'+
+    '<div class="field"><label>Ad title *</label>'+
+      '<input id="fi-title" placeholder="e.g. Air Phantom X - Limited Drop" value="'+(F.adTitle||F.title||'')+'" oninput="sf(\'adTitle\',this.value)">'+
+      '<button onclick="aiGenerateTitle()" style="width:100%;margin-top:6px;background:linear-gradient(90deg,rgba(99,91,255,.3),rgba(191,90,242,.2));border:1px solid rgba(99,91,255,.4);border-radius:var(--r);padding:8px;color:#a78bfa;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--fb)">&#x2728; AI Generate Title</button>'+
+    '</div>'+
+    '<div class="field"><label>Product URL *</label>'+
+      '<input id="fi-url" type="url" placeholder="https://yoursite.com/product" value="'+(F.adUrl||F.url||'')+'" oninput="sf(\'adUrl\',this.value)">'+
+    '</div>'+
+    '<div class="field"><label>Description</label>'+
+      '<textarea id="fi-desc" placeholder="What makes your product special?" oninput="sf(\'adDesc\',this.value)">'+(F.adDesc||F.desc||'')+'</textarea>'+
+      '<button onclick="aiWriteDesc()" style="width:100%;margin-top:6px;background:linear-gradient(90deg,rgba(99,91,255,.3),rgba(191,90,242,.2));border:1px solid rgba(99,91,255,.4);border-radius:var(--r);padding:8px;color:#a78bfa;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--fb)">&#x2728; AI Write Description</button>'+
+    '</div>'+
+    '<div id="ai-check-result"></div>'+
+    '<button onclick="aiContentCheck()" style="width:100%;background:rgba(191,90,242,.1);border:1px solid rgba(191,90,242,.3);border-radius:var(--r);padding:10px;color:#bf5af2;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--fb);margin-bottom:10px">&#x1F916; AI Content Check</button>'+
+    '<div class="field" style="background:rgba(255,45,85,.04);border:1px solid rgba(255,45,85,.12);border-radius:var(--r);padding:12px;margin-bottom:10px">'+
+      '<label style="display:flex;align-items:center;gap:6px;margin-bottom:8px">'+
+        '<span style="background:rgba(255,45,85,.15);border:1px solid rgba(255,45,85,.3);border-radius:5px;padding:2px 7px;font-size:9px;font-weight:800;color:var(--red)">&#x1F4F9; VIDEO</span>'+
+        '<span style="font-size:13px;font-weight:700">Video Ad</span>'+
+        '<span style="font-size:11px;color:var(--t3);font-weight:400">optional — 3x more engagement</span>'+
+      '</label>'+
+      '<input id="fi-video" type="url" placeholder="Paste YouTube, TikTok or Vimeo link..." oninput="sf(\'videoUrl\',this.value);vpCheck(this.value)">'+
+      '<div id="vp-check" style="margin-top:6px;min-height:0"></div>'+
+    '</div>'+
+    '<button class="btn-primary" onclick="next()">Continue &#8594;</button></div>';
+}
+
+
+function p6(){
+  return '<div class="success"><div class="s-icon">🎉</div><div class="s-title">You are live on Addtok!</div><div class="s-sub">Your ad is under AI review and will be live shortly.</div>'+
+    '<div class="feat-card"><div class="feat-title"><span class="live-dot"></span> Live Reaction Feed</div><div class="reaction-list">'+rxnCardsHtml()+'</div></div>'+
+    '<div class="feat-card"><div class="feat-title">📊 How you compare</div>'+benchCardsHtml()+'</div>'+
+    '<div class="feat-card"><div class="feat-title">⌛ Best time to run ads</div><div class="time-bars">'+timeBarsHtml()+'</div><div style="font-size:12px;color:var(--t2);margin-top:8px">Peak: <b style="color:var(--gold)">6pm-10pm UK</b> — 3x more clicks.</div></div>'+
+    '<div style="background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.2);border-radius:14px;padding:14px;margin-bottom:16px"><div style="font-size:12px;font-weight:700;color:#00e5ff;margin-bottom:5px">💬 Support</div><div style="font-size:11px;color:rgba(242,242,247,.7)">Questions? <a href="mailto:hello.addtok@gmail.com" style="color:#00e5ff">hello.addtok@gmail.com</a></div></div>'+
+    '<button class="btn-primary" onclick="showDashboardMsg()">Go to Dashboard →</button>'+
+    '<div style="text-align:center;padding:16px 0 8px"><svg width="110" height="36" viewBox="0 0 210 64" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto 4px"><text x="0" y="40" font-family="DM Sans,sans-serif" font-size="38" font-weight="700" letter-spacing="-2" fill="#fff">Addtok</text><rect x="0" y="46" width="66" height="3" rx="1.5" fill="#FF2D55"/><rect x="68" y="46" width="62" height="3" rx="1.5" fill="#00e5ff"/></svg><div style="font-size:10px;color:var(--t3);letter-spacing:2px">add an ad. · addtok.online</div></div>'+
+  '</div>';
+}
+
+function submit(){
+  if(!validate())return;
+  toast('Setting up your account…','info');
+  setTimeout(function(){step=6;render();scrollTo(0,0);},1000);
+}
+window.submit=submit;
+
+function planCardsHtml(){
+  var plans=[
+    {id:'starter',name:'Starter',price:'est. £5-£20/day',feats:['Pay per click only','est. £0.30-£1.20/click','Basic analytics','Standard placement'],pop:false},
+    {id:'growth',name:'Growth',price:'est. £20-£100/day',feats:['Pay per click only','est. £0.30-£0.90/click','Full analytics dashboard','Priority placement','Featured slot access'],pop:true},
+    {id:'pro',name:'Pro',price:'est. £100+/day',feats:['Pay per click only','Best click rates','Advanced analytics','Top placement + weekly featured','Priority support via email'],pop:false}
+  ];
+  var h='';
+  for(var pi=0;pi<plans.length;pi++){
+    var p=plans[pi];
+    var feats='';
+    for(var fi=0;fi<p.feats.length;fi++){feats+='<div class="pf"><span>✓</span>'+p.feats[fi]+'</div>';}
+    var isSel=F.plan===p.id;
+    var selAttr=isSel?' style="border-color:var(--red);background:rgba(255,45,85,.09);box-shadow:0 0 0 1px var(--red)"':'';
+    var tick=isSel?'<div style="position:absolute;top:12px;right:12px;width:24px;height:24px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff">✓</div>':'';
+    var popBadge=p.pop?'<div class="pop-badge">MOST POPULAR</div>':'';
+    h+='<div id="pl-'+p.id+'" class="plan'+(p.pop?' pop':'')+(isSel?' sel':'')+'" data-pid="'+p.id+'" onclick="selPlan(this.dataset.pid)"'+selAttr+'>'+popBadge+tick+'<div class="plan-name">'+p.name+'</div><div class="plan-price">'+p.price+'</div><div class="plan-feats">'+feats+'</div></div>';
+  }
+  return h;
+}
+function rxnCardsHtml(){
+  var items=[['👍','Someone upvoted your ad','Just now'],['🔖','Someone bookmarked','2s ago'],['🖱','Someone visited your page','5s ago'],['🛒','Someone confirmed a purchase!','1m ago']];
+  var h='';for(var i=0;i<items.length;i++){h+='<div class="ri"><span class="ri-icon">'+items[i][0]+'</span><span style="color:var(--t2)">'+items[i][1]+'</span><span class="ri-time">'+items[i][2]+'</span></div>';}
+  return h;
+}
+function benchCardsHtml(){
+  var rows=[['CTR',73,32,'7.3%','3.2%'],['Approval',94,78,'94%','78%'],['Views/day',100,39,'12,400','4,800']];
+  var h='';for(var i=0;i<rows.length;i++){var r=rows[i];h+='<div class="bench-item"><div class="bench-labels"><span style="color:var(--t2)">'+r[0]+'</span><span><b style="color:var(--cyan)">'+r[3]+'</b> <span style="color:var(--t3)">'+r[4]+' avg</span></span></div><div class="bench-track"><div class="bench-avg" style="width:'+r[2]+'%"></div><div class="bench-you" style="width:'+r[1]+'%"></div></div></div>';}
+  return h;
+}
+function timeBarsHtml(){
+  var bars=[['6am',15,'low'],['9am',30,'good'],['12pm',44,'good'],['3pm',38,'good'],['6pm',72,'peak'],['8pm',68,'peak'],['10pm',45,'good'],['12am',18,'low']];
+  var h='';for(var i=0;i<bars.length;i++){var b=bars[i];h+='<div style="flex:1;display:flex;flex-direction:column;align-items:center"><div class="tb '+b[2]+'" style="width:100%;height:'+Math.round(b[1]/72*52)+'px"></div><div class="tb-label">'+b[0]+'</div></div>';}
+  return h;
+}
+function showDashboardMsg(){
+  var msg=document.createElement('div');
+  msg.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:#1a1a3a;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center';
+  msg.innerHTML='<div style="font-size:64px;margin-bottom:20px">🎉</div>'+
+    '<div style="font-size:24px;font-weight:800;color:#fff;margin-bottom:10px">You are all set!</div>'+
+    '<div style="font-size:14px;color:rgba(242,242,247,.7);line-height:1.8;margin-bottom:28px;max-width:300px">Your ad is under review. Taking you to your dashboard...</div>'+
+    '<div style="background:rgba(48,209,88,.1);border:1px solid rgba(48,209,88,.3);border-radius:12px;padding:12px 24px;color:#30d158;font-size:14px;font-weight:700">✓ Ad submitted</div>'+
+    '<div style="margin-top:24px;width:44px;height:44px;border:3px solid rgba(255,255,255,.1);border-top-color:#FF2D55;border-radius:50%;animation:spin .8s linear infinite"></div>';
+  document.body.appendChild(msg);
+  var qs='name='+encodeURIComponent(F.name||'Advertiser')+
+    '&handle='+encodeURIComponent(F.handle||'')+
+    '&email='+encodeURIComponent(F.email||'')+
+    '&plan='+encodeURIComponent(F.plan||'growth')+
+    '&adTitle='+encodeURIComponent(F.adTitle||F.title||'')+
+    '&adUrl='+encodeURIComponent(F.adUrl||F.url||'')+
+    '&adType='+encodeURIComponent(F.adType||'brand')+
+    '&budget='+encodeURIComponent(F.budget||'20')+
+    '&new=1';
+  setTimeout(function(){
+    window.location.href='addtok-advertiser-dashboard.html?'+qs;
+  },2200);
+}
+function openSupport(){
+  var a=document.createElement('a');a.href='mailto:hello.addtok@gmail.com?subject=Addtok+Advertiser+Support';document.body.appendChild(a);a.click();document.body.removeChild(a);
+}
+function selPlan(p){
+  F.plan=p;
+  var _pls=document.querySelectorAll('.plan');for(var _pli=0;_pli<_pls.length;_pli++){var _pc=_pls[_pli];_pc.classList.remove('sel');_pc.style.borderColor='';_pc.style.background='';_pc.style.boxShadow='';var _pt=_pc.querySelector('.plan-tick');if(_pt)_pt.remove();}
+  var el=document.getElementById('pl-'+p);
+  if(el){
+    el.classList.add('sel');
+    el.style.borderColor='var(--red)';
+    el.style.background='rgba(255,45,85,.09)';
+    el.style.boxShadow='0 0 0 1px var(--red)';
+    var tick=document.createElement('div');
+    tick.className='plan-tick';
+    tick.style.cssText='position:absolute;top:12px;right:12px;width:24px;height:24px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff';
+    tick.innerHTML='✓';
+    el.appendChild(tick);
+  }
+  updPP();
+}
+// AI TOOLS
+function aiGenerateTitle(){
+  var nameEl=document.getElementById('fi-name');
+  var urlEl=document.getElementById('fi-url');
+  var name=(nameEl?nameEl.value:null)||F.name||'Your Brand';
+  var urlVal=(urlEl?urlEl.value:null)||F.adUrl||F.url||'';
+  var type=F.type||'brand';
+  var plan=F.plan||'growth';
+  // Extract domain for smarter titles
+  var domain='';
+  try{if(urlVal){domain=urlVal.replace('https://','').replace('http://','').split('/')[0].replace('www.','').split('.')[0];}}catch(e){}
+  var brandWord=domain||name;
+  // Templates tuned by type AND plan tier
+  var templates={
+    brand:[brandWord+' — New Drop Just Landed',
+           'Discover '+brandWord+' · Tap to Shop',
+           brandWord+' | Addtok Exclusive Offer',
+           'Shop '+brandWord+' · Limited Time',
+           'New from '+brandWord+' · Available Now',
+           brandWord+' — See What Everyone Is Talking About'],
+    influencer:[name+' x Addtok · Exclusive Drop',
+                'Only on Addtok — '+name+' Collab',
+                name+' · Limited Release',
+                'The '+name+' Collection Has Landed',
+                name+' Recommends · Tap to See Why'],
+    merch:[brandWord+' Merch — Limited Run',
+           'Exclusive '+brandWord+' Drop · While Stocks Last',
+           brandWord+' · Rare Drop — Get Yours Now',
+           'Limited Edition '+brandWord+' · Only on Addtok',
+           brandWord+' Merch · Selling Fast'],
+    sponsor:['Try '+brandWord+' Free Today',
+             brandWord+' — Special Addtok Offer Inside',
+             'Addtok Exclusive: '+brandWord,
+             brandWord+' · Thousands of Happy Customers',
+             'Start with '+brandWord+' Today · No Hidden Fees']
+  };
+  var opts=templates[type]||templates['brand'];
+  // Cycle through options on repeat taps
+  var stored=0;try{stored=parseInt(sessionStorage.getItem('titleIdx')||'0');}catch(e){}
+  var pick=opts[stored%opts.length];
+  try{sessionStorage.setItem('titleIdx',(stored+1)+'');}catch(e){}
+  var el=document.getElementById('fi-title');
+  if(el){el.value=pick;}
+  F.title=pick;F.adTitle=pick;
+  toast('AI title generated! Tap again for a different option.','suc');
+}
+function aiWriteDesc(){
+  var type=F.type||'brand';
+  var name=F.name||'us';
+  var hasDeal=F.adTags&&F.adTags.toLowerCase().indexOf('deal')>=0;
+  var templates={
+    brand:['Tap to explore our latest collection. Quality you can see, prices you will love.',
+           'Find your next favourite product. Click to visit our store and see what everyone is talking about.',
+           'New arrivals just dropped. Tap to shop before they sell out.',
+           'Trusted by thousands of customers. Tap to see our latest range.'],
+    influencer:['Created with love and tested by thousands. Tap to get yours today.',
+                'This is the collab you have been waiting for. Limited availability — tap now.',
+                'Exclusive to Addtok users. Tap to claim your special offer.',
+                'Recommended by '+name+'. Tap to discover why.'],
+    merch:['Limited run. Once they are gone, they are gone. Tap to grab yours now.',
+           'Drops are rare. This one is special. Tap to be one of the first to own it.',
+           'Exclusive merch drop — only available for a limited time.',
+           'Designed for the culture. Tap to shop the drop.'],
+    sponsor:['Start free today. No credit card needed. Tap to try it out.',
+             'Join thousands already using it. Tap to see why everyone loves it.',
+             'Special Addtok offer inside. Tap to claim your exclusive discount.',
+             'Used by thousands. Loved by all. Tap to get started.']
+  };
+  var opts=templates[type]||templates['brand'];
+  if(hasDeal) opts=['Exclusive Addtok discount inside — tap to grab the code before it expires.'].concat(opts);
+  var stored=0;try{stored=parseInt(sessionStorage.getItem('descIdx')||'0');}catch(e){}
+  var desc=opts[stored%opts.length];
+  try{sessionStorage.setItem('descIdx',(stored+1)+'');}catch(e){}
+  var el=document.getElementById('fi-desc');
+  if(el){el.value=desc;}
+  F.adDesc=desc;
+  toast('AI description written! Tap again for a different option.','suc');
+}
+function aiContentCheck(){
+  var titleEl=document.getElementById('fi-title');
+  var urlEl=document.getElementById('fi-url');
+  var descEl=document.getElementById('fi-desc');
+  var title=(titleEl?titleEl.value:null)||F.adTitle||F.title||'';
+  var url=(urlEl?urlEl.value:null)||F.adUrl||F.url||'';
+  var desc=(descEl?descEl.value:null)||F.adDesc||'';
+  if(titleEl){F.title=titleEl.value;F.adTitle=titleEl.value;}
+  if(urlEl){F.url=urlEl.value;F.adUrl=urlEl.value;}
+
+  var issues=[];var warnings=[];var passes=[];
+
+  // Title checks
+  if(!title){issues.push('Ad title is required — this is the first thing users see');}
+  else if(title.length<10){issues.push('Title too short ('+title.length+' chars) — aim for 20-50 characters');}
+  else if(title.length>60){warnings.push('Title is long ('+title.length+' chars) — under 50 works best on mobile');}
+  else{passes.push('Title length is good ('+title.length+' chars)');}
+
+  if(title&&title===title.toUpperCase()&&title.length>4){warnings.push('Avoid ALL CAPS — it feels like shouting to users');}
+  else if(title&&title.length>4){passes.push('Title casing looks natural');}
+
+  // Power words check
+  var powerWords=['limited','exclusive','only','free','new','drop','now','today'];
+  var hasPower=false;
+  for(var pw=0;pw<powerWords.length;pw++){
+    if(title.toLowerCase().indexOf(powerWords[pw])>=0){hasPower=true;break;}
+  }
+  if(hasPower){passes.push('Title has a strong hook word — boosts CTR by up to 23%');}
+  else{warnings.push('Add a hook word like Limited, Exclusive, or New to boost CTR');}
+
+  // URL checks
+  if(!url){issues.push('Product URL is required — this is where users click through to');}
+  else if(!url.startsWith('https://')){issues.push('URL must start with https:// for security (Stripe requires this)');}
+  else{passes.push('Product URL format is correct');}
+
+  // Description checks
+  if(desc&&desc.length>0){
+    if(desc.length<20){warnings.push('Description is very short — aim for 1-2 full sentences');}
+    else if(desc.length>200){warnings.push('Description is long — under 150 characters works best');}
+    else{passes.push('Description length is good');}
+    if(desc.indexOf('.')<0&&desc.indexOf('!')<0){warnings.push('End your description with punctuation for a polished look');}
+  } else {
+    warnings.push('Adding a description increases approval rating by 18%');
+  }
+
+  // Forbidden/misleading words
+  var forbidden=['guaranteed','#1 in the world','best ever','free money','win cash','miracle','cure','100% guaranteed'];
+  for(var fi=0;fi<forbidden.length;fi++){
+    if(title.toLowerCase().indexOf(forbidden[fi])>=0||desc.toLowerCase().indexOf(forbidden[fi])>=0){
+      issues.push('Remove misleading claim: "'+forbidden[fi]+'"');
+    }
+  }
+
+  // Grade calculation - weighted
+  var score=100;
+  score-=issues.length*22;
+  score-=warnings.length*7;
+  score=Math.max(0,Math.min(100,score));
+  var grade=score>=90?'A':score>=75?'B':score>=60?'C':score>=45?'D':'F';
+  var gc2={A:'#30d158',B:'#00e5ff',C:'#ffd60a',D:'#ff9f0a',F:'#ff2d55'};
+  var gDesc={A:'Excellent — will likely get top placement',B:'Good — should be approved quickly',C:'Average — consider improving before submitting',D:'Needs work — low approval chances','F':'Will likely be rejected — please fix issues'};
+
+  var html='<div style="background:var(--card2);border-radius:14px;padding:16px;margin-bottom:16px">'+
+    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">'+
+      '<div style="font-size:14px;font-weight:700">🤖 AI Content Check</div>'+
+      '<div style="background:'+gc2[grade]+';color:#000;font-weight:800;font-size:13px;padding:3px 12px;border-radius:20px">Grade '+grade+'</div>'+
+    '</div>'+
+    '<div style="font-size:12px;color:var(--t2);margin-bottom:12px">'+gDesc[grade]+'</div>';
+
+  if(issues.length){
+    html+='<div style="font-size:12px;font-weight:700;color:#FF2D55;margin-bottom:6px">❌ Must fix ('+issues.length+'):</div>';
+    for(var i=0;i<issues.length;i++)html+='<div style="font-size:12px;color:var(--t2);margin-bottom:5px;padding-left:8px">• '+issues[i]+'</div>';
+  }
+  if(warnings.length){
+    html+='<div style="font-size:12px;font-weight:700;color:var(--gold);margin-bottom:6px;margin-top:10px">⚠️ Suggestions ('+warnings.length+'):</div>';
+    for(var i=0;i<warnings.length;i++)html+='<div style="font-size:12px;color:var(--t2);margin-bottom:5px;padding-left:8px">• '+warnings[i]+'</div>';
+  }
+  if(passes.length){
+    html+='<div style="font-size:12px;font-weight:700;color:#30d158;margin-bottom:6px;margin-top:10px">✅ Looking good ('+passes.length+'):</div>';
+    for(var i=0;i<passes.length;i++)html+='<div style="font-size:12px;color:var(--t2);margin-bottom:5px;padding-left:8px">• '+passes[i]+'</div>';
+  }
+  html+='</div>';
+
+  var el=document.getElementById('ai-check-result');
+  if(el)el.innerHTML=html;
+  toast('AI check complete — Grade '+grade+' predicted','suc');
+}
+function aiRecommendBudget(){
+  var type=F.type||'brand';
+  var plan=F.plan||'growth';
+  var dayOfWeek=new Date().getDay();
+  var isWeekend=(dayOfWeek===0||dayOfWeek===6);
+  var isEvening=(new Date().getHours()>=18&&new Date().getHours()<=22);
+  // Base matrix by plan+type
+  var base={
+    starter:{brand:12,influencer:18,merch:20,sponsor:8},
+    growth: {brand:40,influencer:55,merch:65,sponsor:30},
+    pro:    {brand:130,influencer:180,merch:160,sponsor:110}
+  };
+  var rec=(base[plan]&&base[plan][type])?base[plan][type]:30;
+  // Boost for peak times
+  var boost='';
+  if(isWeekend){rec=Math.round(rec*1.2);boost=' (weekend boost +20%)';}
+  else if(isEvening){rec=Math.round(rec*1.15);boost=' (evening peak +15%)';}
+  var el=document.getElementById('fi-budget');
+  if(el){el.value=rec;sf('budget',rec);}
+  F.budget=rec;
+  if(typeof updPP==='function')updPP();
+  toast('£'+rec+'/day recommended for your '+plan+' plan'+boost,'suc');
+}
+function validate(){
+  if(step===1&&!F.type){toast('Please choose your advertiser type','err');return false;}
+  if(step===2){
+    var n=document.getElementById('fi-name');var e=document.getElementById('fi-email');
+    if(n&&n.value)F.name=n.value;if(e&&e.value)F.email=e.value;
+    if(!F.name||!F.name.trim()||!F.email||!F.email.includes('@')){toast('Please fill in your name and email','err');return false;}
+  }
+  if(step===4){
+    var t=document.getElementById('fi-title');var u=document.getElementById('fi-url');
+    if(t&&t.value){F.title=t.value;F.adTitle=t.value;}if(u&&u.value){F.url=u.value;F.adUrl=u.value;}
+    if((!F.adTitle||!F.adTitle.trim())&&(!F.title||!F.title.trim())){toast('Please fill in ad title and product URL','err');return false;}
+  }
+  if(step===3&&!F.plan){F.plan='growth';}
+  if(step===5&&(!F.cardName||!F.cardName.trim()||!F.cardNum||!F.cardNum.trim())){toast('Please fill in your card details','err');return false;}
+  return true;
+}
+window.showDashboardMsg=showDashboardMsg;window.openSupport=openSupport;
+window.selPlan=selPlan;window.sel=sel;
+function vpCheck(url){
+  var el=document.getElementById('vp-check');
+  if(!el)return;
+  if(!url){el.innerHTML='';return;}
+  var p='',ok=false;
+  if(url.indexOf('youtube')>=0||url.indexOf('youtu.be')>=0){p='YouTube';ok=true;}
+  else if(url.indexOf('tiktok')>=0){p='TikTok';ok=true;}
+  else if(url.indexOf('vimeo')>=0){p='Vimeo';ok=true;}
+  else if(url.match(/\.(mp4|webm)/i)){p='Video File';ok=true;}
+  if(ok){
+    el.innerHTML='<div style="padding:5px 10px;background:rgba(48,209,88,.08);border:1px solid rgba(48,209,88,.2);border-radius:8px;font-size:11px;color:#30d158">&#10003; '+p+' detected — will show as Video Ad</div>';
+  } else if(url.length>5){
+    el.innerHTML='<div style="padding:5px 10px;background:rgba(255,214,10,.06);border:1px solid rgba(255,214,10,.2);border-radius:8px;font-size:11px;color:rgba(255,255,255,.5)">Paste a YouTube, TikTok or Vimeo URL</div>';
+  }
+}
+window.vpCheck=vpCheck;
+window.next=next;window.prev=prev;
+window.aiGenerateTitle=aiGenerateTitle;window.aiWriteDesc=aiWriteDesc;
+window.aiContentCheck=aiContentCheck;window.aiRecommendBudget=aiRecommendBudget;
+window.submit=submit;window.sf=sf;window.updPP=updPP;window.validate=validate;
+
+render();
+PP=updPP;window.validate=validate;
+
+render();
+PP=updPP;window.validate=validate;
+
+render();
+</script>
+<div id="tc" class="tct"></div>
+</body>
+</html>

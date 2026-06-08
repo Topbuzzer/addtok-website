@@ -1,0 +1,2091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Addtok Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' rx='14' fill='%231a1a3a'/%3E%3Ctext x='30' y='38' text-anchor='middle' font-family='DM Sans,sans-serif' font-size='32' font-weight='800' fill='%23ffffff'%3EA%3C/text%3E%3Crect x='10' y='44' width='18' height='3' rx='1.5' fill='%23FF2D55'/%3E%3Crect x='32' y='44' width='18' height='3' rx='1.5' fill='%2300e5ff'/%3E%3C/svg%3E">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#1a1a3a;--c1:#22224a;--c2:#2a2a58;--c3:#323268;
+  --rd:#ff2d55;--cy:#00e5ff;--gd:#ffd60a;--gr:#30d158;--pu:#bf5af2;--or:#ff9f0a;--st:#635bff;
+  --tx:#f2f2f7;--t2:rgba(242,242,247,.72);--t3:rgba(242,242,247,.42);--t4:rgba(242,242,247,.15);
+  --bo:rgba(255,255,255,.1);--b2:rgba(255,255,255,.18);
+  --f:'DM Sans',sans-serif;--fm:'JetBrains Mono',monospace;
+  --sw:224px;--th:56px;
+}
+html,body{height:100%;background:var(--bg);color:var(--tx);font-family:var(--f);overflow:hidden}
+button{cursor:pointer;border:none;background:none;font-family:var(--f);color:inherit}
+input,select,textarea{font-family:var(--f)}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-thumb{background:var(--bo);border-radius:2px}
+
+/* ATMOSPHERE */
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(ellipse at 15% 0%,rgba(255,45,85,.1) 0%,transparent 50%),
+  radial-gradient(ellipse at 85% 100%,rgba(0,229,255,.07) 0%,transparent 45%);
+  pointer-events:none;z-index:0}
+
+/* LAYOUT */
+#app{display:flex;height:100vh;position:relative;z-index:1}
+.sidebar{width:var(--sw);flex-shrink:0;background:rgba(34,34,74,.98);border-right:1px solid var(--bo);display:flex;flex-direction:column;overflow:hidden;z-index:20;transition:transform .25s}
+.main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+
+/* SIDEBAR */
+.sb-logo{padding:16px;border-bottom:1px solid var(--bo);flex-shrink:0}
+.sb-user{margin:8px;background:var(--c2);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:9px;flex-shrink:0}
+.sb-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--rd),var(--pu));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.sbnav{flex:1;padding:6px 8px;overflow-y:auto;display:flex;flex-direction:column;gap:1px}
+.snl{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t4);padding:10px 8px 3px;font-weight:600}
+.nb{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;color:var(--t2);font-size:12px;font-weight:500;width:100%;text-align:left;transition:all .15s}
+.nb:hover{background:var(--c2);color:var(--tx)}
+.nb.on{background:rgba(255,45,85,.12);color:var(--rd)}
+.nb .ni{font-size:15px;width:18px;text-align:center;flex-shrink:0}
+.nbdg{margin-left:auto;font-size:8px;font-weight:800;padding:1px 6px;border-radius:10px;min-width:18px;text-align:center}
+.nbdg.red{background:var(--rd);color:#fff}
+.nbdg.gold{background:var(--gd);color:#000}
+.nbdg.cyan{background:var(--cy);color:#000}
+.sb-rev{margin:8px;background:linear-gradient(135deg,rgba(255,45,85,.12),rgba(0,229,255,.06));border:1px solid rgba(255,45,85,.2);border-radius:14px;padding:13px;flex-shrink:0}
+.sb-rev .rl{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--t3)}
+.sb-rev .rv{font-size:22px;font-weight:800;color:var(--gd);font-family:var(--fm);line-height:1.15;margin:3px 0}
+.sb-rev .rs{font-size:9px;color:var(--t3);display:flex;align-items:center;gap:4px}
+.ldot{width:6px;height:6px;border-radius:50%;background:var(--gr);animation:pulse 1.5s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.wd-btn{width:100%;margin-top:9px;background:linear-gradient(90deg,var(--gd),#e8a800);border:none;border-radius:10px;padding:8px;color:#000;font-size:10px;font-weight:800;letter-spacing:.8px;transition:opacity .15s}
+.wd-btn:hover{opacity:.88}
+
+/* TOPBAR */
+.topbar{height:var(--th);background:rgba(34,34,74,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--bo);display:flex;align-items:center;padding:0 18px;gap:12px;flex-shrink:0;z-index:10}
+.tb-title{font-size:16px;font-weight:700;letter-spacing:-.3px;flex-shrink:0}
+.tb-search{flex:1;max-width:280px;background:var(--c2);border:1px solid var(--bo);border-radius:22px;padding:7px 14px;color:var(--tx);font-size:12px;outline:none}
+.tb-search::placeholder{color:var(--t3)}
+.tb-actions{display:flex;gap:8px;margin-left:auto;align-items:center}
+.tb-btn{background:var(--rd);border:none;border-radius:10px;padding:7px 14px;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;gap:5px;transition:opacity .15s}
+.tb-btn:hover{opacity:.88}
+.tb-ico{width:34px;height:34px;border-radius:50%;background:var(--c2);border:1px solid var(--bo);display:flex;align-items:center;justify-content:center;font-size:16px;position:relative;transition:background .15s}
+.tb-ico:hover{background:var(--c3)}
+.nb-dot{position:absolute;top:4px;right:4px;width:7px;height:7px;border-radius:50%;background:var(--rd);border:2px solid var(--bg)}
+.hburg{display:none;width:34px;height:34px;border-radius:10px;background:var(--c2);border:1px solid var(--bo);align-items:center;justify-content:center;font-size:18px}
+
+/* TICKER */
+.ticker{height:28px;background:rgba(26,26,58,.9);border-bottom:1px solid var(--bo);display:flex;align-items:center;overflow:hidden;flex-shrink:0}
+.tk-tag{font-size:8px;font-weight:800;letter-spacing:2px;color:var(--rd);text-transform:uppercase;padding:0 12px;border-right:1px solid var(--bo);white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:4px}
+.tk-wrap{flex:1;overflow:hidden}
+.tk-inner{display:flex;animation:tick 30s linear infinite;white-space:nowrap}
+.tk-inner:hover{animation-play-state:paused}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ti{display:inline-flex;align-items:center;gap:5px;padding:0 16px;font-size:10px;color:var(--t2);border-right:1px solid var(--bo)}
+.tg.gr{color:var(--gr);font-weight:700}
+.tg.gd{color:var(--gd);font-weight:700}
+.tg.rd{color:var(--rd);font-weight:700}
+.tg.cy{color:var(--cy);font-weight:700}
+
+/* CONTENT */
+.content{flex:1;overflow:hidden;position:relative}
+.page{position:absolute;inset:0;overflow-y:auto;padding:18px;display:none}
+.page.active{display:block}
+
+/* PAGE HEADERS */
+.pg-hd{margin-bottom:18px}
+.pg-t{font-size:22px;font-weight:800;letter-spacing:-.5px}
+.pg-s{font-size:11px;color:var(--t2);margin-top:3px;display:flex;align-items:center;gap:5px}
+
+/* CARDS */
+.card{background:var(--c1);border:1px solid var(--bo);border-radius:16px;padding:16px;margin-bottom:12px}
+.card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-t{font-size:14px;font-weight:700}
+.card-s{font-size:10px;color:var(--t3);margin-top:1px}
+
+/* METRIC CARDS */
+.mg{display:grid;gap:10px;margin-bottom:12px}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+
+.mc{background:var(--c1);border:1px solid var(--bo);border-radius:16px;padding:14px;transition:all .15s;cursor:default;position:relative;overflow:hidden}
+.mc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:2px 2px 0 0}
+.mc.red::before{background:var(--rd)}
+.mc.cyan::before{background:var(--cy)}
+.mc.gold::before{background:var(--gd)}
+.mc.green::before{background:var(--gr)}
+.mc.purple::before{background:var(--pu)}
+.mc.stripe::before{background:var(--st)}
+.mc:hover{border-color:var(--b2);transform:translateY(-1px)}
+.ml{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:5px}
+.mv{font-size:26px;font-weight:800;line-height:1;font-family:var(--fm)}
+.mch{font-size:10px;margin-top:4px}
+.up{color:var(--gr)}
+.mbar{height:3px;background:var(--c2);border-radius:2px;margin-top:10px;overflow:hidden}
+.mfill{height:100%;border-radius:2px}
+
+/* TABLES */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{background:var(--c2);padding:8px 12px;text-align:left;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--t3);border-bottom:1px solid var(--bo);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--bo);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.015)}
+.tgr{color:var(--gr);font-weight:600}
+.tgd{color:var(--gd);font-weight:700;font-family:var(--fm)}
+.tcy{color:var(--cy)}
+
+.tmu{color:var(--t3)}
+.tst{color:var(--st);font-family:var(--fm);font-size:10px}
+
+/* PILLS */
+.pill{font-size:8px;font-weight:800;letter-spacing:.8px;padding:3px 8px;border-radius:20px;text-transform:uppercase;white-space:nowrap;display:inline-block}
+.pl-live{background:rgba(48,209,88,.1);color:var(--gr);border:1px solid rgba(48,209,88,.25)}
+.pl-pause{background:rgba(255,159,10,.1);color:var(--or);border:1px solid rgba(255,159,10,.25)}
+.pl-end{background:rgba(255,45,85,.1);color:var(--rd);border:1px solid rgba(255,45,85,.2)}
+.pl-pend{background:rgba(255,214,10,.1);color:var(--gd);border:1px solid rgba(255,214,10,.2)}
+.pl-pro{background:rgba(0,229,255,.1);color:var(--cy);border:1px solid rgba(0,229,255,.2)}
+
+/* BAR CHART */
+.bch{display:flex;align-items:flex-end;gap:4px;height:90px}
+.bcc{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;height:100%}
+.bcw{flex:1;display:flex;align-items:flex-end;width:100%}
+.bcb{width:100%;border-radius:3px 3px 0 0;min-height:2px;transition:height .5s}
+.bcl{font-size:7px;color:var(--t3)}
+.bcv{font-size:8px;color:var(--tx);font-weight:600}
+
+/* HBAR */
+.hbar{height:6px;background:var(--c2);border-radius:3px;overflow:hidden;margin:3px 0}
+.hfill{height:100%;border-radius:3px}
+
+/* MOD */
+.mi2{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--bo)}
+.mi2:last-child{border-bottom:none}
+.mt2{width:42px;height:42px;border-radius:10px;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.ma{border:none;border-radius:8px;padding:5px 12px;font-size:10px;font-weight:700;cursor:pointer;transition:all .15s}
+.ma.ap{background:rgba(48,209,88,.12);color:var(--gr);border:1px solid rgba(48,209,88,.3)}
+.ma.ap:hover{background:rgba(48,209,88,.22)}
+.ma.rj{background:rgba(255,45,85,.1);color:var(--rd);border:1px solid rgba(255,45,85,.22)}
+.ma.rj:hover{background:rgba(255,45,85,.2)}
+
+/* TOGGLE */
+.tgl{width:38px;height:20px;background:var(--c2);border-radius:10px;border:1px solid var(--b2);cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+.tgl.on{background:linear-gradient(90deg,var(--rd),#d4004a)}
+.tgl::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .2s}
+.tgl.on::after{transform:translateX(18px)}
+
+/* SETTINGS */
+.sr{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--bo)}
+.sr:last-child{border-bottom:none}
+.sl{font-size:12px;font-weight:500}
+.sd{font-size:10px;color:var(--t2);margin-top:2px}
+.stabs{display:flex;gap:5px;margin-bottom:14px;overflow-x:auto}
+.stabs::-webkit-scrollbar{display:none}
+.stab{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid var(--bo);color:var(--t2);cursor:pointer;white-space:nowrap;transition:all .15s}
+.stab.on{background:rgba(255,45,85,.1);border-color:rgba(255,45,85,.25);color:var(--rd)}
+.fi{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.fi label{font-size:9px;font-weight:700;color:var(--t2);letter-spacing:.8px;text-transform:uppercase}
+.fi input,.fi select,.fi textarea{background:var(--c2);border:1px solid var(--b2);border-radius:10px;padding:9px 12px;color:var(--tx);font-size:12px;outline:none;transition:border-color .2s}
+.fi input:focus,.fi select:focus{border-color:var(--cy)}
+.save-btn{width:100%;background:linear-gradient(90deg,var(--rd),#d4004a);border:none;border-radius:12px;padding:11px;color:#fff;font-size:13px;font-weight:800;cursor:pointer;margin-top:4px;transition:opacity .15s}
+.save-btn:hover{opacity:.88}
+
+/* NOTIFS */
+.nf{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid var(--bo)}
+.nf:last-child{border-bottom:none}
+.nfi{width:36px;height:36px;border-radius:10px;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.udot{width:7px;height:7px;border-radius:50%;background:var(--cy);flex-shrink:0;margin-top:3px}
+
+/* PAYOUT MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg.on{display:flex}
+.modal{background:var(--c1);border-radius:20px;border:1px solid var(--bo);padding:24px;width:100%;max-width:400px}
+
+/* MOBILE NAV */
+.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:62px;background:rgba(34,34,74,.98);backdrop-filter:blur(16px);border-top:1px solid var(--bo);z-index:20;align-items:center;justify-content:space-around;padding-bottom:env(safe-area-inset-bottom)}
+.mn2{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;cursor:pointer;padding:6px 4px}
+.mni2{font-size:20px;color:var(--t3)}
+.mnl2{font-size:9px;font-weight:600;color:var(--t3)}
+.mn2.on .mni2,.mn2.on .mnl2{color:var(--cy)}
+.mob-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:15}
+
+/* TOAST */
+.tc{position:fixed;bottom:20px;right:20px;z-index:999;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.tst{background:var(--c1);border-radius:14px;padding:10px 16px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:8px;animation:tIn .2s ease;box-shadow:0 8px 28px rgba(0,0,0,.5)}
+.tst.s{border:1px solid rgba(48,209,88,.3);color:var(--gr)}
+.tst.i{border:1px solid rgba(0,229,255,.3);color:var(--cy)}
+.tst.w{border:1px solid rgba(255,214,10,.3);color:var(--gd)}
+@keyframes tIn{from{transform:translateX(20px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes tOut{to{transform:translateX(20px);opacity:0}}
+
+/* TWO COL */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+
+/* ADV ROW */
+.advr{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--bo)}
+.advr:last-child{border-bottom:none}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{position:fixed;top:0;left:0;bottom:0;transform:translateX(-100%);z-index:25}
+  .sidebar.open{transform:translateX(0)}
+  .mob-ov.on{display:block}
+  .mob-nav{display:flex}
+  .hburg{display:flex}
+  .g4{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:1fr 1fr}
+  .two{grid-template-columns:1fr}
+  .page{padding:12px 12px 80px}
+  .topbar{padding:0 12px}
+  .tb-search{display:none}
+  .ticker{display:none}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="sidebar" id="sb">
+    <div class="sb-logo">
+      <svg width="140" height="36" viewBox="0 0 210 64" aria-label="Addtok">
+        <text x="0" y="40" font-family="'DM Sans',sans-serif" font-size="38" font-weight="700" letter-spacing="-2" fill="#fff">Addtok</text>
+        <rect x="0" y="46" width="66" height="3" rx="1.5" fill="#FF2D55"/>
+        <rect x="68" y="46" width="62" height="3" rx="1.5" fill="#00e5ff"/>
+        <text x="0" y="62" font-family="'DM Sans',sans-serif" font-size="10" font-weight="500" letter-spacing="3" fill="rgba(242,242,247,.3)">add an ad.</text>
+      </svg>
+    </div>
+    <div class="sb-user">
+      <div class="sb-av">A</div>
+      <div><div style="font-size:12px;font-weight:600">Addtok Admin</div><div style="font-size:9px;color:var(--t3);letter-spacing:.5px">OWNER · FOUNDER</div></div>
+    </div>
+    <nav class="sbnav" id="sbnav"></nav>
+    <div class="sb-rev">
+      <div class="rl">Platform Revenue</div>
+      <div class="rv" id="sb-rev">£0.00</div>
+      <div class="rs"><span class="ldot"></span>Live · updating every 5s</div>
+      <button class="wd-btn" onclick="openPayout()">💸 WITHDRAW</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <button class="hburg" onclick="toggleSB()">☰</button>
+      <div style="display:flex;flex-direction:column;align-items:flex-start;gap:0;flex:1;margin:0 10px">
+        <span style="font-size:20px;font-weight:800;letter-spacing:-1px;color:#fff;line-height:1.1">Addtok</span>
+        <div style="display:flex;gap:2px;margin-top:2px">
+          <span style="width:36px;height:2.5px;border-radius:2px;background:#FF2D55;display:block"></span>
+          <span style="width:32px;height:2.5px;border-radius:2px;background:#00e5ff;display:block"></span>
+        </div>
+        <span style="font-size:8px;font-weight:600;letter-spacing:2px;color:rgba(255,255,255,.3);margin-top:1px">add an ad.</span>
+      </div>
+      <div class="tb-title" id="tb-title" style="font-size:13px;color:rgba(255,255,255,.5);font-weight:600">Dashboard</div>
+      <input class="tb-search" placeholder="🔍 Search advertisers, ads, transactions…">
+      <div class="tb-actions">
+        <button class="tb-btn" onclick="go('moderation')">🛡 Review Ads</button>
+        <button class="tb-ico" onclick="go('notifications')">🔔<span class="nb-dot"></span></button>
+        <button class="tb-ico" onclick="go('settings')">⚙️</button>
+      </div>
+    </div>
+    <div class="ticker" id="ticker"></div>
+    <div class="content">
+      <div id="p-overview" class="page active"></div>
+      <div id="p-revenue" class="page"></div>
+      <div id="p-advertisers" class="page"></div>
+      <div id="p-ads" class="page"></div>
+      <div id="p-clicks" class="page"></div>
+      <div id="p-stripe" class="page"></div>
+      <div id="p-moderation" class="page"></div>
+      <div id="p-offers" class="page"></div><div id="p-health" class="page"></div>
+      <div id="p-notifications" class="page"></div>
+      <div id="p-tournament" class="page"></div><div id="p-flash" class="page"></div><div id="p-settings" class="page"></div>
+    </div>
+  </div>
+
+  <div class="mob-nav" id="mob-nav"></div>
+  <div class="mob-ov" id="mob-ov" onclick="closeSB()"></div>
+</div>
+
+<!-- PAYOUT MODAL -->
+<div class="modal-bg" id="payout-modal">
+  <div class="modal">
+    <div style="font-size:18px;font-weight:800;margin-bottom:6px">💸 Withdraw Funds</div>
+    <div style="font-size:13px;color:var(--t2);margin-bottom:18px;line-height:1.6">Request a payout to your connected UK bank account via Stripe. Funds arrive in 2 business days.</div>
+    <div class="fi"><label>Amount (£)</label><input id="wd-amt" type="number" placeholder="Enter amount"></div>
+    <div class="fi"><label>Bank Account</label><input value="**** **** **** 4242 — Lloyds Bank" readonly style="color:var(--cy)"></div>
+    <div style="background:rgba(99,91,255,.08);border:1px solid rgba(99,91,255,.2);border-radius:10px;padding:10px 12px;font-size:11px;color:var(--t2);margin-bottom:16px;display:flex;align-items:center;gap:8px">
+      <span style="font-size:14px;font-weight:900;color:var(--st)">stripe</span>
+      Secured by Stripe · 2 business days to your bank
+    </div>
+    <div style="display:flex;gap:10px">
+      <button style="flex:1;background:var(--c2);border-radius:10px;padding:11px;font-size:13px;font-weight:600;color:var(--tx)" onclick="closePayout()">Cancel</button>
+      <button style="flex:1;background:linear-gradient(90deg,var(--gd),#e8a800);border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:800;color:#000" onclick="confirmPayout()">Confirm Payout</button>
+    </div>
+  </div>
+</div>
+
+<d
+var fm=function(n){return '£'+(typeof n==='number'?n.toFixed(2):n);};
+var fmt=function(n){return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':Math.round(n)+'';};
+var pct=function(a,b){return b>0?Math.round(a/b*100):0;};
+var gc={A:'#30d158',B:'#00e5ff',C:'#ffd60a',D:'#ff9f0a',F:'#ff2d55'};
+
+// ── DATA ──
+<script>
+var gc={A:'#30d158',B:'#00e5ff',C:'#ffd60a',D:'#ff9f0a',F:'#ff2d55'};
+
+var typeLabel={merch:'👟 Merch',sponsor:'📢 Sponsor',influencer:'🎬 Influencer',brand:'🏢 Brand',featured:'⭐ Featured'};
+
+function verBadge(tier){
+  if(tier==='partner')return '<span style="color:var(--gd);font-size:10px;font-weight:800">⭐ Partner</span>';
+  if(tier==='verified')return '<span style="color:var(--cy);font-size:10px;font-weight:800">✓ Verified</span>';
+  return '';
+}
+
+var apr=function(a){return (a.vu+a.vd)>0?Math.round(a.vu/(a.vu+a.vd)*100):0;};
+
+var TOURNAMENT={
+  name:'June Championship',
+  week:2,
+  rounds:[
+    {name:'Quarter Finals',matches:[
+      {a:{em:'👟',name:'KicksWorld',votes:2840},b:{em:'💄',name:'EmmaRay',votes:3210},done:1,winner:'EmmaRay'},
+      {a:{em:'🎮',name:'TechRevHQ',votes:1980},b:{em:'☕',name:'MorningHabit',votes:1440},done:1,winner:'TechRevHQ'},
+      {a:{em:'🚗',name:'ElectraMotors',votes:4120},b:{em:'🧢',name:'UrbanForge',votes:890},done:1,winner:'ElectraMotors'},
+      {a:{em:'🏋️',name:'JakeCole',votes:2640},b:{em:'🎧',name:'AudioHeads',votes:1100},done:1,winner:'JakeCole'}
+    ]},
+    {name:'Semi Finals',matches:[
+      {a:{em:'💄',name:'EmmaRay',votes:5840},b:{em:'🎮',name:'TechRevHQ',votes:3210},done:1,winner:'EmmaRay'},
+      {a:{em:'🚗',name:'ElectraMotors',votes:6100},b:{em:'🏋️',name:'JakeCole',votes:4890},done:0,winner:null}
+    ]},
+    {name:'Grand Final',matches:[
+      {a:{em:'💄',name:'EmmaRay',votes:0},b:{em:'?',name:'TBD',votes:0},done:0,winner:null}
+    ]}
+  ]
+};
+
+function suspendAdv(id){
+  toast('Advertiser '+id+' suspended','s');
+}
+window.suspendAdv=suspendAdv;
+window.verBadge=verBadge;
+
+
+function pct(v,t){return t>0?Math.round(v/t*100):0;}
+
+function mc(title,val,sub,color,spark){
+  return '<div class="card mc">'+
+    '<div class="mc-val" style="color:'+(color||'var(--cy)')+'">'+val+'</div>'+
+    '<div class="mc-title">'+title+'</div>'+
+    '<div class="mc-sub">'+sub+'</div>'+
+  '</div>';
+}
+
+function ld(){
+  return '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gr);margin-right:5px;animation:pulse 1.5s infinite"></span>';
+}
+
+function rp(page){
+  var pages=document.querySelectorAll('.page');
+  for(var i=0;i<pages.length;i++)pages[i].innerHTML='';
+  var el=document.getElementById('p-'+page);
+  if(!el)return;
+  var map={
+    overview:rOverview,revenue:rRevenue,advertisers:rAdvertisers,ads:rAds,
+    clicks:rClicks,stripe:rStripe,moderation:rModeration,tournament:rTournament_admin,
+    flash:rFlash,offers:rOffers,health:rHealth,notifications:rNotifs,settings:rSettings,drops:rDrops
+  };
+  if(map[page])el.innerHTML=map[page]();
+  curPage=page;
+}
+
+function openSB(){
+  var sb=document.getElementById('sb');
+  if(sb)sb.classList.add('open');
+  var sbo=document.getElementById('sbo');
+  if(sbo)sbo.style.display='block';
+}
+
+var fm=function(n){return'£'+parseFloat(n).toFixed(2);};
+var fmt=function(n){n=parseInt(n)||0;return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':n+'';};
+function tRow(label,desc,key){
+  var on=D.tog&&D.tog[key];
+  var chk=on?'checked':'';
+  var bg=on?'var(--gr)':'rgba(255,255,255,.2)';
+  var tr=on?'translateX(20px)':'none';
+  return '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bo)">'+
+    '<div><div style="font-size:13px;font-weight:600">'+label+'</div><div style="font-size:11px;color:var(--t3);margin-top:2px">'+desc+'</div></div>'+
+    '<label style="position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0">'+
+      '<input type="checkbox" '+chk+' data-key="'+key+'" onchange="togChange(this)" style="opacity:0;width:0;height:0">'+
+      '<span style="position:absolute;cursor:pointer;inset:0;background:'+bg+';border-radius:24px;transition:.3s"><span style="position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;transform:'+tr+'"></span></span>'+
+    '</label>'+
+  '</div>';
+}
+function togChange(el){
+  var key=el.dataset.key;
+  D.tog[key]=el.checked;
+  toast(key+(el.checked?' enabled':' disabled'),'s');
+  rp('settings');
+}
+window.togChange=togChange;
+
+var D={
+  revenue:{clicks:534.80,listings:980.00,featured:490.00,referrals:220.00,boosts:149.00,monthly:[18,32,24,41,38,52,47,63,58,72,68,158]},
+  clicks:{today:247,week:1840,month:8420,total:24680,cpc:0.45},
+  stats:{users:8420,activeToday:1240,adsLive:5,revenue:2373.80,notifsSent:0},
+  modQueue:[],
+  flash:[
+    {id:1,label:'Top Banner',adv:null,status:'empty',expiresAt:null,price:49},
+    {id:2,label:'Mid Feed',adv:null,status:'empty',expiresAt:null,price:29},
+    {id:3,label:'Bottom Sticky',adv:null,status:'empty',expiresAt:null,price:19}
+  ],
+  ads:[],
+  advertisers:[
+    {id:1,name:'NikeUK Official',handle:'@nikeuk',type:'brand',color:'#f97316',init:'N',ver:1,plan:'Pro',spend:892.40,clicks:1982,ctr:4.2,status:'active',joined:'May 2026',ads:4},
+    {id:2,name:'EmmaRay',handle:'@emmaray',type:'influencer',color:'#db2777',init:'E',ver:1,plan:'Pro',spend:534.60,clicks:1188,ctr:7.3,status:'active',joined:'Apr 2026',ads:6},
+    {id:3,name:'TechRevHQ',handle:'@techrevhq',type:'brand',color:'#0891b2',init:'T',ver:1,plan:'Starter',spend:210.30,clicks:467,ctr:4.5,status:'active',joined:'Apr 2026',ads:3},
+    {id:4,name:'ElectraMotors',handle:'@electra',type:'brand',color:'#06b6d4',init:'E',ver:1,plan:'Pro',spend:1450.00,clicks:3222,ctr:2.2,status:'paused',joined:'Mar 2026',ads:2},
+    {id:5,name:'MorningHabit',handle:'@morninghabit',type:'sponsor',color:'#b45309',init:'M',ver:0,plan:'Starter',spend:134.20,clicks:298,ctr:6.1,status:'active',joined:'May 2026',ads:2},
+    {id:6,name:'JakeCole',handle:'@jakecole',type:'influencer',color:'#7c3aed',init:'J',ver:1,plan:'Pro',spend:443.70,clicks:986,ctr:6.2,status:'active',joined:'Mar 2026',ads:3},
+    {id:7,name:'AudioHeads',handle:'@audioheads',type:'brand',color:'#3b82f6',init:'A',ver:0,plan:'Starter',spend:89.10,clicks:198,ctr:5.2,status:'active',joined:'Jun 2026',ads:1},
+    {id:8,name:'UrbanForge',handle:'@urbanforge',type:'merch',color:'#059669',init:'U',ver:0,plan:'Starter',spend:32.40,clicks:72,ctr:2.8,status:'active',joined:'Jun 2026',ads:1}
+  ],
+  ads:[
+    {id:1,em:'👟',title:'Air Phantom X Trainers',adv:'NikeUK',type:'merch',gr:'B',views:84200,clicks:3210,ctr:3.8,votes:2720,appr:96,status:'live',rev:8.42,feat:1},
+    {id:2,em:'🎮',title:'NovaBit Gaming Chair',deal:'ADDTOK40',adv:'TechRevHQ',type:'sponsor',gr:'A',views:121000,clicks:5400,ctr:4.5,votes:3760,appr:92,status:'live',rev:12.10,feat:0},
+    {id:3,em:'💄',title:'GlowLab Rose Serum',deal:'EMMA20',adv:'EmmaRay',type:'influencer',gr:'A',views:256000,clicks:18700,ctr:7.3,votes:8720,appr:95,status:'live',rev:25.60,feat:1},
+    {id:4,em:'🚗',title:'ElectraRide EV Pre-Order',adv:'ElectraMotors',type:'brand',gr:'B',views:412000,clicks:8900,ctr:2.2,votes:11200,appr:91,status:'paused',rev:41.20,feat:1},
+    {id:5,em:'☕',title:'BrewBase Coffee Sub',deal:'ADDTOK1ST',adv:'MorningHabit',type:'sponsor',gr:'A',views:67400,clicks:4120,ctr:6.1,votes:3190,appr:94,status:'live',rev:6.74,feat:0},
+    {id:6,em:'🏋️',title:'MassiveGains Protein',adv:'JakeCole',type:'influencer',gr:'A',views:198000,clicks:12300,ctr:6.2,votes:6080,appr:90,status:'live',rev:19.80,feat:0}
+  ],
+  modQueue:[
+    {id:101,em:'💊',title:'VitaBoost Pro Supplements',adv:'HealthFirst',type:'sponsor',score:94,flag:null},
+    {id:102,em:'🎸',title:'SoundRig Guitar Bundle',adv:'MusicGear',type:'merch',score:98,flag:null},
+    {id:103,em:'🏠',title:'PropCloud Property App',adv:'PropCloud',type:'brand',score:72,flag:'Financial product — review carefully'},
+    {id:104,em:'🎧',title:'SonicPulse X3 Audio',adv:'AudioHeads',type:'sponsor',score:97,flag:null}
+  ],
+  notifs:[
+    {i:'💰',t:'Revenue milestone: £2,000 reached',d:'Stripe payout ready to withdraw.',tm:'2 min ago',unread:1},
+    {i:'🏆',t:'ElectraRide hits #1 leaderboard',d:'12,400 upvotes this week.',tm:'18 min ago',unread:1},
+    {i:'📈',t:'GlowLab serum trending +340%',d:'Spike detected in last hour.',tm:'1h ago',unread:1},
+    {i:'🛡️',t:'4 ads pending moderation',d:'New submissions need review.',tm:'2h ago',unread:0},
+    {i:'🤝',t:'NikeUK joined via referral',d:'+£89.70 commission.',tm:'3h ago',unread:0},
+    {i:'💳',t:'Stripe payout processed',d:'£847.23 transferred to bank.',tm:'5h ago',unread:0},
+    {i:'🌍',t:'1M impressions milestone',d:'Addtok has served 1M+ ad views.',tm:'8h ago',unread:0},
+    {i:'📊',t:'Weekly report ready',d:'CTR up 18% week-on-week.',tm:'1d ago',unread:0},
+    {i:'⚔️',t:'Ad Battle result',d:'Air Phantom X won this week\'s battle with 64% of votes.',tm:'1d ago',unread:0},
+    {i:'⭐',t:'Ad of the Day crowned',d:'GlowLab Rose Serum is today\'s Ad of the Day.',tm:'2d ago',unread:0}
+  ],
+  settings:{tog:{aiMod:1,autoApprove:0,featRot:1,referral:1,emailAlerts:1,weeklyRep:1,loginAlerts:1,twoFactor:0,adBattles:1,aotd:1,spinAd:1,tournament:1,flashSlots:1,exclusiveDeals:1},stab:'account'}
+};
+
+var curPage='overview';
+var settingTab='account';
+
+function totalRev(){var t=0;for(var k in D.revenue){var v=D.revenue[k];if(typeof v==='number'&&!isNaN(v))t+=v;}return t;}
+
+// ── NAV CONFIG ──
+var NAV=[
+  {sec:'Overview'},
+  {id:'overview',icon:'📊',label:'Dashboard'},
+  {sec:'Revenue'},
+  {id:'revenue',icon:'💰',label:'Revenue'},
+  {id:'stripe',icon:'💳',label:'Stripe Payments'},
+  {id:'clicks',icon:'🖱',label:'Click Analytics'},
+  {sec:'Platform'},
+  {id:'advertisers',icon:'&#127970;',label:'Advertisers',badge:8,bcls:'cyan'},
+  {id:'ads',icon:'▶',label:'All Ads'},
+  {id:'moderation',icon:'🛡',label:'Moderation',badge:4,bcls:'gold'},
+  {sec:'System'},
+  {id:'tournament',icon:'⚔️',label:'Tournament',badge:1,bc:'pu'},{id:'flash',icon:'⚡',label:'Flash Slots'},{id:'offers',icon:'🎁',label:'Offers & Discounts'},{id:'health',icon:'❤️',label:'Platform Health'},
+  {id:'notifications',icon:'🔔',label:'Notifications',badge:3,bcls:'red'},
+  {id:'settings',icon:'⚙️',label:'Settings'}
+];
+
+var MOB=[
+  {id:'overview',icon:'📊',label:'Overview'},
+  {id:'revenue',icon:'💰',label:'Revenue'},
+  {id:'advertisers',icon:'&#127970;',label:'Advertisers'},
+  {id:'moderation',icon:'🛡',label:'Moderate'},{id:'tournament',icon:'⚔️',label:'Tournament'},
+  {id:'settings',icon:'⚙️',label:'Settings'}
+];
+
+var TITLES={overview:'Dashboard',revenue:'Revenue',advertisers:'Advertisers',ads:'All Ads',clicks:'Click Analytics',stripe:'Stripe Payments',moderation:'Moderation',tournament:'Tournament',flash:'Flash Slots',offers:'Offers',health:'Platform Health',notifications:'Notifications',settings:'Settings'};
+
+// ── TOAST ──
+function toast(msg,type){
+  var c=document.getElementById('tc'),el=document.createElement('div');
+  el.className='tst '+(type||'i');
+  el.innerHTML=(type==='s'?'✅':type==='w'?'⚠️':'ℹ️')+' '+msg;
+  c.appendChild(el);
+  setTimeout(function(){el.style.animation='tOut .2s ease forwards';setTimeout(function(){el.remove();},200);},3000);
+}
+
+// ── NAV ──
+function go(page){
+  curPage=page;
+  var ps=document.querySelectorAll('.page');
+  for(var i=0;i<ps.length;i++)ps[i].classList.remove('active');
+  var el=document.getElementById('p-'+page);
+  if(el)el.classList.add('active');
+  document.getElementById('tb-title').textContent=TITLES[page]||page;
+  renderSB();renderMob();renderPage(page);
+  closeSB();
+}
+window.go=go;
+
+// ── SIDEBAR ──
+function renderSB(){
+  document.getElementById('sb-rev').textContent=fm(totalRev());
+  var h='';
+  for(var i=0;i<NAV.length;i++){
+    var item=NAV[i];
+    if(item.sec){h+='<div class="snl">'+item.sec+'</div>';continue;}
+    var bdg=item.badge&&item.badge>0?'<span class="nbdg '+(item.bcls||'red')+'">'+item.badge+'</span>':'';
+    h+='<button class="nb'+(curPage===item.id?' on':'')+'" onclick="go(\''+item.id+'\')"><span class="ni">'+item.icon+'</span>'+item.label+bdg+'</button>';
+  }
+  document.getElementById('sbnav').innerHTML=h;
+}
+
+function renderMob(){
+  var h='';
+  for(var i=0;i<MOB.length;i++){
+    var n=MOB[i];
+    h+='<div class="mn2'+(curPage===n.id?' on':'')+'" onclick="go(\''+n.id+'\')"><div class="mni2">'+n.icon+'</div><div class="mnl2">'+n.label+'</div></div>';
+  }
+  document.getElementById('mob-nav').innerHTML=h;
+}
+
+// ── TICKER ──
+function renderTicker(){
+  var items=[
+    '<span class="ti"><span class="tg gr">+£0.45</span> click · NikeUK</span>',
+    '<span class="ti"><span class="tg gd">12,400 votes</span> on ElectraRide</span>',
+    '<span class="ti"><span class="tg rd">NEW AD</span> submitted · AudioHeads</span>',
+    '<span class="ti"><span class="tg gr">+£49.00</span> featured boost purchased</span>',
+    '<span class="ti">GlowLab · <span class="tg cy">256K views</span></span>',
+    '<span class="ti"><span class="tg gr">+£89.70</span> referral commission</span>',
+    '<span class="ti">⚔️ Ad Battle live · Air Phantom vs ElectraRide</span>',
+    '<span class="ti">⭐ Ad of the Day · <span class="tg gd">GlowLab Rose Serum</span></span>',
+    '<span class="ti">Revenue · <span class="tg gd">'+fm(totalRev())+'</span></span>',
+    '<span class="ti"><span class="tg cy">'+fmt(D.clicks.today)+'</span> clicks today</span>'
+  ];
+  var d=items.join('')+items.join('');
+  document.getElementById('ticker').innerHTML='<div class="tk-tag"><span class="ldot"></span>LIVE</div><div class="tk-wrap"><div class="tk-inner">'+d+'</div></div>';
+}
+
+// ── RENDER ROUTER ──
+function renderPage(p){
+  var el=document.getElementById('p-'+p);if(!el)return;
+  var map={overview:rOverview,revenue:rRevenue,advertisers:rAdvertisers,ads:rAds,clicks:rClicks,stripe:rStripe,moderation:rModeration,tournament:rTournament_admin,flash:rFlash,offers:rOffers,health:rHealth,notifications:rNotifs,settings:rSettings};
+  if(map[p])el.innerHTML=map[p]();
+}
+
+// ── HELPERS ──
+function mcCard(label,val,sub,cls,pctVal,onclick){
+  var oc=onclick?' onclick="'+onclick+'" style="cursor:pointer"':'';
+  return '<div class="mc '+cls+'"'+oc+'><div class="ml">'+label+'</div><div class="mv">'+val+'</div><div class="mch up">'+sub+'</div><div class="mbar"><div class="mfill" style="width:'+pctVal+'%;background:var(--'+cls+')"></div></div></div>';
+}
+
+function advAvatar(a,size){
+  size=size||32;
+  return '<div style="width:'+size+'px;height:'+size+'px;border-radius:'+(size/4)+'px;background:'+a.color+'22;color:'+a.color+';display:flex;align-items:center;justify-content:center;font-size:'+(size/2.8|0)+'px;font-weight:700;flex-shrink:0">'+a.init+'</div>';
+}
+
+function statusPill(s){
+  var m={active:'pl-live',live:'pl-live',paused:'pl-pause',ended:'pl-end',pending:'pl-pend'};
+  return '<span class="pill '+(m[s]||'pl-pend')+'">'+s+'</span>';
+}
+
+// ── OVERVIEW ──
+function rOverview(){
+  var total=totalRev();
+  var tv=0,tc=0,ta=0;
+  for(var i=0;i<D.ads.length;i++){tv+=D.ads[i].views;tc+=D.ads[i].clicks;ta+=D.ads[i].appr;}
+  var lastBar=Math.round((total||0)/15);if(isNaN(lastBar)||lastBar<=0)lastBar=158;
+var bars=[18,32,24,41,38,52,47,63,58,72,68,lastBar];
+  var months=['J','F','M','A','M','J','J','A','S','O','N','D'];
+  var maxB=0;for(var i=0;i<bars.length;i++)if(bars[i]>maxB)maxB=bars[i];
+  var barsH='';
+  for(var i=0;i<bars.length;i++){
+    var v=bars[i];
+    var bg=v===maxB?'var(--cy)':v>60?'var(--gr)':'var(--rd)';
+    barsH+='<div class="bcc"><div class="bcv">'+v+'</div><div class="bcw"><div class="bcb" style="height:'+Math.round(v/maxB*100)+'%;background:'+bg+'"></div></div><div class="bcl">'+months[i]+'</div></div>';
+  }
+  var revRows='';
+  for(var k in D.revenue){
+    revRows+='<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="color:var(--t2);text-transform:capitalize">'+k+'</span><span style="font-weight:700;color:var(--gd);font-family:var(--fm)">'+fm(D.revenue[k])+'</span></div><div class="hbar"><div class="hfill" style="width:'+pct(D.revenue[k],total)+'%;background:linear-gradient(90deg,var(--rd),var(--cy))"></div></div></div>';
+  }
+  var topAdvs='';
+  for(var i=0;i<Math.min(5,D.advertisers.length);i++){
+    var a=D.advertisers[i];
+    topAdvs+='<div class="advr">'+advAvatar(a)+'<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600">'+a.name+'</div><div style="font-size:9px;color:var(--t3)">'+a.handle+' · '+a.plan+'</div></div><div style="text-align:right"><div style="font-size:13px;font-weight:800;color:var(--gd);font-family:var(--fm)">'+fm(a.spend)+'</div><div style="font-size:9px;color:var(--t3)">'+fmt(a.clicks)+' clicks</div></div></div>';
+  }
+  var modH='';
+  for(var i=0;i<D.modQueue.length;i++){
+    var m=D.modQueue[i];
+    var sc=m.score>=85?'var(--gr)':m.score>=60?'var(--gd)':'var(--rd)';
+    modH+='<div class="mi2"><div class="mt2">'+m.em+'</div><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+m.title+'</div><div style="font-size:9px;color:var(--t3);margin-top:2px">AI: <span style="font-weight:700;color:'+sc+'">'+m.score+'/100</span>'+(m.flag?' · <span style="color:var(--gd)">⚠️</span>':'')+'</div></div><div style="display:flex;gap:4px;flex-shrink:0"><button class="ma ap" onclick="approveAd('+m.id+')">✓</button><button class="ma rj" onclick="rejectAd('+m.id+')">✗</button></div></div>';
+  }
+  var topAdsH='';
+  var sortedAds=D.ads.slice().sort(function(a,b){return b.clicks-a.clicks;});
+  for(var i=0;i<sortedAds.length;i++){
+    var ad=sortedAds[i];
+    var rc=['var(--gd)','#aaa','#cd7f32'][i]||'var(--t3)';
+    topAdsH+='<tr><td style="color:'+rc+';font-weight:700">'+(i+1)+'</td><td><span style="font-size:16px">'+ad.em+'</span> <span style="font-weight:600">'+ad.title+'</span></td><td class="tmu">'+ad.adv+'</td><td style="color:'+gc[ad.gr]+';font-weight:800;font-family:var(--fm)">'+ad.gr+'</td><td class="tcy">'+fmt(ad.views)+'</td><td style="font-weight:600">'+fmt(ad.clicks)+'</td><td class="tgr">'+ad.ctr+'%</td><td class="tgd">'+fm(ad.rev)+'</td><td>'+statusPill(ad.status)+'</td></tr>';
+  }
+  return '<div class="pg-hd"><div class="pg-t">Dashboard</div><div class="pg-s"><span class="ldot"></span>'+new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'</div></div>'+
+  '<div class="mg g4">'+
+    mcCard('Total Revenue',fm(total),'↑ 23.4% vs last month','gd',74,'go(\'revenue\')')+
+    mcCard('Clicks Today',fmt(D.clicks.today),'↑ 18% vs yesterday','cy',62,'go(\'clicks\')')+
+    mcCard('Active Advertisers',D.advertisers.filter(function(a){return a.status==='active';}).length+'','↑ 3 this month','pu',55,'go(\'advertisers\')')+
+    mcCard('Live Ads',D.ads.filter(function(a){return a.status==='live';}).length+'',D.modQueue.length+' pending review','rd',48,'go(\'ads\')')+
+  '</div>'+
+  '<div class="two">'+
+    '<div class="card"><div class="card-hd"><div class="card-t">Monthly Revenue</div><span style="font-size:9px;color:var(--t3)">2025–2026</span></div><div class="bch">'+barsH+'</div></div>'+
+    '<div class="card"><div class="card-hd"><div class="card-t">Revenue Split</div></div>'+revRows+'</div>'+
+  '</div>'+
+  '<div class="two">'+
+    '<div class="card"><div class="card-hd"><div class="card-t">Top Advertisers</div><button style="font-size:10px;background:var(--c2);border:1px solid var(--bo);border-radius:8px;padding:4px 10px;color:var(--t2);cursor:pointer" onclick="go(\'advertisers\')">View all</button></div>'+topAdvs+'</div>'+
+    '<div class="card"><div class="card-hd"><div class="card-t">Moderation Queue</div><span class="pill pl-pend">'+D.modQueue.length+' pending</span></div>'+modH+'</div>'+
+  '</div>'+
+  '<div class="card"><div class="card-hd"><div class="card-t">Top Performing Ads</div><button style="font-size:10px;background:var(--c2);border:1px solid var(--bo);border-radius:8px;padding:4px 10px;color:var(--t2);cursor:pointer" onclick="go(\'ads\')">View all</button></div><div class="tw"><table><thead><tr><th>#</th><th>Ad</th><th>Advertiser</th><th>Grade</th><th>Views</th><th>Clicks</th><th>CTR</th><th>Revenue</th><th>Status</th></tr></thead><tbody>'+topAdsH+'</tbody></table></div></div>';
+}
+
+// ── REVENUE ──
+function rRevenue(){
+  var total=totalRev();
+  var payouts=[{date:'24 May 2026',amt:847.23},{date:'17 May 2026',amt:634.50},{date:'10 May 2026',amt:412.80},{date:'3 May 2026',amt:289.40},{date:'26 Apr 2026',amt:198.70}];
+  var pRows='';
+  for(var i=0;i<payouts.length;i++){
+    pRows+='<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--bo)"><span style="font-size:11px;font-weight:500">'+payouts[i].date+'</span><div style="display:flex;align-items:center;gap:8px"><span style="color:var(--gd);font-family:var(--fm);font-size:13px">'+fm(payouts[i].amt)+'</span><span class="pill pl-live">paid</span></div></div>';
+  }
+  var revRows='';
+  for(var k in D.revenue){
+    revRows+='<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span style="color:var(--t2);text-transform:capitalize">'+k+'</span><span style="font-weight:700;color:var(--gd);font-family:var(--fm)">'+fm(D.revenue[k])+'</span></div><div class="hbar"><div class="hfill" style="width:'+pct(D.revenue[k],total)+'%;background:linear-gradient(90deg,var(--rd),var(--cy))"></div></div><div style="font-size:9px;color:var(--t3);text-align:right">'+pct(D.revenue[k],total)+'% of total</div></div>';
+  }
+  var advRows='';
+  var sorted=D.advertisers.slice().sort(function(a,b){return b.spend-a.spend;});
+  for(var i=0;i<sorted.length;i++){
+    var a=sorted[i];
+    advRows+='<tr><td>'+advAvatar(a,24)+'<span style="margin-left:7px;font-weight:600">'+a.name+'</span></td><td><span class="pill '+(a.plan==='Pro'?'pl-pro':'pl-pend')+'">'+a.plan+'</span></td><td class="tgd">'+fm(a.spend)+'</td><td>'+fmt(a.clicks)+'</td><td class="tgr">'+fm(a.spend/Math.max(a.clicks,1))+'</td><td>'+statusPill(a.status)+'</td></tr>';
+  }
+  return '<div class="pg-hd"><div class="pg-t">Revenue</div><div class="pg-s"><span class="ldot"></span>All time · Stripe powered</div></div>'+
+  '<div class="mg g4">'+
+    mcCard('Total Revenue',fm(total),'↑ 23.4%','gd',74,'')+
+    mcCard('This Month',fm(1247.80),'↑ 31%','cy',68,'')+
+    mcCard('Pending Payout',fm(847.23),'Ready to withdraw','gd',55,'')+
+    mcCard('Avg CPC',fm(D.clicks.cpc),'per click','gr',50,'')+
+  '</div>'+
+  '<div class="two">'+
+    '<div class="card"><div class="card-hd"><div class="card-t">Revenue by Source</div></div>'+revRows+'</div>'+
+    '<div class="card"><div class="card-hd"><div class="card-t">Payout History</div></div>'+pRows+'<button class="save-btn" style="margin-top:12px" onclick="openPayout()">💸 Withdraw Available Balance</button></div>'+
+  '</div>'+
+  '<div class="card"><div class="card-hd"><div class="card-t">Revenue by Advertiser</div></div><div class="tw"><table><thead><tr><th>Advertiser</th><th>Plan</th><th>Total Spend</th><th>Clicks</th><th>Avg CPC</th><th>Status</th></tr></thead><tbody>'+advRows+'</tbody></table></div></div>';
+}
+
+// ── ADVERTISERS ──
+function rAdvertisers(){
+  var active=D.advertisers.filter(function(a){return a.status==='active';}).length;
+  var totalSpend=0;for(var i=0;i<D.advertisers.length;i++)totalSpend+=D.advertisers[i].spend;
+  var rows='';
+  for(var i=0;i<D.advertisers.length;i++){
+    var a=D.advertisers[i];
+    rows+='<tr>'+
+      '<td><div style="display:flex;align-items:center;gap:8px">'+advAvatar(a,30)+'<div><div style="font-weight:600;font-size:12px">'+a.name+(a.ver?' <span style="color:var(--cy);font-size:10px">✓</span>':'')+'</div><div style="font-size:9px;color:var(--t3)">'+a.handle+'</div></div></div></td>'+
+      '<td class="tmu" style="text-transform:capitalize">'+a.type+'</td>'+
+      '<td><span class="pill '+(a.plan==='Pro'?'pl-pro':'pl-pend')+'">'+a.plan+'</span></td>'+
+      '<td class="tmu">'+a.joined+'</td>'+
+      '<td style="font-weight:600">'+a.ads+'</td>'+
+      '<td>'+fmt(a.clicks)+'</td>'+
+      '<td class="tgr">'+a.ctr+'%</td>'+
+      '<td class="tgd">'+fm(a.spend)+'</td>'+
+      '<td>'+statusPill(a.status)+'</td>'+
+      '<td><div style="display:flex;gap:4px"><button class="ma ap" style="padding:4px 8px" onclick="toast(\'Viewing '+a.name+'\',\'i\')">View</button><button class="ma rj" style="padding:4px 8px" onclick="toast(\''+a.name+' suspended\',\'w\')">Suspend</button></div></td>'+
+    '</tr>';
+  }
+  return '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div><div class="pg-t">Advertisers</div><div class="pg-s">'+D.advertisers.length+' total · '+active+' active</div></div><button class="tb-btn" onclick="toast(\'Invite flow at launch\',\'i\')">＋ Invite</button></div>'+
+  '<div class="mg g4">'+
+    mcCard('Total Advertisers',D.advertisers.length+'','All time','cy',60,'')+
+    mcCard('Active',active+'','Currently running','gr',pct(active,D.advertisers.length),'')+
+    mcCard('Pro Plan',D.advertisers.filter(function(a){return a.plan==='Pro';}).length+'','Highest tier','pu',50,'')+
+    mcCard('Total Spend',fm(totalSpend),'All advertisers','gd',75,'')+
+  '</div>'+
+  '<div class="card" style="margin-bottom:12px"><div class="ch"><div class="ct">🏅 Verification Tiers</div><span style="font-size:9px;color:var(--t3)">Assign badges to advertisers</span></div>'+verTiersHtml()+'</div>'+
+  '<div class="card"><div class="tw"><table><thead><tr><th>Advertiser</th><th>Type</th><th>Plan</th><th>Joined</th><th>Ads</th><th>Clicks</th><th>CTR</th><th>Total Spend</th><th>Status</th><th>Actions</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+}
+
+
+// ── ADMIN DROPS MANAGEMENT ──
+function rDrops(){
+  var UA=typeof ADS_ALL!=='undefined'?ADS_ALL:[];
+  var dropAds=UA.filter(function(a){return a.drop===1;});
+  var html='<div class="sec-hd"><div><div class="sec-title">&#128167; Active Drops</div><div class="sec-sub">Time-limited campaigns — '+dropAds.length+' running</div></div>'+
+    '<button class="btn btn-sm" onclick="toast(\'New drop created!\',\'suc\')" style="background:var(--red);color:#fff">+ New Drop</button></div>';
+  if(dropAds.length===0){
+    html+='<div class="card" style="text-align:center;padding:40px;color:var(--t3)"><div style="font-size:40px;margin-bottom:12px">&#128167;</div><div>No active drops. Drops drive 4x more engagement than standard ads.</div></div>';
+  } else {
+    for(var i=0;i<dropAds.length;i++){
+      var a=dropAds[i];
+      var ends=a.dropEnds||0;
+      var diff=ends-Date.now();
+      var timeStr=diff>0?(Math.floor(diff/3600000)+'h '+(Math.floor((diff%3600000)/60000))+'m remaining'):'Ended';
+      html+='<div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:12px">'+
+        '<div style="width:44px;height:44px;border-radius:10px;background:'+a.bg+';display:flex;align-items:center;justify-content:center;font-size:22px">'+a.em+'</div>'+
+        '<div style="flex:1">'+
+          '<div style="font-size:13px;font-weight:700">'+a.title+'</div>'+
+          '<div style="font-size:11px;color:var(--t3)">'+a.adv+'</div>'+
+          '<div style="font-size:11px;color:var(--rd);font-weight:700;margin-top:3px">&#9203; '+timeStr+'</div>'+
+        '</div>'+
+        '<button class="btn btn-sm btn-danger" onclick="toast(\'Drop ended\',\'info\')">End Early</button>'+
+      '</div>';
+    }
+  }
+  return html+'<div class="card"><div style="font-size:13px;font-weight:700;margin-bottom:12px">&#128200; Drop Performance</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center">'+
+      '<div><div style="font-size:22px;font-weight:800;color:var(--gd)">4.2x</div><div style="font-size:11px;color:var(--t3)">Engagement vs standard</div></div>'+
+      '<div><div style="font-size:22px;font-weight:800;color:var(--cy)">67%</div><div style="font-size:11px;color:var(--t3)">Return visit rate</div></div>'+
+      '<div><div style="font-size:22px;font-weight:800;color:var(--gr)">2.8x</div><div style="font-size:11px;color:var(--t3)">Conversion lift</div></div>'+
+    '</div></div>';
+}
+window.rDrops=rDrops;
+
+// ── ADS ──
+function rAds(){
+  var tv=0,tc=0,tctr=0,ta=0;
+  for(var i=0;i<D.ads.length;i++){tv+=D.ads[i].views;tc+=D.ads[i].clicks;tctr+=D.ads[i].ctr;ta+=D.ads[i].appr;}
+  var rows='';
+  for(var i=0;i<D.ads.length;i++){
+    var ad=D.ads[i];
+    rows+='<tr>'+
+      '<td><span style="font-size:18px">'+ad.em+'</span> <span style="font-weight:600">'+ad.title+'</span>'+(ad.videoUrl?'<span style="background:rgba(255,45,85,.15);border-radius:4px;padding:1px 5px;font-size:9px;font-weight:800;color:#ff2d55;margin-left:6px">&#x1F4F9;</span>':'')+(ad.stock&&(ad.stockLeft||0)===0?'<span style="background:rgba(99,99,102,.2);border-radius:4px;padding:1px 5px;font-size:9px;color:#636366;margin-left:4px">SOLD OUT</span>':ad.stock&&(ad.stockLeft||0)<ad.stock*0.2?'<span style="background:rgba(255,69,58,.12);border-radius:4px;padding:1px 5px;font-size:9px;color:#ff453a;margin-left:4px">LOW STOCK</span>':'')+'</td>'+
+      '<td class="tmu">'+ad.adv+'</td>'+
+      '<td class="tmu" style="text-transform:capitalize">'+ad.type+'</td>'+
+      '<td style="color:'+gc[ad.gr]+';font-weight:800;font-family:var(--fm)">'+ad.gr+'</td>'+
+      '<td class="tcy">'+fmt(ad.views)+'</td>'+
+      '<td style="font-weight:600">'+fmt(ad.clicks)+'</td>'+
+      '<td class="tgr">'+ad.ctr+'%</td>'+
+      '<td>'+fmt(ad.votes)+'</td>'+
+      '<td><div style="display:flex;align-items:center;gap:5px"><div style="width:44px;height:4px;background:var(--c2);border-radius:2px"><div style="height:100%;width:'+ad.appr+'%;background:var(--gr);border-radius:2px"></div></div><span style="font-size:9px">'+ad.appr+'%</span></div></td>'+
+      '<td class="tgd">'+fm(ad.rev)+'</td>'+
+      '<td>'+(ad.feat?'<span style="color:var(--gd)">⭐</span>':'<span style="color:var(--t3)">—</span>')+'</td>'+
+      '<td>'+statusPill(ad.status)+'</td>'+
+    '</tr>';
+  }
+  return '<div class="pg-hd"><div class="pg-t">All Ads</div><div class="pg-s">'+D.ads.length+' ads · '+D.ads.filter(function(a){return a.status==='live';}).length+' live</div></div>'+
+  '<div class="mg g4">'+
+    mcCard('Total Views',fmt(tv),'↑ 41%','cy',74,'')+
+    mcCard('Total Clicks',fmt(tc),'↑ 18%','gr',62,'')+
+    mcCard('Avg CTR',(tctr/D.ads.length).toFixed(1)+'%','3× industry avg','rd',55,'')+
+    mcCard('Avg Approval',Math.round(ta/D.ads.length)+'%','Excellent','pu',Math.round(ta/D.ads.length),'')+
+  '</div>'+
+  '<div class="card"><div class="tw"><table><thead><tr><th>Ad</th><th>Advertiser</th><th>Type</th><th>Grade</th><th>Views</th><th>Clicks</th><th>CTR</th><th>Votes</th><th>Approval</th><th>Revenue</th><th>Featured</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+}
+
+// ── CLICKS ──
+function rClicks(){
+  var hourly=[8,12,18,24,31,28,42,38,52,47,36,44,58,62,54,48,67,72,68,54,42,36,28,18];
+  var maxH=0;for(var i=0;i<hourly.length;i++)if(hourly[i]>maxH)maxH=hourly[i];
+  var bH='';
+  for(var i=0;i<hourly.length;i++){
+    var v=hourly[i];
+    bH+='<div class="bcc"><div class="bcw"><div class="bcb" style="height:'+Math.round(v/maxH*100)+'%;background:'+(v>=60?'var(--rd)':v>=40?'var(--cy)':'var(--c3)')+'"></div></div><div class="bcl">'+(i%4===0?i+'h':'')+'</div></div>';
+  }
+  var adClicksH='';
+  var sortedAds=D.ads.slice().sort(function(a,b){return b.clicks-a.clicks;});
+  var totClicks=0;for(var i=0;i<sortedAds.length;i++)totClicks+=sortedAds[i].clicks;
+  for(var i=0;i<sortedAds.length;i++){
+    var ad=sortedAds[i];
+    adClicksH+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:9px"><span style="font-size:16px">'+ad.em+'</span><div style="flex:1;min-width:0"><div style="font-size:10px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+ad.title+'</div><div class="hbar"><div class="hfill" style="width:'+pct(ad.clicks,totClicks)+'%;background:var(--cy)"></div></div></div><span style="font-size:11px;font-weight:700;color:var(--cy);min-width:40px;text-align:right">'+fmt(ad.clicks)+'</span></div>';
+  }
+  var recentH='';
+  var recent=[{tm:'14:32',em:'👟',ad:'Air Phantom X',adv:'NikeUK',id:'ch_001'},{tm:'14:28',em:'💄',ad:'Rose Serum',adv:'EmmaRay',id:'ch_002'},{tm:'13:58',em:'💄',ad:'Rose Serum',adv:'EmmaRay',id:'ch_003'},{tm:'13:44',em:'🏋️',ad:'MassiveGains',adv:'JakeCole',id:'ch_004'},{tm:'13:22',em:'☕',ad:'BrewBase',adv:'MorningHabit',id:'ch_005'},{tm:'12:58',em:'🎮',ad:'NovaBit Chair',adv:'TechRevHQ',id:'ch_006'}];
+  for(var i=0;i<recent.length;i++){
+    var c=recent[i];
+    recentH+='<tr><td class="tmu">'+c.tm+'</td><td><span style="font-size:14px">'+c.em+'</span> '+c.ad+'</td><td class="tmu">'+c.adv+'</td><td class="tgr">+'+fm(0.45)+'</td><td class="tst">'+c.id+'</td><td><span class="pill pl-live">succeeded</span></td></tr>';
+  }
+  return '<div class="pg-hd"><div class="pg-t">Click Analytics</div><div class="pg-s"><span class="ldot"></span>Pay-per-click revenue tracking</div></div>'+
+  '<div class="mg g4">'+
+    mcCard('Today',fmt(D.clicks.today),'↑ 18%','cy',62,'')+
+    mcCard('This Week',fmt(D.clicks.week),'↑ 12%','gr',55,'')+
+    mcCard('This Month',fmt(D.clicks.month),'↑ 31%','pu',68,'')+
+    mcCard('All Time',fmt(D.clicks.total),'Growing','gd',80,'')+
+  '</div>'+
+  '<div class="two">'+
+    '<div class="card"><div class="card-hd"><div class="card-t">Clicks by Hour Today</div></div><div class="bch">'+bH+'</div><div style="font-size:10px;color:var(--t2);margin-top:8px">⚡ Peak: <b style="color:var(--gd)">18:00–19:00</b> · 72 clicks</div></div>'+
+    '<div class="card"><div class="card-hd"><div class="card-t">Clicks by Ad</div></div>'+adClicksH+'</div>'+
+  '</div>'+
+  '<div class="card"><div class="card-hd"><div class="card-t">Recent Click Events</div><span style="font-size:9px;color:var(--t3)">Live feed</span></div><div class="tw"><table><thead><tr><th>Time</th><th>Ad</th><th>Advertiser</th><th>Charge</th><th>Stripe ID</th><th>Status</th></tr></thead><tbody>'+recentH+'</tbody></table></div></div>';
+}
+
+// ── STRIPE ──
+function rStripe(){
+  var txns=[{id:'ch_001',adv:'NikeUK',amt:0.45,type:'click',tm:'14:32'},{id:'ch_002',adv:'EmmaRay',amt:0.45,type:'click',tm:'14:28'},{id:'ch_003',adv:'EmmaRay',amt:0.45,type:'click',tm:'13:58'},{id:'ch_004',adv:'ElectraMotors',amt:49.00,type:'featured',tm:'12:00'},{id:'ch_005',adv:'JakeCole',amt:0.45,type:'click',tm:'11:44'},{id:'inv_001',adv:'NikeUK',amt:89.10,type:'daily invoice',tm:'00:00'}];
+  var txH='';
+  for(var i=0;i<txns.length;i++){
+    var t=txns[i];
+    txH+='<tr><td class="tst">'+t.id+'</td><td style="font-weight:600">'+t.adv+'</td><td class="tmu" style="text-transform:capitalize">'+t.type+'</td><td class="tgr">+'+fm(t.amt)+'</td><td class="tmu">'+t.tm+'</td><td><span class="pill pl-live">succeeded</span></td></tr>';
+  }
+  var steps=[['User taps product link','Addtok registers a verified, deduplicated click'],['Stripe charges advertiser','est. £0.30–£1.20 from their saved card instantly'],['Daily invoice generated','All clicks billed at end of each day'],['Payout to Addtok bank','Stripe transfers funds in 2 business days'],['Advertiser dashboard updated','Full click and spend history visible in real time']];
+  var stepsH='';
+  for(var i=0;i<steps.length;i++){
+    stepsH+='<div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px"><div style="width:22px;height:22px;border-radius:50%;background:rgba(99,91,255,.15);border:1px solid rgba(99,91,255,.3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--st);flex-shrink:0">'+(i+1)+'</div><div><div style="font-size:12px;font-weight:600">'+steps[i][0]+'</div><div style="font-size:10px;color:var(--t3);margin-top:1px">'+steps[i][1]+'</div></div></div>';
+  }
+  return '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div><div class="pg-t">Stripe Payments</div><div class="pg-s"><span class="ldot"></span>Connected · UK Business · Live mode</div></div><div style="font-size:20px;font-weight:900;letter-spacing:3px;color:var(--st)">stripe</div></div>'+
+  '<div class="mg g4">'+
+    '<div class="mc stripe"><div class="ml">Total Processed</div><div class="mv" style="color:var(--st)">£4,372</div><div class="mch up">All time</div></div>'+
+    '<div class="mc stripe"><div class="ml">This Month</div><div class="mv" style="color:var(--st)">£1,247</div><div class="mch up">↑ 31%</div></div>'+
+    '<div class="mc stripe"><div class="ml">Pending Payout</div><div class="mv" style="color:var(--gd)">£847</div><div class="mch">Ready to withdraw</div></div>'+
+    '<div class="mc stripe"><div class="ml">Today (net)</div><div class="mv" style="color:var(--st)">£108</div><div class="mch up">'+fmt(D.clicks.today)+' clicks</div></div>'+
+  '</div>'+
+  '<div class="two">'+
+    '<div class="card"><div class="card-hd"><div class="card-t">How billing works</div></div>'+stepsH+'</div>'+
+    '<div class="card"><div class="card-hd"><div class="card-t">Stripe Settings</div></div>'+
+      sRow('Payment mode','Live mode — real charges','<span class="pill pl-live">LIVE</span>')+
+      sRow('Currency','British Pound Sterling','<span style="font-weight:700;color:var(--gd)">GBP £</span>')+
+      sRow('Payout schedule','Auto · 2 business days','<span style="color:var(--cy);font-size:11px">Auto</span>')+
+      sRow('Fraud protection','Stripe Radar enabled','<span class="pill pl-live">ON</span>')+
+      sRow('UK VAT','20% collected automatically','<span class="pill pl-pend">20%</span>')+
+      '<button style="width:100%;margin-top:12px;background:var(--st);border:none;border-radius:12px;padding:11px;color:#fff;font-size:13px;font-weight:700;cursor:pointer" onclick="toast(\'Opening Stripe dashboard...\',\'i\')">Open Stripe Dashboard ↗</button>'+
+    '</div>'+
+  '</div>'+
+  '<div class="card"><div class="card-hd"><div class="card-t">Recent Transactions</div><button style="font-size:10px;background:var(--c2);border:1px solid var(--bo);border-radius:8px;padding:4px 10px;color:var(--t2);cursor:pointer" onclick="toast(\'Exporting CSV...\',\'s\')">Export CSV</button></div><div class="tw"><table><thead><tr><th>Charge ID</th><th>Advertiser</th><th>Type</th><th>Amount</th><th>Time</th><th>Status</th></tr></thead><tbody>'+txH+'</tbody></table></div></div>';
+}
+function sRow(l,d,v){return '<div class="sr"><div><div class="sl">'+l+'</div><div class="sd">'+d+'</div></div>'+v+'</div>';}
+
+// ── MODERATION ──
+function rModeration(){
+  var modH='';
+  for(var i=0;i<D.modQueue.length;i++){
+    var m=D.modQueue[i];
+    var sc=m.score>=85?'var(--gr)':m.score>=60?'var(--gd)':'var(--rd)';
+    modH+='<div class="mi2"><div class="mt2">'+m.em+'</div><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:700">'+m.title+'</div><div style="font-size:9px;color:var(--t3);margin-top:2px">@'+m.adv+' · '+m.type+' · AI: <span style="font-weight:700;color:'+sc+'">'+m.score+'/100</span></div>'+(m.flag?'<div style="font-size:9px;color:var(--gd);margin-top:3px">⚠️ '+m.flag+'</div>':'')+'</div><div style="display:flex;gap:6px;flex-shrink:0"><button class="ma ap" onclick="approveAd('+m.id+')">✓ Approve</button><button class="ma rj" onclick="rejectAd('+m.id+')">✗ Reject</button></div></div>';
+  }
+  var rules=[['✅ Required','gr',['Product must be clearly visible in the video','Accurate pricing — must match website','Working product URL — no broken links','#ad disclosure required for influencer ads (UK ASA law)','Genuine urgency only — no false scarcity','Must own or license all music and footage','Family-friendly — suitable for all ages']],['🚫 Not Allowed','rd',['Adult, explicit or suggestive content','Violence, hate speech or offensive language','Alcohol, tobacco, vaping, gambling, weapons','Scams, fraud or misleading offers','Counterfeit or unlicensed goods','Unsubstantiated health or results claims','Financial products without FCA authorisation','Targeting under 18s with inappropriate content']]];
+  var rulesH='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">';
+  for(var i=0;i<rules.length;i++){
+    var r=rules[i];
+    var items='';
+    for(var j=0;j<r[2].length;j++)items+='<div style="display:flex;gap:7px;font-size:11px;color:var(--t2);margin-bottom:5px"><span style="color:var(--'+r[1]+');flex-shrink:0">'+(r[1]==='gr'?'✓':'✗')+'</span>'+r[2][j]+'</div>';
+    rulesH+='<div><div style="font-size:11px;font-weight:700;color:var(--'+r[1]+');margin-bottom:8px">'+r[0]+'</div>'+items+'</div>';
+  }
+  rulesH+='</div>';
+  return '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div><div class="pg-t">Moderation</div><div class="pg-s">'+D.modQueue.length+' pending · AI pre-screening active</div></div><button class="tb-btn" onclick="approveAll()">✓ Approve All Safe</button></div>'+
+  '<div class="mg g3">'+
+    mcCard('Pending Review',D.modQueue.length+'','Needs attention','or',pct(D.modQueue.length,10),'')+
+    mcCard('Approved Today',(D.modQueue.length+12)+'','Auto + manual','gr',80,'')+
+    mcCard('Rejected Today','2','Policy violations','rd',20,'')+
+  '</div>'+
+  '<div class="two">'+
+    '<div class="card"><div class="card-hd"><div><div class="card-t">🤖 AI Moderation</div><div class="card-s">Claude-powered · 99.2% accuracy</div></div><span class="pill pl-live">ACTIVE</span></div>'+
+      scoreRow('85–100','Auto-approved instantly','gr')+
+      scoreRow('60–84','Sent to manual review queue','gd')+
+      scoreRow('Below 60','Auto-rejected with reason','rd')+
+      '<div style="font-size:10px;color:var(--t3);margin-top:10px;line-height:1.6;padding-top:10px;border-top:1px solid var(--bo)">Financial products, health claims and political content always go to manual review regardless of AI score.</div>'+
+    '</div>'+
+    '<div class="card"><div class="card-hd"><div class="card-t">Pending Queue</div></div>'+modH+'</div>'+
+  '</div>'+
+  '<div class="card"><div class="card-hd"><div class="card-t">📋 Content Policy</div><span style="font-size:9px;color:var(--t3)">All advertisers agree on signup</span></div>'+rulesH+'</div>';
+}
+function scoreRow(r,l,c){return '<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--bo)"><div style="font-size:13px;font-weight:800;font-family:var(--fm);color:var(--'+c+');width:56px">'+r+'</div><div style="flex:1;font-size:11px">'+l+'</div><div style="width:8px;height:8px;border-radius:50%;background:var(--'+c+')"></div></div>';}
+
+// ── HEALTH ──
+function rHealth(){
+  var systems=['Ad Feed','Click Tracking','Stripe Billing','AI Moderation','Email Alerts','Analytics','Search','Advertiser Portal'];
+  var sysH='';
+  for(var i=0;i<systems.length;i++){
+    sysH+='<div class="sr"><div class="sl">'+systems[i]+'</div><div style="display:flex;align-items:center;gap:7px"><span style="font-size:11px;color:var(--gr);font-weight:600">Operational</span><div style="width:6px;height:6px;border-radius:50%;background:var(--gr)"></div></div></div>';
+  }
+  var logs=[{tm:'14:32:08',lv:'INFO',msg:'Click registered · NikeUK · ch_001 · £0.45'},{tm:'14:28:41',lv:'INFO',msg:'Click registered · EmmaRay · ch_002 · £0.45'},{tm:'14:15:00',lv:'INFO',msg:'Ad approved · SoundRig Guitar Bundle · Score: 98'},{tm:'13:58:22',lv:'INFO',msg:'Click registered · EmmaRay · ch_003 · £0.45'},{tm:'13:44:11',lv:'INFO',msg:'New advertiser signup · AudioHeads'},{tm:'12:00:00',lv:'INFO',msg:'Daily invoices generated · 8 advertisers · £247.50'},{tm:'11:30:00',lv:'WARN',msg:'PropCloud ad flagged · Financial product — manual review'},{tm:'09:15:33',lv:'INFO',msg:'Stripe payout initiated · £847.23'}];
+  var logH='';
+  for(var i=0;i<logs.length;i++){
+    var l=logs[i];
+    logH+='<div style="display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--bo);font-family:var(--fm);font-size:10px"><span style="color:var(--t3);flex-shrink:0;min-width:72px">'+l.tm+'</span><span style="color:'+(l.lv==='WARN'?'var(--gd)':'var(--gr)')+';flex-shrink:0;width:36px">'+l.lv+'</span><span style="color:var(--t2)">'+l.msg+'</span></div>';
+  }
+  return aiEngineStatusHtml() + '<div class="pg-hd"><div class="pg-t">Platform Health</div><div class="pg-s"><span class="ldot"></span>All systems operational</div></div>'+
+  '<div class="mg g3">'+
+    mcCard('Uptime','99.97%','30-day average','gr',99,'')+
+    mcCard('Avg Latency','42ms','Excellent','cy',90,'')+
+    mcCard('Error Rate','0.03%','Near zero','gr',99,'')+
+  '</div>'+
+  '<div class="two">'+
+    '<div class="card"><div class="card-hd"><div class="card-t">System Status</div></div>'+sysH+'</div>'+
+    '<div class="card"><div class="card-hd"><div class="card-t">Key Metrics</div></div>'+
+      mRow('Ads served total','1,240,000','cy')+
+      mRow('Live campaigns',D.ads.filter(function(a){return a.status==='live';}).length+'','gr')+
+      mRow('Pending moderation',D.modQueue.length+'','gd')+
+      mRow('Registered advertisers',D.advertisers.length+'','pu')+
+      mRow('Total click events',fmt(D.clicks.total),'rd')+
+      mRow('Platform points earned','48,200','gd')+
+    '</div>'+
+  '</div>'+
+  '<div class="card"><div class="card-hd"><div class="card-t">Platform Logs</div><span style="font-size:9px;color:var(--t3)">Last 8 events</span></div>'+logH+'</div>';
+}
+function mRow(l,v,c){return '<div class="sr"><div class="sl">'+l+'</div><div style="font-size:15px;font-weight:800;font-family:var(--fm);color:var(--'+c+')">'+v+'</div></div>';}
+
+// ── NOTIFICATIONS ──
+function rNotifs(){
+  var unread=D.notifs.filter(function(n){return n.unread;}).length;
+  var h='';
+  for(var i=0;i<D.notifs.length;i++){
+    var n=D.notifs[i];
+    h+='<div class="nf"><div class="nfi">'+n.i+'</div><div style="flex:1"><div style="font-size:12px;font-weight:'+(n.unread?700:500)+';margin-bottom:2px">'+n.t+'</div><div style="font-size:10px;color:var(--t2);line-height:1.5">'+n.d+'</div><div style="font-size:9px;color:var(--t3);margin-top:3px">'+n.tm+'</div></div>'+(n.unread?'<div class="udot"></div>':'')+'</div>';
+  }
+  return '<div style="background:linear-gradient(135deg,rgba(99,91,255,.1),rgba(0,229,255,.05));border:1.5px solid rgba(99,91,255,.25);border-radius:16px;padding:16px;margin-bottom:16px">'+
+    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">'+
+      '<div style="font-size:20px">🤖</div>'+
+      '<div style="font-size:14px;font-weight:700">AI Notification Drafter</div>'+
+    '</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">'+
+      '<button onclick="aiDraftAndFill(\'newAd\')" style="background:var(--c2);border:1px solid var(--bo);border-radius:10px;padding:8px;color:var(--tx);font-size:11px;font-weight:600;cursor:pointer">🔥 New Ad Drop</button>'+
+      '<button onclick="aiDraftAndFill(\'challenge\')" style="background:var(--c2);border:1px solid var(--bo);border-radius:10px;padding:8px;color:var(--tx);font-size:11px;font-weight:600;cursor:pointer">🎯 Weekly Challenge</button>'+
+      '<button onclick="aiDraftAndFill(\'deal\')" style="background:var(--c2);border:1px solid var(--bo);border-radius:10px;padding:8px;color:var(--tx);font-size:11px;font-weight:600;cursor:pointer">🏷️ Exclusive Deals</button>'+
+      '<button onclick="aiDraftAndFill(\'spin\')" style="background:var(--c2);border:1px solid var(--bo);border-radius:10px;padding:8px;color:var(--tx);font-size:11px;font-weight:600;cursor:pointer">🎰 Daily Spins Ready</button>'+
+      '<button onclick="aiDraftAndFill(\'tournament\')" style="background:var(--c2);border:1px solid var(--bo);border-radius:10px;padding:8px;color:var(--tx);font-size:11px;font-weight:600;cursor:pointer">⚔️ Tournament Live</button>'+
+      '<button onclick="aiDraftAndFill(\'weekend\')" style="background:var(--c2);border:1px solid var(--bo);border-radius:10px;padding:8px;color:var(--tx);font-size:11px;font-weight:600;cursor:pointer">🌟 Double Points</button>'+
+    '</div>'+
+    '<textarea id="notif-draft" style="width:100%;background:var(--c2);border:1px solid var(--bo);border-radius:10px;padding:10px;color:var(--tx);font-size:13px;min-height:70px;resize:none;box-sizing:border-box" placeholder="AI will draft your notification here…"></textarea>'+
+    '<button onclick="sendDraftedNotif()" style="width:100%;background:linear-gradient(90deg,var(--rd),#d4004a);border:none;border-radius:12px;padding:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px">📤 Send to All Users</button>'+
+  '</div>'+'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div><div class="pg-t">Notifications</div><div class="pg-s">'+unread+' unread</div></div><button style="background:var(--rd);border:none;border-radius:10px;padding:7px 14px;color:#fff;font-size:12px;font-weight:700;cursor:pointer" onclick="markAllRead()">✓ Mark all read</button></div>'+
+  '<div class="card">'+h+'</div>';
+}
+
+// ── SETTINGS ──
+function rSettings(){
+  var tog=D.settings.tog;
+  var tabs=['account','payments','platform','security'];
+  var tlabels={account:'👤 Account',payments:'💳 Payments',platform:'⚙️ Platform',security:'🔐 Security'};
+  var tabH='<div class="stabs">';
+  for(var i=0;i<tabs.length;i++){
+    tabH+='<div class="stab'+(settingTab===tabs[i]?' on':'')+'" onclick="setStab(\''+tabs[i]+'\')">'+tlabels[tabs[i]]+'</div>';
+  }
+  tabH+='</div>';
+  var panels={
+    account:'<div style="background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.15);border-radius:12px;padding:14px;margin-bottom:14px"><div style="font-size:12px;font-weight:700;color:var(--cy);margin-bottom:8px">💬 Addtok Support</div><div style="font-size:11px;color:var(--t2);line-height:1.65;margin-bottom:10px">Need help with the platform? Contact the Addtok team directly.</div><div style="display:flex;gap:8px"><a href="mailto:hello.addtok@gmail.com" style="flex:1;background:var(--c2);border:1px solid var(--bo);border-radius:10px;padding:9px;text-align:center;color:var(--cy);font-size:11px;font-weight:700;text-decoration:none">✉️ hello.addtok@gmail.com</a></div></div>'+
+    '<div class="fi"><label>Platform Name</label><input value="Addtok"></div>'+
+    '<div class="fi"><label>Owner Email</label><input value="hello.addtok@gmail.com" type="email"></div>'+
+    '<div class="fi"><label>Phone</label><input value="+44 7700 900000"></div>'+
+    '<div class="fi"><label>Domain</label><input value="addtok.online"></div>'+
+    '<button class="btn btn-rd btn-full btn-lg" onclick="toast(\"Settings saved!\",\"s\")">Save Changes</button>',
+    payments:'<div style="background:rgba(99,91,255,.08);border:1px solid rgba(99,91,255,.2);border-radius:14px;padding:14px;margin-bottom:14px"><div style="font-size:20px;font-weight:900;letter-spacing:3px;color:var(--st);margin-bottom:4px">stripe</div><div style="font-size:11px;color:var(--t2);margin-bottom:10px">Connected · UK Business · Live mode</div><div style="display:flex;gap:8px"><input style="flex:1;background:var(--c1);border:1px solid var(--b2);border-radius:10px;padding:8px 12px;color:var(--tx);font-size:13px;font-family:var(--fm)" value="'+fm(847.23)+'" readonly><button style="background:linear-gradient(90deg,var(--gd),#e8a800);border:none;border-radius:10px;padding:8px 16px;color:#000;font-size:11px;font-weight:800;cursor:pointer" onclick="openPayout()">Withdraw</button></div></div><div class="fi"><label>Default CPC (est.)</label><input value="£0.45 per click"></div><div class="fi"><label>Min Daily Budget (est.)</label><input value="£5.00/day"></div><button class="save-btn" onclick="toast(\'Payment settings saved!\',\'s\')">Save</button>',
+    platform:togRow('AI moderation','Pre-screen all ad submissions','aiMod',tog)+togRow('Auto-approve safe ads','Publish ads scoring 85+ instantly','autoApprove',tog)+togRow('Featured ad rotation','Rotate featured slots every 24h','featRot',tog)+togRow('Ad Battles','Enable head-to-head ad voting','adBattles',tog)+togRow('Ad of the Day','Crown daily community favourite','aotd',tog)+togRow('Referral programme','20% commission for referrals','referral',tog)+togRow('Email alerts','Revenue and activity notifications','emailAlerts',tog)+togRow('Weekly reports','Performance summary every Monday','weeklyRep',tog),
+    security:togRow('Two-factor authentication','Require 2FA on every login','twoFactor',tog)+togRow('Login alerts','Email on new device login','loginAlerts',tog)+'<div style="margin-top:14px"><button class="save-btn" onclick="toast(\'API key regenerated — check email\',\'s\')">🔑 Regenerate API Key</button></div>'
+  };
+  return '<div class="pg-hd"><div class="pg-t">Settings</div></div>'+tabH+'<div class="card">'+(panels[settingTab]||'')+'</div>';
+}
+function togRow(l,d,key,tog){return '<div class="sr"><div><div class="sl">'+l+'</div><div class="sd">'+d+'</div></div><div class="tgl'+(tog[key]?' on':'')+'" onclick="toggleSetting(\''+key+'\')"></div></div>';}
+
+// ── ACTIONS ──
+function verTiersHtml(){
+  var tiers=[
+    {label:'⭐ Featured Partner',color:'var(--gd)',desc:'Gold badge · Top tier · Manually assigned',count:4},
+    {label:'✓ Verified',color:'var(--cy)',desc:'Cyan badge · Identity confirmed · Auto after KYC',count:3},
+    {label:'New',color:'var(--t3)',desc:'No badge · Recently joined · Not yet verified',count:1}
+  ];
+  var h='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">';
+  for(var i=0;i<tiers.length;i++){
+    var t=tiers[i];
+    h+='<div style="background:var(--c2);border-radius:12px;padding:12px;text-align:center">'+
+      '<div style="font-size:13px;font-weight:700;color:'+t.color+';margin-bottom:4px">'+t.label+'</div>'+
+      '<div style="font-size:22px;font-weight:800;color:'+t.color+';margin-bottom:4px">'+t.count+'</div>'+
+      '<div style="font-size:10px;color:var(--t3);line-height:1.5">'+t.desc+'</div>'+
+    '</div>';
+  }
+  h+='</div>';
+  return h;
+}
+
+function reportedAdsHtml(){
+  var reported=[
+    {em:'👟',title:'Air Phantom X Trainers',adv:'NikeUK',reason:'Misleading price',reports:3,time:'2h ago'},
+    {em:'🧢',title:'UrbanForge Caps Season 4',adv:'UrbanForge',reason:'Product not as described',reports:1,time:'5h ago'},
+    {em:'☕',title:'BrewBase Coffee Sub',adv:'MorningHabit',reason:'False urgency claim',reports:2,time:'8h ago'}
+  ];
+  var h='';
+  for(var i=0;i<reported.length;i++){
+    var r=reported[i];
+    h+='<div class="mi">'+
+      '<div class="mt">'+r.em+'</div>'+
+      '<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600">'+r.title+'</div>'+
+      '<div style="font-size:9px;color:var(--t3);margin-top:2px">@'+r.adv+' · <span style="color:var(--rd)">'+r.reason+'</span> · '+r.reports+' report'+(r.reports>1?'s':'')+' · '+r.time+'</div></div>'+
+      '<div style="display:flex;gap:4px">'+
+        '<button class="ma ap" onclick="dismissReport()">Dismiss</button>'+
+        '<button class="ma rj" onclick="removeReportedAd()">Remove</button>'+
+      '</div></div>';
+  }
+  return h||'<div style="font-size:12px;color:var(--t3);padding:10px 0">No reported ads</div>';
+}
+
+function approveAd(id){
+  for(var i=0;i<D.modQueue.length;i++){if(D.modQueue[i].id===id){D.modQueue.splice(i,1);break;}}
+  toast('Ad approved and live!','s');renderSB();renderPage(curPage);
+}
+function rejectAd(id){
+  for(var i=0;i<D.modQueue.length;i++){if(D.modQueue[i].id===id){D.modQueue.splice(i,1);break;}}
+  toast('Ad rejected','w');renderSB();renderPage(curPage);
+}
+function approveAll(){D.modQueue=[];toast('All safe ads approved!','s');renderSB();renderPage(curPage);}
+function markAllRead(){for(var i=0;i<D.notifs.length;i++)D.notifs[i].unread=0;toast('All read','s');renderSB();renderPage('notifications');}
+function setStab(t){settingTab=t;renderPage('settings');}
+function toggleSetting(key){D.settings.tog[key]=D.settings.tog[key]?0:1;toast((D.settings.tog[key]?'Enabled':'Disabled')+' — '+key,'s');renderPage('settings');}
+function openPayout(){var el=document.getElementById('wd-amt');if(el)el.value=totalRev().toFixed(2);document.getElementById('payout-modal').classList.add('on');}
+function closePayout(){document.getElementById('payout-modal').classList.remove('on');}
+function confirmPayout(){closePayout();toast('Payout requested — 2 business days to your bank','s');}
+function toggleSB(){document.getElementById('sb').classList.toggle('open');document.getElementById('mob-ov').classList.toggle('on');}
+function closeSB(){document.getElementById('sb').classList.remove('open');document.getElementById('mob-ov').classList.remove('on');}
+
+function dismissReport(){toast("Report dismissed","i");}
+function removeReportedAd(){toast("Ad removed","w");}
+window.dismissReport=dismissReport;window.removeReportedAd=removeReportedAd;
+
+function adminHeat(ad){
+  return Math.min(100,Math.round(((ad.vu||0)*2+(ad.clicks||0)*1.5+(ad.appr||0)*0.8)/1200)+12);
+}
+function adminHeatColor(ad){
+  var s=adminHeat(ad);
+  if(s>=80)return'var(--rd)';if(s>=60)return'var(--or)';if(s>=40)return'var(--gd)';return'var(--cy)';
+}
+function adminLiveV(id){
+  var base=[847,1204,2310,634,891,1580];
+  return fmt(base[(id-1)%base.length]+Math.floor(Math.random()*30))+' now';
+}
+
+function rTournament_admin(){
+  var rounds=[
+    {name:'Quarter Finals ✅',matches:[
+      {a:'💄 EmmaRay',b:'👟 KicksWorld',av:3210,bv:2840,done:1,w:'EmmaRay'},
+      {a:'🎮 TechRevHQ',b:'☕ MorningHabit',av:1980,bv:1440,done:1,w:'TechRevHQ'},
+      {a:'🚗 ElectraMotors',b:'🧢 UrbanForge',av:4120,bv:890,done:1,w:'ElectraMotors'},
+      {a:'🏋️ JakeCole',b:'🎧 AudioHeads',av:2640,bv:1100,done:1,w:'JakeCole'}
+    ]},
+    {name:'Semi Finals ⚡ LIVE',matches:[
+      {a:'💄 EmmaRay',b:'🎮 TechRevHQ',av:5840,bv:3210,done:1,w:'EmmaRay'},
+      {a:'🚗 ElectraMotors',b:'🏋️ JakeCole',av:3890,bv:3640,done:0,w:null}
+    ]},
+    {name:'Grand Final 🏆',matches:[
+      {a:'💄 EmmaRay',b:'? TBD',av:0,bv:0,done:0,w:null}
+    ]}
+  ];
+  var bracketH='';
+  for(var r=0;r<rounds.length;r++){
+    var rd=rounds[r];
+    bracketH+='<div style="margin-bottom:14px"><div style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:var(--t3);text-transform:uppercase;margin-bottom:8px">'+rd.name+'</div>';
+    for(var m=0;m<rd.matches.length;m++){
+      var match=rd.matches[m];
+      var tot=match.av+match.bv||1;
+      bracketH+='<div style="background:var(--c2);border-radius:12px;padding:12px;margin-bottom:6px;display:flex;align-items:center;gap:10px">'+
+        '<div style="flex:1;font-size:12px;font-weight:600;color:'+(match.w&&match.w===match.a.split(' ')[1]?'var(--gr)':'var(--t2)')+'">'+(match.w===match.a.split(' ')[1]?'✓ ':'')+match.a+'</div>'+
+        '<div style="font-size:10px;color:var(--t3);flex-shrink:0">'+(match.done?Math.round(match.av/tot*100)+'% vs '+Math.round(match.bv/tot*100)+'%':'LIVE')+'</div>'+
+        '<div style="flex:1;font-size:12px;font-weight:600;text-align:right;color:'+(match.w&&match.w===match.b.split(' ')[1]?'var(--gr)':'var(--t2)')+'">'+match.b+(match.w===match.b.split(' ')[1]?' ✓':'')+'</div>'+
+      '</div>';
+    }
+    bracketH+='</div>';
+  }
+  return '<div class="ph"><div><div class="pt">Brand vs Brand Tournament</div><div class="ps"><span class="ld"></span>Week 2 · Semi Finals live now</div></div>'+
+    '<button class="btn btn-rd" onclick="toast(\"Tournament settings coming soon\",\"i\")">⚙️ Manage</button></div>'+
+  '<div class="mg g3">'+
+    mc('Total Votes','4,820','This week','var(--pu)',68)+
+    mc('Participants','8','Brands competing','var(--cy)',80)+
+    mc('Prize','Free featured slot','£200 value · Winner gets 24h','var(--gd)',50)+
+  '</div>'+
+  '<div class="card"><div class="ch"><div class="ct">Tournament Bracket</div><span class="pill p-live">LIVE</span></div>'+bracketH+'</div>';
+}
+
+function rFlash(){
+  var slots=[
+    {adv:'NikeUK',ad:'Air Phantom X Trainers',em:'👟',start:'14:00',end:'15:00',revenue:49.00,clicks:184,status:'active'},
+    {adv:'EmmaRay',ad:'GlowLab Rose Serum',em:'💄',start:'12:00',end:'13:00',revenue:49.00,clicks:210,status:'ended'},
+    {adv:'ElectraMotors',ad:'ElectraRide EV Pre-Order',em:'🚗',start:'10:00',end:'11:00',revenue:49.00,clicks:156,status:'ended'},
+  ];
+  var slotRows='';
+  for(var i=0;i<slots.length;i++){
+    var s=slots[i];
+    slotRows+='<tr><td><span style="font-size:16px">'+s.em+'</span> <b>'+s.ad+'</b></td>'+
+      '<td class="tc-mu">'+s.adv+'</td>'+
+      '<td class="tc-mu">'+s.start+' – '+s.end+'</td>'+
+      '<td class="tc-gd">'+fm(s.revenue)+'</td>'+
+      '<td><b>'+s.clicks+'</b></td>'+
+      '<td><span class="pill '+(s.status==='active'?'p-live':'p-end')+'">'+s.status+'</span></td></tr>';
+  }
+  return '<div class="ph"><div><div class="pt">Flash Ad Slots</div><div class="ps">1-hour premium top-of-feed placement</div></div>'+
+    '<button class="btn btn-rd" onclick="toast(\"Flash slot booking coming at launch\",\"i\")">＋ Create Slot</button></div>'+
+  '<div class="mg g3">'+
+    mc('Today&#39;s Revenue',fm(147.00),'3 slots sold','var(--gd)',60)+
+    mc('Avg Clicks Per Slot','183','Peak hour: 18:00–19:00','var(--cy)',55)+
+    mc('Slots Available','5','Today remaining','var(--pu)',50)+
+  '</div>'+
+  '<div class="card"><div class="ch"><div class="ct">Flash Slot History</div></div>'+
+    '<div class="tw"><table><thead><tr><th>Ad</th><th>Advertiser</th><th>Time Slot</th><th>Revenue</th><th>Clicks</th><th>Status</th></tr></thead><tbody>'+slotRows+'</tbody></table></div>'+
+    '<div style="margin-top:12px;padding:12px;background:var(--c2);border-radius:10px;font-size:11px;color:var(--t2);line-height:1.65">'+
+      '<b style="color:var(--gd)">How flash slots work:</b> An advertiser pays £49 for a guaranteed 1-hour top-of-feed position. Their ad appears above all others for exactly 60 minutes. Book and manage slots from the advertiser dashboard.'+
+    '</div>'+
+  '</div>';
+}
+
+// ── INTEREST PROFILE STATS IN HEALTH ──
+
+// ── OFFERS & DISCOUNTS ──
+var OFFERS=[
+  {id:1,type:'discount',label:'Welcome Discount',code:'WELCOME20',value:'20% off first order',status:'active',users:142,expires:'2026-12-31'},
+  {id:2,type:'points',label:'Double Points Weekend',code:'DBLPTS',value:'2x points on all votes',status:'active',users:891,expires:'2026-06-30'},
+  {id:3,type:'free',label:'Free Spin Bonus',code:'SPIN5',value:'5 extra spins today',status:'paused',users:0,expires:'2026-07-15'},
+];
+
+function rOffers(){
+  var statsHtml=
+    mc('Active Offers',OFFERS.filter(function(o){return o.status==='active';}).length,'Running now','var(--gr)',60)+
+    mc('Total Redemptions',fmt(OFFERS.reduce(function(a,o){return a+(o.users||0);},0)),'Across all offers','var(--cy)',55)+
+    mc('Offer Types','3','Discount · Points · Free reward','var(--pu)',50);
+
+  var offerRows='';
+  for(var i=0;i<OFFERS.length;i++){
+    var o=OFFERS[i];
+    var statusPill=o.status==='active'?'<span class="pill p-live">ACTIVE</span>':'<span class="pill p-end">PAUSED</span>';
+    var typeIcon=o.type==='discount'?'🏷️':o.type==='points'?'⭐':'🎁';
+    offerRows+=
+      '<tr>'+
+        '<td><b>'+typeIcon+' '+o.label+'</b></td>'+
+        '<td><code style="background:var(--c2);padding:3px 8px;border-radius:6px;font-size:12px;color:var(--gd)">'+o.code+'</code></td>'+
+        '<td style="color:var(--t2)">'+o.value+'</td>'+
+        '<td class="tc-cy"><b>'+fmt(o.users)+'</b></td>'+
+        '<td style="color:var(--t3);font-size:11px">'+o.expires+'</td>'+
+        '<td>'+statusPill+'</td>'+
+        '<td>'+
+          '<button class="btn btn-sm" onclick="toggleOffer('+o.id+')" style="margin-right:4px">'+(o.status==='active'?'Pause':'Resume')+'</button>'+
+          '<button class="btn btn-sm btn-rd" onclick="deleteOffer('+o.id+')">Delete</button>'+
+        '</td>'+
+      '</tr>';
+  }
+
+  return '<div class="ph">'+
+    '<div><div class="pt">Offers &amp; Discounts</div><div class="ps">Create discount codes, bonus points and free rewards for users</div></div>'+
+    '<button class="btn btn-rd" onclick="showCreateOffer()">＋ Create Offer</button>'+
+  '</div>'+
+  '<div class="mg g3">'+statsHtml+'</div>'+
+
+  // Create offer form
+  '<div class="card" id="create-offer-card" style="display:none">'+
+    '<div class="ch"><div class="ct">Create New Offer</div><button class="btn" onclick="hideCreateOffer()">✕ Cancel</button></div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">'+
+      '<div><label style="font-size:11px;color:var(--t3);display:block;margin-bottom:4px">Offer Label</label>'+
+      '<input id="new-offer-label" placeholder="e.g. Summer Sale" style="width:100%;background:var(--c2);border:1px solid var(--bo);border-radius:8px;padding:8px 10px;color:var(--tx);font-size:13px"></div>'+
+      '<div><label style="font-size:11px;color:var(--t3);display:block;margin-bottom:4px">Discount Code</label>'+
+      '<input id="new-offer-code" placeholder="e.g. SUMMER25" style="width:100%;background:var(--c2);border:1px solid var(--bo);border-radius:8px;padding:8px 10px;color:var(--tx);font-size:13px;text-transform:uppercase"></div>'+
+    '</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">'+
+      '<div><label style="font-size:11px;color:var(--t3);display:block;margin-bottom:4px">Type</label>'+
+      '<select id="new-offer-type" style="width:100%;background:var(--c2);border:1px solid var(--bo);border-radius:8px;padding:8px 10px;color:var(--tx);font-size:13px">'+
+        '<option value="discount">🏷️ Discount</option>'+
+        '<option value="points">⭐ Bonus Points</option>'+
+        '<option value="free">🎁 Free Reward</option>'+
+      '</select></div>'+
+      '<div><label style="font-size:11px;color:var(--t3);display:block;margin-bottom:4px">Value / Description</label>'+
+      '<input id="new-offer-value" placeholder="e.g. 25% off" style="width:100%;background:var(--c2);border:1px solid var(--bo);border-radius:8px;padding:8px 10px;color:var(--tx);font-size:13px"></div>'+
+      '<div><label style="font-size:11px;color:var(--t3);display:block;margin-bottom:4px">Expiry Date</label>'+
+      '<input id="new-offer-expiry" type="date" style="width:100%;background:var(--c2);border:1px solid var(--bo);border-radius:8px;padding:8px 10px;color:var(--tx);font-size:13px"></div>'+
+    '</div>'+
+    '<button class="btn btn-rd btn-full" onclick="saveOffer()">Create Offer</button>'+
+  '</div>'+
+
+  // Offers table
+  '<div class="card">'+
+    '<div class="ch"><div class="ct">All Offers</div></div>'+
+    '<div class="tw"><table><thead><tr>'+
+      '<th>Offer</th><th>Code</th><th>Value</th><th>Redeemed</th><th>Expires</th><th>Status</th><th>Actions</th>'+
+    '</tr></thead><tbody>'+offerRows+'</tbody></table></div>'+
+  '</div>'+
+
+  // How it works
+  '<div class="card">'+
+    '<div class="ch"><div class="ct">How Offers Work</div></div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">'+
+      '<div style="background:var(--c2);border-radius:10px;padding:12px">'+
+        '<div style="font-size:13px;font-weight:700;margin-bottom:6px">🏷️ Discount Codes</div>'+
+        '<div style="font-size:11px;color:var(--t2);line-height:1.6">Users enter the code at checkout on the advertiser website. You notify advertisers to honour the code.</div>'+
+      '</div>'+
+      '<div style="background:var(--c2);border-radius:10px;padding:12px">'+
+        '<div style="font-size:13px;font-weight:700;margin-bottom:6px">⭐ Bonus Points</div>'+
+        '<div style="font-size:11px;color:var(--t2);line-height:1.6">Users get extra points for specific actions. Applied automatically when the offer is active.</div>'+
+      '</div>'+
+      '<div style="background:var(--c2);border-radius:10px;padding:12px">'+
+        '<div style="font-size:13px;font-weight:700;margin-bottom:6px">🎁 Free Rewards</div>'+
+        '<div style="font-size:11px;color:var(--t2);line-height:1.6">Grant users free spins, badge upgrades or exclusive access. Redeemed via code in the user app.</div>'+
+      '</div>'+
+      '<div style="background:var(--c2);border-radius:10px;padding:12px">'+
+        '<div style="font-size:13px;font-weight:700;margin-bottom:6px">📢 Notifying Users</div>'+
+        '<div style="font-size:11px;color:var(--t2);line-height:1.6">Use the Notifications page to push offers to all users or targeted segments.</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}
+
+function toggleOffer(id){
+  for(var i=0;i<OFFERS.length;i++){
+    if(OFFERS[i].id===id){
+      OFFERS[i].status=OFFERS[i].status==='active'?'paused':'active';
+      toast(OFFERS[i].label+' '+(OFFERS[i].status==='active'?'resumed':'paused'),'s');
+      rp('offers');return;
+    }
+  }
+}
+function deleteOffer(id){
+  OFFERS=OFFERS.filter(function(o){return o.id!==id;});
+  toast('Offer deleted','s');
+  rp('offers');
+}
+function showCreateOffer(){
+  var el=document.getElementById('create-offer-card');
+  if(el)el.style.display='block';
+}
+function hideCreateOffer(){
+  var el=document.getElementById('create-offer-card');
+  if(el)el.style.display='none';
+}
+function saveOffer(){
+  var label=document.getElementById('new-offer-label');
+  var code=document.getElementById('new-offer-code');
+  var type=document.getElementById('new-offer-type');
+  var value=document.getElementById('new-offer-value');
+  var expiry=document.getElementById('new-offer-expiry');
+  if(!label||!label.value.trim()||!code||!code.value.trim()){toast('Please fill in offer label and code','w');return;}
+  var newId=OFFERS.length?Math.max.apply(null,(function(){var _ids=[];for(var _oi=0;_oi<OFFERS.length;_oi++)_ids.push(OFFERS[_oi].id);return _ids;})())+1:1;
+  OFFERS.push({
+    id:newId,
+    type:type?type.value:'discount',
+    label:label.value.trim(),
+    code:code.value.trim().toUpperCase(),
+    value:value?value.value.trim():'',
+    status:'active',
+    users:0,
+    expires:expiry?expiry.value:'—'
+  });
+  toast('Offer created! Code: '+code.value.trim().toUpperCase(),'s');
+  hideCreateOffer();
+  rp('offers');
+}
+window.toggleOffer=toggleOffer;
+window.deleteOffer=deleteOffer;
+window.showCreateOffer=showCreateOffer;
+window.hideCreateOffer=hideCreateOffer;
+window.saveOffer=saveOffer;
+
+
+// ═══════════════════════════════════════
+// ── ADMIN AI ENGINE ──
+// ═══════════════════════════════════════
+
+// AI Auto-Moderation
+// Scores ads 0-100, auto-approves 85+, auto-rejects below 40, manual review 40-84
+function aiModScore(ad){
+  var score=60;
+  // Title quality
+  if(!ad.title||ad.title.length<5){score-=25;}
+  else if(ad.title.length>=15&&ad.title.length<=60){score+=12;}
+  else if(ad.title.length>5){score+=6;}
+  // All caps title penalty
+  if(ad.title&&ad.title===ad.title.toUpperCase()&&ad.title.length>4){score-=10;}
+  // URL check
+  if(ad.url&&ad.url.startsWith('https://')){score+=15;}
+  else if(ad.url&&ad.url.startsWith('http://')){score+=3;}
+  else if(!ad.url){score-=20;}
+  // Ad type signals
+  if(ad.type==='brand'||ad.type==='merch'){score+=6;}
+  if(ad.type==='influencer'){score+=9;}
+  // Approval rate from existing data
+  if(ad.appr>=90){score+=12;}
+  else if(ad.appr>=75){score+=6;}
+  else if(ad.appr>0&&ad.appr<50){score-=10;}
+  // Check against known problematic patterns
+  var forbidden=['guaranteed','free money','win cash','miracle cure','#1 in'];
+  if(ad.title){
+    for(var i=0;i<forbidden.length;i++){
+      if(ad.title.toLowerCase().indexOf(forbidden[i])>=0){score-=30;}
+    }
+  }
+  // Platform advertiser history bonus
+  var advHistory=D.advertisers?D.advertisers.filter(function(a){return a.name===ad.adv;}):[];
+  if(advHistory.length>0&&advHistory[0].spend>500){score+=10;}
+  return Math.min(100,Math.max(0,score));
+}
+
+function aiModDecision(score){
+  if(score>=85)return{action:'approve',label:'Auto-Approve',color:'var(--gr)',reason:'High quality signals across all checks. Meets all content guidelines.',confidence:Math.round(score)};
+  if(score>=60)return{action:'review',label:'Manual Review',color:'var(--gd)',reason:'Moderate signals — recommend human review before approving.',confidence:Math.round(score)};
+  if(score>=35)return{action:'review',label:'Needs Work',color:'var(--or)',reason:'Multiple quality issues found. Contact advertiser before proceeding.',confidence:Math.round(score)};
+  return{action:'reject',label:'Auto-Reject',color:'var(--rd)',reason:'Low quality signals. Does not meet content standards — likely spam or misleading.',confidence:Math.round(score)};
+}
+
+function runAiModeration() {
+  var results = [];
+  for (var i = 0; i < D.modQueue.length; i++) {
+    var ad = D.modQueue[i];
+    var score = aiModScore(ad);
+    var decision = aiModDecision(score);
+    results.push({ad: ad, score: score, decision: decision});
+    // Auto-execute
+    if (decision.action === 'approve') { ad.status = 'live'; }
+    else if (decision.action === 'reject') { ad.status = 'rejected'; }
+  }
+  // Remove auto-processed from queue
+  D.modQueue = D.modQueue.filter(function(a) { return a.status === 'pending'; });
+  var approved = results.filter(function(r) { return r.decision.action === 'approve'; }).length;
+  var rejected = results.filter(function(r) { return r.decision.action === 'reject'; }).length;
+  var manual = results.filter(function(r) { return r.decision.action === 'review'; }).length;
+  toast('AI processed ' + results.length + ' ads: ' + approved + ' approved, ' + rejected + ' rejected, ' + manual + ' for review', 's');
+  rp('moderation');
+}
+window.runAiModeration = runAiModeration;
+
+// AI Revenue Forecast
+function aiRevenueForecast() {
+  var rev = D.revenue;
+  var monthly = (rev && rev.monthly && rev.monthly.length) ? rev.monthly : [18,32,24,41,38,52,47,63,58,72,68,158];
+  var recent = monthly.slice(-3);
+  var prev3 = monthly.slice(-6,-3);
+  // Calculate actual trend
+  var recentAvg = recent.reduce(function(a,b){return a+b;},0) / recent.length;
+  var prevAvg = prev3.length ? prev3.reduce(function(a,b){return a+b;},0) / prev3.length : recentAvg;
+  var trendPct = prevAvg > 0 ? ((recentAvg - prevAvg) / prevAvg) : 0.15;
+  // Cap trend between -20% and +50% for realism
+  trendPct = Math.min(0.5, Math.max(-0.2, trendPct));
+  var forecast = Math.round(recentAvg * (1 + trendPct) * 100) / 100;
+  var confidence = trendPct > 0.1 ? 82 : trendPct > 0 ? 71 : 58;
+  var trendLabel = trendPct > 0.1 ? 'Strong upward trend' : trendPct > 0 ? 'Steady growth trend' : 'Flat or declining trend — consider promotions';
+  return {
+    nextMonth: forecast,
+    confidence: confidence,
+    trend: Math.round(trendPct * 100),
+    factors: [
+      trendLabel + ' (' + (trendPct >= 0 ? '+' : '') + Math.round(trendPct*100) + '% 3-month avg)',
+      'Active advertisers: ' + D.advertisers.filter(function(a){return a.status==='active';}).length,
+      'Last month revenue: ' + fm(monthly[monthly.length-1])
+    ]
+  };
+}
+
+// AI Advertiser Health Score
+function aiAdvHealthScore(adv){
+  var score=40;
+  // Spend history
+  if(adv.spend>1000){score+=25;}
+  else if(adv.spend>500){score+=18;}
+  else if(adv.spend>100){score+=10;}
+  else if(adv.spend>0){score+=4;}
+  // CTR quality
+  if(adv.ctr>6){score+=20;}
+  else if(adv.ctr>3){score+=12;}
+  else if(adv.ctr>1){score+=5;}
+  // Account status
+  if(adv.status==='active'){score+=10;}
+  else if(adv.status==='paused'){score-=5;}
+  // Verification tier
+  if(adv.tier==='partner'){score+=15;}
+  else if(adv.tier==='verified'){score+=8;}
+  // Number of live ads
+  var advAds=adv.ads&&Array.isArray(adv.ads)?adv.ads:[];
+  var liveAds=advAds.filter(function(a){return a.status==='live';}).length;
+  if(liveAds>=3){score+=8;}
+  else if(liveAds>=1){score+=4;}
+  // Flag risk signals
+  if(adv.spend>0&&adv.ctr<0.5){score-=15;}
+  return Math.min(100,Math.max(0,score));
+}
+
+function aiHealthLabel(score) {
+  if (score >= 80) return {label: 'Excellent', color: 'var(--gr)'};
+  if (score >= 60) return {label: 'Good', color: 'var(--cy)'};
+  if (score >= 40) return {label: 'Average', color: 'var(--gd)'};
+  return {label: 'At Risk', color: 'var(--rd)'};
+}
+
+// AI Notification Drafter
+function aiDraftNotification(topic){
+  var users=D.stats&&D.stats.users?D.stats.users:0;
+  var liveAds=D.ads?D.ads.filter(function(a){return a.status==='live';}).length:0;
+  var drafts={
+    newAd:'🔥 '+liveAds+' ads are live on Addtok right now! Check out the latest from top brands, vote for your favourites and earn points.',
+    challenge:'🎯 Your Weekly Challenge is live! Complete it by Sunday to earn 50 bonus points. New challenge every week.',
+    tournament:'⚔️ Brand vs Brand is heating up! The Semi Finals are live — vote for your favourite brand and help crown this week’s champion.',
+    deal:'🏷️ Exclusive deals are waiting for you! Open Addtok now to find special discount codes from top brands — only available here.',
+    spin:'🎰 Your 3 daily spins are ready! Open Addtok and spin to discover something new. Every spin earns points.',
+    weekend:'🌟 Double points ALL weekend! Every vote, reaction and save earns 2x points until Sunday midnight. Do not miss it.',
+    general:'👋 Something exciting is happening on Addtok right now. Open the app to find out what everyone is talking about.',
+    milestone:'You helped Addtok reach '+Math.round(users/1000)+'K users! Thank you for being part of the community — enjoy 10 bonus points from us.',
+    newfeature:'✨ New feature just dropped on Addtok! Open the app and check out what’s new. We think you’ll love it.'
+  };
+  return drafts[topic]||drafts['general'];
+}
+window.aiDraftNotification = aiDraftNotification;
+
+// AI Offer Recommender
+function aiRecommendOffer() {
+  var stats = D.stats || {};
+  var users = stats.users || 0;
+  var today = new Date().getDay(); // 0=Sun, 6=Sat
+  var recommendations = [];
+  // Weekend = double points makes most sense
+  if (today === 0 || today === 6) {
+    recommendations.push({type:'points', label:'Double Points Weekend', code:'DBLPTS', value:'2x points all weekend', reason:'It is the weekend — engagement is 23% lower on weekends. Bonus points increase opens by 38%.'});
+  }
+  // Low active offers = add a deal
+  var activeOffers = OFFERS.filter(function(o){return o.status==='active';}).length;
+  if (activeOffers < 2) {
+    recommendations.push({type:'discount', label:'New User Welcome', code:'WELCOME20', value:'20% off first purchase', reason:'You only have ' + activeOffers + ' active offer. A welcome deal drives new user conversion.'});
+  }
+  // Always suggest spin bonus as a daily engagement tool
+  recommendations.push({type:'free', label:'Free Spin Bonus', code:'SPIN5', value:'5 extra daily spins', reason:'Spin the Ad has high engagement. Extra spins extend daily session time by an average of 4 minutes.'});
+  // Return most relevant
+  return recommendations[0];
+}
+window.aiRecommendOffer = aiRecommendOffer;
+
+// AI Ad Performance Insights (plain English)
+function aiAdInsight(ad){
+  var insights=[];
+  var avgCTR=3.2;var avgAppr=78;
+  if(ad.appr>=90){
+    insights.push('Exceptional approval of '+ad.appr+'% — '+Math.round(ad.appr-avgAppr)+'pts above the platform average. This ad resonates strongly with users.');
+  } else if(ad.appr>=avgAppr){
+    insights.push('Solid approval at '+ad.appr+'%. Slightly above average. A stronger call to action could push this higher.');
+  } else if(ad.appr>0){
+    insights.push('Approval of '+ad.appr+'% is below the '+avgAppr+'% platform average. Consider refreshing the creative or title.');
+  }
+  if(ad.ctr>6){
+    insights.push('CTR of '+ad.ctr+'% is exceptional — top 10% of all ads. Users are highly motivated to click.');
+  } else if(ad.ctr>avgCTR){
+    insights.push('CTR of '+ad.ctr+'% is above average ('+avgCTR+'%). Performing well.');
+  } else if(ad.ctr>0){
+    insights.push('CTR of '+ad.ctr+'% is below average. Try a more compelling title or add an exclusive offer.');
+  }
+  if(ad.bought&&ad.bought>10){
+    insights.push(ad.bought+' users confirmed a purchase from this ad — strong conversion signal.');
+  }
+  if(ad.vu>5000){
+    insights.push('High engagement with '+ad.vu.toLocaleString()+' upvotes. Consider increasing daily cap to capture more peak-hour traffic.');
+  }
+  if(insights.length===0){
+    insights.push('Ad is new or has limited data. Check back after 24 hours for meaningful insights.');
+  }
+  return insights.join(' ');
+}
+window.aiAdInsight = aiAdInsight;
+
+// AI Fraud Detection
+function aiFraudCheck(ad){
+  var flags=[];var signals=[];
+  if(ad.clicks>0&&ad.views>0){
+    var ctr=ad.clicks/ad.views*100;
+    if(ctr>30){flags.push('⚠️ CTR of '+ctr.toFixed(1)+'% is abnormally high (avg 3.2%). Possible click fraud.');}
+    else if(ctr>15){signals.push('CTR '+ctr.toFixed(1)+'% is elevated — monitor closely.');}
+  }
+  if(ad.bought&&ad.clicks>0){
+    var convRate=ad.bought/ad.clicks;
+    if(convRate>0.8){flags.push('⚠️ '+Math.round(convRate*100)+'% of clicks led to purchase confirmations — unusually high. Verify authenticity.');}
+  }
+  if(ad.clicks>500&&ad.vu<10){
+    flags.push('⚠️ High clicks but very low upvotes — possible bot traffic pattern.');
+  }
+  if(flags.length===0&&signals.length===0){
+    signals.push('✅ No fraud signals detected. Traffic patterns look normal.');
+  }
+  return flags.concat(signals);
+}
+
+
+function aiRevenueSummary(){
+  var f=aiRevenueForecast();
+  var trend=f.trend>=0?'↑ +'+f.trend+'%':'↓ '+f.trend+'%';
+  var trendCol=f.trend>=0?'var(--gr)':'var(--rd)';
+  var h='<div style="display:flex;align-items:center;gap:16px;margin-bottom:14px">'+
+    '<div><div style="font-size:32px;font-weight:800;color:var(--pu)">'+fm(f.nextMonth)+'</div>'+
+    '<div style="font-size:11px;color:var(--t3);margin-top:2px">Projected next month</div></div>'+
+    '<div style="display:flex;flex-direction:column;gap:6px">'+
+      '<div style="background:rgba(191,90,242,.15);border-radius:10px;padding:5px 12px;font-size:12px;color:var(--pu);font-weight:700">'+f.confidence+'% confidence</div>'+
+      '<div style="background:rgba(48,209,88,.1);border-radius:10px;padding:5px 12px;font-size:12px;color:'+trendCol+';font-weight:700">'+trend+' trend</div>'+
+    '</div>'+
+  '</div>'+
+  '<div style="font-size:12px;font-weight:700;color:var(--t2);margin-bottom:8px">Key factors:</div>';
+  for(var i=0;i<f.factors.length;i++){
+    h+='<div style="font-size:12px;color:var(--t2);margin-bottom:5px;padding-left:10px;border-left:2px solid rgba(191,90,242,.3)">· '+f.factors[i]+'</div>';
+  }
+  return h;
+}
+
+function aiDraftAndFill(topic){
+  var draft=aiDraftNotification(topic);
+  var el=document.getElementById('notif-draft');
+  if(el){
+    el.value=draft;
+    el.focus();
+    // Show char count
+    var remaining=280-draft.length;
+    toast('🤖 Draft ready · '+draft.length+' chars ('+remaining+' remaining)','s');
+  } else {
+    toast('AI drafted: '+draft.slice(0,60)+'...','s');
+  }
+}
+function sendDraftedNotif(){
+  var el=document.getElementById('notif-draft');
+  var msg=el?el.value.trim():'';
+  if(!msg){toast('Please write or generate a notification first','w');return;}
+  var userCount=D.stats&&D.stats.users?fmt(D.stats.users):'all';
+  toast('Notification sent to '+userCount+' users!','s');
+  if(el){
+    el.value='';
+    el.placeholder='Notification sent! Generate another or write your own…';
+  }
+  // Show sent count in the button temporarily
+  var btn=document.querySelector('[onclick="sendDraftedNotif()"]');
+  if(btn){
+    var orig=btn.innerHTML;
+    btn.innerHTML='✅ Sent to '+userCount+' users!';
+    btn.style.background='var(--gr)';
+    setTimeout(function(){btn.innerHTML=orig;btn.style.background='';},3000);
+  }
+}
+window.aiDraftAndFill=aiDraftAndFill;
+window.sendDraftedNotif=sendDraftedNotif;
+
+function showAiOfferRec(){
+  var rec=aiRecommendOffer();
+  toast('AI recommends: '+rec.label+' (code: '+rec.code+') — '+rec.reason,'s');
+}
+window.showAiOfferRec=showAiOfferRec;
+
+// ADMIN AI AUTO-UPDATE
+function adminAiAutoAdvanceTournament(){
+  if(!TOURNAMENT||!TOURNAMENT.rounds)return;
+  var changed=false;
+  for(var r=0;r<TOURNAMENT.rounds.length-1;r++){
+    var round=TOURNAMENT.rounds[r];
+    var allDone=true;
+    for(var m=0;m<round.matches.length;m++){if(!round.matches[m].done){allDone=false;break;}}
+    if(allDone&&TOURNAMENT.currentRound===r){
+      TOURNAMENT.currentRound=r+1;
+      changed=true;
+      toast('Tournament auto-advanced to: '+TOURNAMENT.rounds[r+1].name,'s');
+    }
+  }
+  // Check for champion
+  var fl=TOURNAMENT.rounds[TOURNAMENT.rounds.length-1];
+  if(fl&&fl.matches[0]&&fl.matches[0].done&&!TOURNAMENT.champion){
+    var fm=fl.matches[0];
+    TOURNAMENT.champion=fm.a.votes>fm.b.votes?fm.a.name:fm.b.name;
+    TOURNAMENT.active=false;
+    // Award winner a free featured slot
+    var winnerAd=null;
+    for(var i=0;i<D.ads.length;i++){
+      if(D.ads[i].adv===TOURNAMENT.champion){winnerAd=D.ads[i];break;}
+    }
+    if(winnerAd){
+      winnerAd.feat=true;
+      toast(TOURNAMENT.champion+' crowned champion! Free featured slot awarded.','s');
+    }
+    changed=true;
+  }
+  if(changed)rp('tournament');
+}
+
+function adminAiAutoSortLeaderboard(){
+  if(D.ads){
+    D.ads.sort(function(a,b){
+      var scoreA=(a.appr||0)*0.4+(a.clicks||0)*0.01+(a.ctr||0)*2;
+      var scoreB=(b.appr||0)*0.4+(b.clicks||0)*0.01+(b.ctr||0)*2;
+      return scoreB-scoreA;
+    });
+  }
+}
+
+function adminAiAutoAwardWeekly(){
+  if(!D.ads||D.ads.length===0)return;
+  var live=D.ads.filter(function(a){return a.appr>0;});
+  if(!live.length)return;
+  // Top voted gets featured slot
+  var top=live.slice().sort(function(a,b){return (b.vu||0)-(a.vu||0);})[0];
+  if(top){
+    top.feat=true;
+    toast('Weekly winner: '+top.adv+' - featured slot auto-awarded','s');
+  }
+}
+
+window.adminAiAutoAdvanceTournament=adminAiAutoAdvanceTournament;
+window.adminAiAutoSortLeaderboard=adminAiAutoSortLeaderboard;
+window.adminAiAutoAwardWeekly=adminAiAutoAwardWeekly;
+
+// ╔══════════════════════════════════════════════════════╗
+// ║         ADDTOK AUTONOMOUS AI ENGINE                  ║
+// ║  Self-sufficient platform management                  ║
+// ╚══════════════════════════════════════════════════════╝
+
+var AI_ENGINE = {
+  lastRun: null,
+  logs: [],
+  stats: {autoApproved:0, autoRejected:0, fraudBlocked:0, notifsSent:0, offersExpired:0}
+};
+
+function aiLog(msg, type) {
+  var entry = {time: new Date().toLocaleTimeString(), msg: msg, type: type||'info'};
+  AI_ENGINE.logs.unshift(entry);
+  if(AI_ENGINE.logs.length > 50) AI_ENGINE.logs.pop();
+}
+
+// ── MASTER RUNNER ──
+// Runs every 30 seconds automatically
+function runAiEngine() {
+  AI_ENGINE.lastRun = new Date();
+  aiAutoModerate();
+  aiCheckFraud();
+  aiCheckExpiredOffers();
+  aiCheckInactiveAdvertisers();
+  aiCheckFlashSlots();
+  aiCheckEngagement();
+  aiCheckPlatformHealth();
+  aiCheckTournamentCycle();
+  aiAutoNotifyEvents();
+  // Refresh current page to show updated data
+  if(curPage) rp(curPage);
+}
+window.runAiEngine = runAiEngine;
+
+// ── 1. AUTO MODERATION ──
+// Runs continuously - no human needed
+function aiAutoModerate() {
+  if(!D.modQueue || D.modQueue.length === 0) return;
+  var processed = 0;
+  var newQueue = [];
+  for(var i = 0; i < D.modQueue.length; i++) {
+    var ad = D.modQueue[i];
+    if(ad.status !== 'pending') continue;
+    var score = aiModScore(ad);
+    var decision = aiModDecision(score);
+    if(decision.action === 'approve') {
+      ad.status = 'live';
+      ad.approvedAt = new Date().toISOString();
+      ad.aiScore = score;
+      D.ads.push(ad);
+      AI_ENGINE.stats.autoApproved++;
+      aiLog('Auto-approved: ' + ad.title + ' (score: ' + score + ')', 'good');
+      // Notify advertiser
+      aiTriggerNotif('adv-approved', {title: ad.title, adv: ad.adv});
+      processed++;
+    } else if(decision.action === 'reject') {
+      ad.status = 'rejected';
+      ad.rejectedAt = new Date().toISOString();
+      ad.aiScore = score;
+      ad.rejectReason = decision.reason;
+      AI_ENGINE.stats.autoRejected++;
+      aiLog('Auto-rejected: ' + ad.title + ' (score: ' + score + ') - ' + decision.reason, 'warn');
+      // Notify advertiser of rejection with reason
+      aiTriggerNotif('adv-rejected', {title: ad.title, reason: decision.reason});
+      processed++;
+    } else {
+      // Manual review - keep in queue but flag
+      ad.aiScore = score;
+      ad.aiReviewNote = decision.reason;
+      newQueue.push(ad);
+    }
+  }
+  D.modQueue = newQueue;
+  if(processed > 0) aiLog('Moderation: processed ' + processed + ' ads', 'info');
+}
+
+// ── 2. FRAUD DETECTION & AUTO-BLOCK ──
+function aiCheckFraud() {
+  if(!D.ads) return;
+  for(var i = 0; i < D.ads.length; i++) {
+    var ad = D.ads[i];
+    if(ad.status !== 'live') continue;
+    var flags = aiFraudCheck(ad);
+    var hasFlag = false;
+    for(var f = 0; f < flags.length; f++) {
+      if(flags[f].indexOf('⚠️') === 0) { hasFlag = true; break; }
+    }
+    if(hasFlag && !ad.fraudFlagged) {
+      ad.fraudFlagged = true;
+      ad.status = 'paused';
+      AI_ENGINE.stats.fraudBlocked++;
+      aiLog('Fraud detected & paused: ' + ad.title, 'warn');
+      aiTriggerNotif('fraud-flag', {title: ad.title});
+    }
+  }
+}
+
+// ── 3. AUTO-EXPIRE OFFERS ──
+function aiCheckExpiredOffers() {
+  if(!OFFERS) return;
+  var today = new Date().toISOString().split('T')[0];
+  for(var i = 0; i < OFFERS.length; i++) {
+    var o = OFFERS[i];
+    if(o.status === 'active' && o.expires && o.expires < today) {
+      o.status = 'expired';
+      AI_ENGINE.stats.offersExpired++;
+      aiLog('Offer expired: ' + o.label, 'info');
+    }
+  }
+  // Auto-suggest new offer if none active
+  var activeCount = OFFERS.filter(function(o){return o.status==='active';}).length;
+  if(activeCount === 0) {
+    var rec = aiRecommendOffer();
+    // Auto-create the recommended offer
+    OFFERS.push({
+      id: OFFERS.length + 1,
+      type: rec.type,
+      label: rec.label,
+      code: rec.code,
+      value: rec.value,
+      status: 'active',
+      users: 0,
+      expires: new Date(Date.now() + 7*24*3600*1000).toISOString().split('T')[0],
+      autoCreated: true
+    });
+    aiLog('Auto-created offer: ' + rec.label + ' (no active offers)', 'good');
+  }
+}
+
+// ── 4. INACTIVE ADVERTISER DETECTION ──
+function aiCheckInactiveAdvertisers() {
+  if(!D.advertisers) return;
+  var thirtyDaysAgo = new Date(Date.now() - 30*24*3600*1000);
+  for(var i = 0; i < D.advertisers.length; i++) {
+    var adv = D.advertisers[i];
+    if(adv.status !== 'active') continue;
+    // Flag if no spend in 30 days
+    var lastActive = adv.lastActivity ? new Date(adv.lastActivity) : thirtyDaysAgo;
+    if(lastActive < thirtyDaysAgo && !adv.inactiveFlagged) {
+      adv.inactiveFlagged = true;
+      aiLog('Inactive advertiser flagged: ' + adv.name + ' (no activity 30d)', 'warn');
+      // Auto-send re-engagement nudge
+      aiTriggerNotif('adv-inactive', {name: adv.name});
+    }
+    // Auto-suspend if balance is 0 and inactive
+    if(adv.balance <= 0 && adv.status === 'active' && adv.inactiveFlagged) {
+      adv.status = 'paused';
+      // Pause their ads
+      for(var j = 0; j < D.ads.length; j++) {
+        if(D.ads[j].adv === adv.name && D.ads[j].status === 'live') {
+          D.ads[j].status = 'paused';
+        }
+      }
+      aiLog('Auto-paused: ' + adv.name + ' (zero balance)', 'warn');
+    }
+  }
+}
+
+// ── 5. FLASH SLOT AUTO-MANAGEMENT ──
+function aiCheckFlashSlots() {
+  if(!D.flash) return;
+  var now = new Date();
+  // Check for expired slots
+  for(var i = 0; i < D.flash.length; i++) {
+    var slot = D.flash[i];
+    if(slot.status === 'active' && slot.expiresAt) {
+      var exp = new Date(slot.expiresAt);
+      if(exp < now) {
+        slot.status = 'expired';
+        slot.adv = null;
+        aiLog('Flash slot expired: ' + slot.label, 'info');
+      }
+    }
+  }
+  // Auto-fill empty slots with best performing ads
+  var emptySlots = D.flash.filter(function(s){return !s.adv || s.status==='expired';});
+  if(emptySlots.length > 0 && D.ads && D.ads.length > 0) {
+    var topAds = D.ads.filter(function(a){return a.status==='live'&&!a.feat;})
+      .sort(function(a,b){return (b.appr||0)-(a.appr||0);});
+    for(var j = 0; j < Math.min(emptySlots.length, topAds.length); j++) {
+      emptySlots[j].adv = topAds[j].adv;
+      emptySlots[j].status = 'active';
+      emptySlots[j].autoFilled = true;
+      emptySlots[j].expiresAt = new Date(Date.now() + 24*3600*1000).toISOString();
+      aiLog('Flash slot auto-filled: ' + emptySlots[j].label + ' with ' + topAds[j].adv, 'good');
+    }
+  }
+}
+
+// ── 6. ENGAGEMENT MONITORING ──
+function aiCheckEngagement() {
+  if(!D.stats) return;
+  var clicks = D.stats.clicks || 0;
+  var expected = 200; // baseline clicks per day
+  if(clicks < expected * 0.5 && !AI_ENGINE.lowEngagementNotified) {
+    AI_ENGINE.lowEngagementNotified = true;
+    aiLog('Low engagement detected: ' + clicks + ' clicks (expected ' + expected + ')', 'warn');
+    // Auto-send push notification to boost engagement
+    aiTriggerNotif('low-engagement', {clicks: clicks});
+  } else if(clicks >= expected * 0.5) {
+    AI_ENGINE.lowEngagementNotified = false;
+  }
+  // Flag low-performing ads automatically
+  if(D.ads) {
+    for(var i = 0; i < D.ads.length; i++) {
+      var ad = D.ads[i];
+      if(ad.status !== 'live') continue;
+      if(ad.ctr > 0 && ad.ctr < 1.0 && !ad.lowPerfFlagged) {
+        ad.lowPerfFlagged = true;
+        aiLog('Low CTR flagged: ' + ad.title + ' (' + ad.ctr + '%)', 'warn');
+      }
+    }
+  }
+}
+
+// ── 7. PLATFORM HEALTH AUTO-MONITOR ──
+var AI_HEALTH = {status:'healthy', issues:[], lastCheck:null};
+function aiCheckPlatformHealth() {
+  AI_HEALTH.issues = [];
+  AI_HEALTH.lastCheck = new Date();
+  // Check moderation queue size
+  var queueSize = D.modQueue ? D.modQueue.length : 0;
+  if(queueSize > 10) {
+    AI_HEALTH.issues.push({severity:'high', msg:'Moderation queue backed up: ' + queueSize + ' pending'});
+    aiLog('Health: queue backed up (' + queueSize + ')', 'warn');
+  }
+  // Check active ad ratio
+  var totalAds = D.ads ? D.ads.length : 0;
+  var liveAds = D.ads ? D.ads.filter(function(a){return a.status==='live';}).length : 0;
+  if(totalAds > 0 && liveAds/totalAds < 0.4) {
+    AI_HEALTH.issues.push({severity:'medium', msg:'Low live ad ratio: ' + liveAds + '/' + totalAds});
+  }
+  // Check revenue trend
+  if(D.revenue && D.revenue.monthly && D.revenue.monthly.length >= 2) {
+    var last = D.revenue.monthly[D.revenue.monthly.length-1];
+    var prev = D.revenue.monthly[D.revenue.monthly.length-2];
+    if(last < prev * 0.7) {
+      AI_HEALTH.issues.push({severity:'high', msg:'Revenue drop: ' + fm(last) + ' vs ' + fm(prev) + ' last period'});
+      aiLog('Health: revenue drop detected', 'warn');
+    }
+  }
+  AI_HEALTH.status = AI_HEALTH.issues.length === 0 ? 'healthy' :
+    AI_HEALTH.issues.some(function(i){return i.severity==='high';}) ? 'critical' : 'warning';
+  if(AI_HEALTH.status === 'critical') {
+    aiLog('Platform health: CRITICAL - ' + AI_HEALTH.issues.length + ' issues', 'warn');
+  }
+}
+
+// ── 8. TOURNAMENT AUTO-CYCLE ──
+function aiCheckTournamentCycle() {
+  if(!TOURNAMENT) return;
+  var now = new Date();
+  var dayOfWeek = now.getDay(); // 0=Sun, 1=Mon
+  // Auto-start new tournament on Monday if previous one is done
+  if(dayOfWeek === 1 && !TOURNAMENT.active && TOURNAMENT.champion) {
+    // Reset tournament for new week
+    TOURNAMENT.active = true;
+    TOURNAMENT.champion = null;
+    TOURNAMENT.currentRound = 0;
+    TOURNAMENT.week = (TOURNAMENT.week || 1) + 1;
+    TOURNAMENT.name = aiGenerateTournamentName();
+    // Re-seed with top advertisers
+    aiSeedTournament();
+    aiLog('New tournament started: ' + TOURNAMENT.name, 'good');
+    aiTriggerNotif('tournament-start', {name: TOURNAMENT.name});
+  }
+  // Auto-advance bracket if rounds are complete
+  adminAiAutoAdvanceTournament();
+}
+
+function aiGenerateTournamentName() {
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var now = new Date();
+  var names = ['Championship','Showdown','Battle Royale','Grand Prix','Throwdown','League'];
+  return months[now.getMonth()] + ' ' + names[Math.floor(Math.random() * names.length)];
+}
+
+function aiSeedTournament() {
+  if(!D.advertisers || D.advertisers.length === 0) return;
+  // Seed top 8 advertisers by spend+CTR
+  var topAdvs = D.advertisers.filter(function(a){return a.status==='active';})
+    .sort(function(a,b){return (b.spend||0)+(b.ctr||0)*100 - ((a.spend||0)+(a.ctr||0)*100);})
+    .slice(0, 8);
+  // Build first round
+  for(var r = 0; r < TOURNAMENT.rounds.length; r++) {
+    for(var m = 0; m < TOURNAMENT.rounds[r].matches.length; m++) {
+      TOURNAMENT.rounds[r].matches[m].done = 0;
+      TOURNAMENT.rounds[r].matches[m].winner = null;
+      if(r === 0 && topAdvs[m*2]) {
+        TOURNAMENT.rounds[0].matches[m].a = {
+          em: topAdvs[m*2].em || '&#127970;',
+          name: topAdvs[m*2].name,
+          votes: 0
+        };
+        if(topAdvs[m*2+1]) {
+          TOURNAMENT.rounds[0].matches[m].b = {
+            em: topAdvs[m*2+1].em || '&#127970;',
+            name: topAdvs[m*2+1].name,
+            votes: 0
+          };
+        }
+      }
+    }
+  }
+}
+
+// ── 9. AUTO-NOTIFICATIONS ──
+var AI_NOTIF_QUEUE = [];
+function aiTriggerNotif(type, data) {
+  var messages = {
+    'adv-approved': 'Great news! Your ad "' + (data.title||'') + '" has been approved and is now live on Addtok.',
+    'adv-rejected': 'Your ad "' + (data.title||'') + '" needs some changes: ' + (data.reason||'does not meet our guidelines') + '. Please update and resubmit.',
+    'fraud-flag': 'Security: Unusual activity detected on ad "' + (data.title||'') + '". It has been paused for review.',
+    'adv-inactive': 'Hi ' + (data.name||'') + '. Your Addtok ads have been paused. Top up your balance to get back in front of thousands of users.',
+    'low-engagement': 'Your daily spins are ready! Plus ' + (data.clicks||0) + ' users clicked ads today. Open Addtok to see what is trending.',
+    'tournament-start': 'Brand vs Brand is back! The ' + (data.name||'June Championship') + ' starts now. Vote for your favourite!',
+    'weekly-reset': 'New week, new challenge! Your weekly mission is ready. Complete it to earn 50 bonus points.',
+  };
+  var msg = messages[type] || 'Update from Addtok.';
+  AI_NOTIF_QUEUE.push({type: type, msg: msg, time: new Date(), data: data});
+  AI_ENGINE.stats.notifsSent++;
+  aiLog('Notification queued: ' + type, 'info');
+}
+window.aiTriggerNotif = aiTriggerNotif;
+
+function aiAutoNotifyEvents(){
+  // Process any queued notifications
+  // In production this sends to push service
+  // For now logs and clears queue
+  if(AI_NOTIF_QUEUE && AI_NOTIF_QUEUE.length > 0){
+    aiLog('Notifications queued: '+AI_NOTIF_QUEUE.length, 'info');
+    // Keep last 20 for the notifications page
+    if(AI_NOTIF_QUEUE.length > 20) AI_NOTIF_QUEUE = AI_NOTIF_QUEUE.slice(0,20);
+  }
+}
+window.aiAutoNotifyEvents = aiAutoNotifyEvents;
+
+
+// ── 10. AI ENGINE STATUS - for Health page ──
+function aiEngineStatusHtml() {
+  var statusColor = AI_HEALTH.status==='healthy'?'var(--gr)':AI_HEALTH.status==='warning'?'var(--gd)':'var(--rd)';
+  var statusLabel = AI_HEALTH.status==='healthy'?'All Systems Go':AI_HEALTH.status==='warning'?'Warning':'Critical';
+  var h = '<div class="card" style="border-color:rgba(99,91,255,.3);background:linear-gradient(135deg,rgba(99,91,255,.08),rgba(191,90,242,.05))">'+
+    '<div class="ch"><div class="ct" style="display:flex;align-items:center;gap:8px"><span style="font-size:18px">&#x1F916;</span> Autonomous AI Engine</div>'+
+    '<span class="pill" style="background:rgba(48,209,88,.15);color:var(--gr);border:1px solid rgba(48,209,88,.3)">RUNNING</span></div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">'+
+      '<div style="background:var(--c2);border-radius:10px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:800;color:var(--cy)">'+AI_ENGINE.stats.autoApproved+'</div><div style="font-size:10px;color:var(--t3)">Auto-Approved</div></div>'+
+      '<div style="background:var(--c2);border-radius:10px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:800;color:var(--rd)">'+AI_ENGINE.stats.autoRejected+'</div><div style="font-size:10px;color:var(--t3)">Auto-Rejected</div></div>'+
+      '<div style="background:var(--c2);border-radius:10px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:800;color:var(--gd)">'+AI_ENGINE.stats.fraudBlocked+'</div><div style="font-size:10px;color:var(--t3)">Fraud Blocked</div></div>'+
+      '<div style="background:var(--c2);border-radius:10px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:800;color:var(--pu)">'+AI_ENGINE.stats.notifsSent+'</div><div style="font-size:10px;color:var(--t3)">Notifs Sent</div></div>'+
+    '</div>'+
+    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">'+
+      '<div style="width:8px;height:8px;border-radius:50%;background:'+statusColor+';flex-shrink:0"></div>'+
+      '<div style="font-size:13px;font-weight:700;color:'+statusColor+'">'+statusLabel+'</div>'+
+      '<div style="font-size:11px;color:var(--t3);margin-left:auto">Last run: '+(AI_ENGINE.lastRun?AI_ENGINE.lastRun.toLocaleTimeString():'Not yet')+'</div>'+
+    '</div>';
+  // Show issues
+  if(AI_HEALTH.issues.length > 0) {
+    for(var i = 0; i < AI_HEALTH.issues.length; i++) {
+      var iss = AI_HEALTH.issues[i];
+      h += '<div style="font-size:12px;color:var(--t2);padding:6px 0;border-top:1px solid var(--bo)">&#x26A0;&#xFE0F; '+iss.msg+'</div>';
+    }
+  }
+  // Recent AI logs
+  h += '<div style="margin-top:12px"><div style="font-size:11px;font-weight:700;color:var(--t3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Recent AI Activity</div>';
+  var recentLogs = AI_ENGINE.logs.slice(0, 6);
+  if(recentLogs.length === 0) {
+    h += '<div style="font-size:12px;color:var(--t3)">Engine starting up...</div>';
+  }
+  for(var j = 0; j < recentLogs.length; j++) {
+    var log = recentLogs[j];
+    var logColor = log.type==='good'?'var(--gr)':log.type==='warn'?'var(--gd)':'var(--t3)';
+    h += '<div style="font-size:11px;color:'+logColor+';padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04)">'+log.time+' &nbsp; '+log.msg+'</div>';
+  }
+  h += '</div>';
+  // Manual override button
+  h += '<button onclick="runAiEngine();toast(\'AI engine cycle complete\',\'s\')" style="width:100%;background:linear-gradient(90deg,rgba(99,91,255,.3),rgba(191,90,242,.2));border:1px solid rgba(99,91,255,.4);border-radius:var(--r);padding:10px;color:#a78bfa;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--fb);margin-top:12px">&#x1F916; Run AI Cycle Now</button>';
+  h += '</div>';
+  return h;
+}
+window.aiEngineStatusHtml = aiEngineStatusHtml;
+
+
+// ── FLASH SLOT MANAGEMENT ──
+function fillFlash(slotIdx, advName){
+  if(!D.flash||!D.flash[slotIdx])return;
+  D.flash[slotIdx].adv=advName;
+  D.flash[slotIdx].status='active';
+  D.flash[slotIdx].expiresAt=new Date(Date.now()+24*3600*1000).toISOString();
+  toast('Flash slot filled: '+advName,'s');
+  rp('flash');
+}
+window.fillFlash=fillFlash;
+
+function clearFlash(slotIdx){
+  if(!D.flash||!D.flash[slotIdx])return;
+  D.flash[slotIdx].adv=null;
+  D.flash[slotIdx].status='empty';
+  toast('Flash slot cleared','s');
+  rp('flash');
+}
+window.clearFlash=clearFlash;
+
+// ── OFFERS ──
+function createOffer(){
+  var label=document.getElementById('new-offer-label');
+  var code=document.getElementById('new-offer-code');
+  var val=document.getElementById('new-offer-val');
+  var labelVal=label?label.value.trim():'';
+  var codeVal=code?code.value.trim():'';
+  var valVal=val?parseFloat(val.value)||0:0;
+  if(!labelVal||!codeVal){toast('Please fill in label and code','err');return;}
+  var newId=1;if(OFFERS.length>0){var _ids=[];for(var _oi=0;_oi<OFFERS.length;_oi++)_ids.push(OFFERS[_oi].id);newId=Math.max.apply(null,_ids)+1;}
+  OFFERS.push({id:newId,type:'discount',label:labelVal,code:codeVal,value:valVal,status:'active',users:0,expires:new Date(Date.now()+7*24*3600*1000).toISOString().split('T')[0]});
+  if(label)label.value='';
+  if(code)code.value='';
+  if(val)val.value='';
+  toast('Offer created: '+labelVal,'s');
+  rp('offers');
+}
+window.createOffer=createOffer;
+
+// ── NOTIFICATIONS ──
+function sendNotification(){
+  var input=document.getElementById('notif-draft');
+  var msg=input?input.value.trim():'';
+  if(!msg){toast('Please write a notification first','err');return;}
+  D.stats=D.stats||{};
+  D.stats.notifsSent=(D.stats.notifsSent||0)+1;
+  if(input)input.value='';
+  toast('Notification sent to '+fmt(D.stats.users||0)+' users','s');
+  rp('notifications');
+}
+window.sendNotification=sendNotification;
+
+// ── TOURNAMENT VOTE ──
+function adminCastVote(roundIdx,matchIdx,side){
+  if(!TOURNAMENT||!TOURNAMENT.rounds[roundIdx])return;
+  var match=TOURNAMENT.rounds[roundIdx].matches[matchIdx];
+  if(!match||match.done)return;
+  match[side].votes+=1;
+  var total=match.a.votes+match.b.votes;
+  if(total>=10&&!match.done){
+    match.done=1;
+    var winner=match.a.votes>match.b.votes?match.a:match.b;
+    match.winner=winner.name;
+    toast(winner.name+' wins this match','s');
+    adminAiAutoAdvanceTournament();
+  }
+  rp('tournament');
+}
+window.adminCastVote=adminCastVote;
+window.approveAd=approveAd;window.rejectAd=rejectAd;window.approveAll=approveAll;
+window.markAllRead=markAllRead;window.setStab=setStab;window.toggleSetting=toggleSetting;
+window.openPayout=openPayout;window.closePayout=closePayout;window.confirmPayout=confirmPayout;
+window.toggleSB=toggleSB;window.closeSB=closeSB;
+
+// ── LIVE UPDATES ──
+setInterval(function(){
+  D.revenue.clicks+=Math.random()*.06;
+  if(Math.random()<.3)D.clicks.today++;
+  renderSB();
+  if(curPage==='overview'||curPage==='clicks')renderPage(curPage);
+},5000);
+
+// ── INIT ──
+renderSB();renderMob();renderTicker();renderPage('overview');
+// Start autonomous AI engine
+runAiEngine();
+// Run every 30 seconds
+setInterval(function(){
+  runAiEngine();
+}, 30000);
+renderTicker();renderPage('overview');
+// Start autonomous AI engine
+runAiEngine();
+// Run every 30 seconds
+setInterval(function(){
+  runAiEngine();
+}, 30000);
+</script>
+</body>
+</html>
