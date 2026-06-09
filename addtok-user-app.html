@@ -2,16 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="version" content="1780925105">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Addtok</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' rx='13' fill='%23161830'/%3E%3Ctext x='30' y='37' text-anchor='middle' font-family='DM Sans,Arial Black,sans-serif' font-size='30' font-weight='800' fill='%23ffffff'%3EA%3C/text%3E%3Crect x='8' y='43' width='20' height='4' rx='2' fill='%23FF2D55'/%3E%3Crect x='31' y='43' width='20' height='4' rx='2' fill='%2300e5ff'/%3E%3C/svg%3E">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#1a1a3a;
   --card:#22224a;
@@ -42,7 +35,7 @@ button{cursor:pointer;border:none;background:none;font-family:var(--fb);color:in
 
 /* LAYOUT */
 #app{display:flex;flex-direction:column;height:100dvh}
-.topbar{position:fixed;top:0;left:0;right:0;background:rgba(13,13,26,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;flex-direction:column;z-index:100;overflow:hidden}.topbar-main{display:flex;align-items:center;padding:8px 14px;gap:10px;min-height:52px;width:100%}
+.topbar{position:fixed;top:0;left:0;right:0;background:rgba(13,13,26,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;z-index:100;overflow:hidden}.topbar-main{display:flex;align-items:center;padding:8px 14px;gap:10px;min-height:52px;width:100%}
 .content{flex:1;overflow:hidden;position:relative}
 .page{position:fixed;top:112px;left:0;right:0;bottom:60px;overflow-y:auto;-webkit-overflow-scrolling:touch;display:none}
 .page.active,.page.active,.page.active,.page.on{display:block}
@@ -262,7 +255,7 @@ button{cursor:pointer;border:none;background:none;font-family:var(--fb);color:in
 .sbo{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:90;opacity:0;pointer-events:none;transition:opacity .25s}
 .sbo.on{opacity:1;pointer-events:all}
 .sheet{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-radius:20px 20px 0 0;z-index:91;transform:translateY(100%);transition:transform .3s;padding:20px;max-height:80vh;overflow-y:auto}
-.pts-strip{position:fixed;top:var(--topbar-height,80px);left:0;right:0;background:rgba(13,13,26,.9);backdrop-filter:blur(10px);padding:6px 16px;font-size:12px;font-weight:600;color:rgba(242,242,247,.7);display:flex;align-items:center;gap:6px;z-index:99;border-bottom:1px solid rgba(255,255,255,.05)}
+.pts-strip{position:fixed;top:60px;left:0;right:0;background:rgba(13,13,26,.9);backdrop-filter:blur(10px);padding:6px 16px;font-size:12px;font-weight:600;color:rgba(242,242,247,.7);display:flex;align-items:center;gap:6px;z-index:99;border-bottom:1px solid rgba(255,255,255,.05)}
 .streak-sep{color:rgba(255,255,255,.2)}
 
 .btl{background:var(--card);border:1px solid rgba(99,91,255,.3);border-radius:16px;padding:14px;margin-bottom:12px}
@@ -452,21 +445,13 @@ button{cursor:pointer;border:none;background:none;font-family:var(--fb);color:in
 .rxn-row{display:flex;gap:0;padding:4px 6px 6px;border-top:1px solid var(--bo)}
 
 /* ══ FEATURE: TRENDING TICKER ══ */
-.ticker-wrap{position:fixed;top:108px;left:0;right:0;z-index:98;overflow:hidden;
-  background:linear-gradient(90deg,rgba(255,45,85,.1),rgba(0,229,255,.05));
-  border-bottom:1px solid rgba(255,45,85,.15);height:26px;display:flex;align-items:center}
-.ticker-lbl{flex-shrink:0;font-size:9px;font-weight:800;letter-spacing:1px;
-  color:var(--rd);padding:0 8px 0 10px;border-right:1px solid rgba(255,45,85,.2);
-  white-space:nowrap}
-.ticker-track{flex:1;overflow:hidden}
-.ticker-inner{display:flex;align-items:center;white-space:nowrap;font-size:11px;font-weight:600;color:rgba(242,242,247,.75);animation:tickerScroll 30s linear infinite;padding-left:100vw;will-change:transform}
-.ticker-item{font-size:11px;color:var(--t2);padding:0 20px;flex-shrink:0}
-.ticker-item b{color:var(--tx)}
-/* tickerScroll moved to topbar-ticker-inner */
 
-/* ══ FEATURE: MATCH SCORE ══ */
-.match-badge{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;
-  border-radius:20px;font-size:10px;font-weight:800;flex-shrink:0}
+
+
+
+
+.ticker-item b{color:var(--tx)}
+
 .match-high{background:rgba(48,209,88,.12);color:var(--gr);border:1px solid rgba(48,209,88,.25)}
 .match-med{background:rgba(255,214,10,.1);color:var(--gd);border:1px solid rgba(255,214,10,.2)}
 .match-low{background:rgba(255,255,255,.05);color:var(--t3);border:1px solid var(--bo)}
@@ -501,21 +486,15 @@ button{cursor:pointer;border:none;background:none;font-family:var(--fb);color:in
 
 
 /* ── TICKER ── */
-.ticker{display:none}
-/* ── TICKER STRIP (inside topbar) ── */
-.ticker{display:none}
-.topbar{flex-direction:column;align-items:stretch;padding-bottom:0}
-.topbar-ticker{width:100%;overflow:hidden;max-height:0;height:20px;opacity:0;background:linear-gradient(90deg,rgba(255,45,85,.08),rgba(191,90,242,.05),rgba(0,229,255,.08));border-top:1px solid rgba(255,255,255,.05);transition:max-height .3s,opacity .3s}
-.topbar-ticker-inner{display:inline-block;white-space:nowrap;font-size:10px;font-weight:600;color:rgba(242,242,247,.6);line-height:20px;height:20px;will-change:transform}
+
+
+
+
 .topbar-ticker-inner span{margin-right:40px}
 
-.ticker-inner{display:flex;align-items:center;white-space:nowrap;font-size:11px;font-weight:600;color:rgba(242,242,247,.7);animation:tickerScroll 25s linear infinite;padding-left:100%}
-.ticker-inner span{margin-right:40px}
-/* tickerScroll moved to topbar-ticker-inner */
-.ticker:hover .ticker-inner{animation-play-state:paused}
 
-/* ── FLOATING REACTIONS ── */
-@keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-90px) scale(1.4)}}
+.ticker-inner span{margin-right:40px}
+100%{opacity:0;transform:translateY(-90px) scale(1.4)}}
 .float-rxn{position:absolute;pointer-events:none;z-index:50;animation:floatUp 1.2s ease-out forwards}
 
 /* ── DROPS ── */
@@ -538,9 +517,141 @@ button{cursor:pointer;border:none;background:none;font-family:var(--fb);color:in
 /* ── STREAK MULTIPLIER ── */
 .streak-mult{background:linear-gradient(135deg,var(--gd),rgba(255,159,10,.6));border-radius:20px;padding:2px 8px;font-size:10px;font-weight:800;color:#000;margin-left:6px}
 
+
+/* ── ONBOARDING ── */
+.ob-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.88);transition:opacity .3s}
+.ob-overlay.hide{display:none}
+.ob-sheet{background:#12122a;border-radius:24px 24px 0 0;width:100%;max-width:480px;padding:0 0 32px;overflow:hidden}
+.ob-progress{display:flex;gap:6px;padding:16px 20px 0}
+.ob-dot{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.15);transition:background .3s}
+.ob-dot.active{background:#ff2d55}
+.ob-dot.done{background:rgba(255,45,85,.4)}
+.ob-content{padding:28px 24px 20px;text-align:center}
+.ob-icon{font-size:56px;margin-bottom:16px;display:block}
+.ob-title{font-size:22px;font-weight:900;color:#f2f2f7;margin-bottom:10px;letter-spacing:-.5px;line-height:1.2}
+.ob-body{font-size:14px;color:rgba(242,242,247,.65);line-height:1.6;margin-bottom:24px}
+.ob-earn-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;text-align:left}
+.ob-earn-item{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px}
+.ob-earn-pts{font-size:18px;font-weight:900;color:#ff2d55;margin-bottom:2px}
+.ob-earn-label{font-size:11px;color:rgba(242,242,247,.5);line-height:1.4}
+.ob-btn{width:100%;padding:15px;border:none;border-radius:16px;background:linear-gradient(135deg,#ff2d55,#bf5af2);color:#fff;font-size:16px;font-weight:800;cursor:pointer;font-family:var(--f);transition:opacity .15s,transform .1s}
+.ob-btn:active{opacity:.85;transform:scale(.98)}
+.ob-skip{display:block;text-align:center;margin-top:12px;font-size:13px;color:rgba(242,242,247,.35);cursor:pointer;padding:4px}
+
+
+/* ── AUTH ── */
+.auth-screen{position:fixed;inset:0;z-index:8000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.auth-screen.hide{display:none}
+.auth-logo-wrap{text-align:center;margin-bottom:32px}
+.auth-logo{font-size:36px;font-weight:900;letter-spacing:-2px;color:#fff;line-height:1}
+.auth-bars{display:flex;gap:4px;justify-content:center;margin-top:4px}
+.auth-bar-r{width:48px;height:3px;border-radius:2px;background:#FF2D55;display:block}
+.auth-bar-c{width:42px;height:3px;border-radius:2px;background:#00e5ff;display:block}
+.auth-tagline{font-size:10px;letter-spacing:2.5px;color:rgba(255,255,255,.3);margin-top:6px;text-transform:uppercase}
+.auth-card{background:var(--c1);border:1px solid var(--bo);border-radius:24px;padding:24px;width:100%;max-width:380px}
+.auth-title{font-size:20px;font-weight:900;margin-bottom:4px;letter-spacing:-.5px}
+.auth-sub{font-size:13px;color:var(--t2);margin-bottom:20px}
+.auth-input{width:100%;background:rgba(255,255,255,.05);border:1.5px solid var(--bo);border-radius:14px;padding:13px 16px;font-size:15px;color:var(--tx);font-family:var(--f);margin-bottom:10px;outline:none;transition:border-color .2s;display:block}
+.auth-input:focus{border-color:var(--rd)}
+.auth-btn{width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--rd),var(--pu));color:#fff;font-size:15px;font-weight:800;cursor:pointer;font-family:var(--f);margin-bottom:10px;transition:opacity .15s}
+.auth-btn:active{opacity:.85}
+.auth-btn-ghost{width:100%;padding:14px;border:1.5px solid var(--bo);border-radius:14px;background:transparent;color:var(--tx);font-size:14px;font-weight:700;cursor:pointer;font-family:var(--f);margin-bottom:10px;transition:background .15s}
+.auth-btn-ghost:active{background:rgba(255,255,255,.05)}
+.auth-google{width:100%;padding:13px;border:1.5px solid var(--bo);border-radius:14px;background:rgba(255,255,255,.04);color:var(--tx);font-size:14px;font-weight:700;cursor:pointer;font-family:var(--f);margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:10px}
+.auth-divider{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.auth-divider-line{flex:1;height:1px;background:var(--bo)}
+.auth-divider-txt{font-size:11px;color:var(--t3);font-weight:600}
+.auth-switch{text-align:center;font-size:13px;color:var(--t2);margin-top:4px}
+.auth-switch span{color:var(--rd);font-weight:700;cursor:pointer}
+.auth-guest{text-align:center;font-size:12px;color:var(--t3);margin-top:16px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.auth-err{font-size:12px;color:var(--rd);margin-bottom:8px;min-height:16px;text-align:center}
+
+
+.auth-screen{position:fixed;inset:0;z-index:8000;background:#0d0d1a;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow-y:auto}
+.auth-screen.hide{display:none}
+.auth-logo-wrap{text-align:center;margin-bottom:28px}
+.auth-logo{font-size:34px;font-weight:900;letter-spacing:-2px;color:#fff;line-height:1}
+.auth-bars{display:flex;gap:4px;justify-content:center;margin-top:4px}
+.auth-bar-r{width:46px;height:3px;border-radius:2px;background:#FF2D55;display:block}
+.auth-bar-c{width:40px;height:3px;border-radius:2px;background:#00e5ff;display:block}
+.auth-tagline{font-size:9px;letter-spacing:2.5px;color:rgba(255,255,255,.3);margin-top:5px;text-transform:uppercase}
+.auth-card{background:#12122a;border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:22px;width:100%;max-width:380px}
+.auth-title{font-size:19px;font-weight:900;margin-bottom:3px;letter-spacing:-.5px;color:#f2f2f7}
+.auth-sub{font-size:13px;color:rgba(242,242,247,.6);margin-bottom:18px}
+.auth-input{width:100%;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.08);border-radius:13px;padding:13px 15px;font-size:15px;color:#f2f2f7;font-family:-apple-system,sans-serif;margin-bottom:9px;outline:none;box-sizing:border-box;display:block}
+.auth-input:focus{border-color:#ff2d55}
+.auth-btn{width:100%;padding:14px;border:none;border-radius:13px;background:linear-gradient(135deg,#ff2d55,#bf5af2);color:#fff;font-size:15px;font-weight:800;cursor:pointer;font-family:-apple-system,sans-serif;margin-bottom:9px}
+.auth-btn-ghost{width:100%;padding:13px;border:1.5px solid rgba(255,255,255,.1);border-radius:13px;background:transparent;color:#f2f2f7;font-size:14px;font-weight:700;cursor:pointer;font-family:-apple-system,sans-serif;margin-bottom:9px}
+.auth-google{width:100%;padding:12px;border:1.5px solid rgba(255,255,255,.1);border-radius:13px;background:rgba(255,255,255,.04);color:#f2f2f7;font-size:14px;font-weight:700;cursor:pointer;font-family:-apple-system,sans-serif;margin-bottom:11px;display:flex;align-items:center;justify-content:center;gap:10px;box-sizing:border-box}
+.auth-divider{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.auth-divider-line{flex:1;height:1px;background:rgba(255,255,255,.08)}
+.auth-divider-txt{font-size:11px;color:rgba(242,242,247,.35);font-weight:600}
+.auth-switch{text-align:center;font-size:13px;color:rgba(242,242,247,.5);margin-top:6px}
+.auth-switch b{color:#ff2d55;font-weight:700;cursor:pointer}
+.auth-back{text-align:center;font-size:12px;color:rgba(242,242,247,.3);margin-top:14px;cursor:pointer}
+.auth-err{font-size:12px;color:#ff2d55;margin-bottom:8px;min-height:16px;text-align:center}
+.auth-guest{text-align:center;font-size:12px;color:rgba(242,242,247,.35);margin-top:14px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
 </style>
 </head>
 <body>
+
+<div id="auth-welcome" class="auth-screen">
+  <div class="auth-logo-wrap">
+    <div class="auth-logo">Addtok</div>
+    <div class="auth-bars"><span class="auth-bar-r"></span><span class="auth-bar-c"></span></div>
+    <div class="auth-tagline">add an ad.</div>
+  </div>
+  <div class="auth-card">
+    <div class="auth-title">Vote on ads.<br>Earn rewards.</div>
+    <div class="auth-sub">Join thousands discovering ads they actually want to see.</div>
+    <button class="auth-google" onclick="authGoogle()"><svg width="18" height="18" viewBox="0 0 48 48" style="flex-shrink:0"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> Continue with Google</button>
+    <div class="auth-divider"><div class="auth-divider-line"></div><div class="auth-divider-txt">or</div><div class="auth-divider-line"></div></div>
+    <button class="auth-btn" onclick="showAuthScreen('signup')">Create Account</button>
+    <button class="auth-btn-ghost" onclick="showAuthScreen('login')">Log In</button>
+    <div class="auth-guest" onclick="authGuest()">Continue as Guest</div>
+  </div>
+</div>
+
+<div id="auth-signup" class="auth-screen hide">
+  <div class="auth-logo-wrap">
+    <div class="auth-logo">Addtok</div>
+    <div class="auth-bars"><span class="auth-bar-r"></span><span class="auth-bar-c"></span></div>
+  </div>
+  <div class="auth-card">
+    <div class="auth-title">Create account</div>
+    <div class="auth-sub">Start earning points from day one.</div>
+    <button class="auth-google" onclick="authGoogle()"><svg width="18" height="18" viewBox="0 0 48 48" style="flex-shrink:0"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> Sign up with Google</button>
+    <div class="auth-divider"><div class="auth-divider-line"></div><div class="auth-divider-txt">or</div><div class="auth-divider-line"></div></div>
+    <div class="auth-err" id="signup-err"></div>
+    <input class="auth-input" id="signup-name" type="text" placeholder="Your name">
+    <input class="auth-input" id="signup-email" type="email" placeholder="Email address">
+    <input class="auth-input" id="signup-pw" type="password" placeholder="Password (min 6 chars)">
+    <input class="auth-input" id="signup-pw2" type="password" placeholder="Confirm password">
+    <button class="auth-btn" onclick="doSignup()">Create Account</button>
+    <div class="auth-switch">Already have an account? <b onclick="showAuthScreen('login')">Log in</b></div>
+    <div class="auth-back" onclick="showAuthScreen('welcome')">&#8592; Back</div>
+  </div>
+</div>
+
+<div id="auth-login" class="auth-screen hide">
+  <div class="auth-logo-wrap">
+    <div class="auth-logo">Addtok</div>
+    <div class="auth-bars"><span class="auth-bar-r"></span><span class="auth-bar-c"></span></div>
+  </div>
+  <div class="auth-card">
+    <div class="auth-title">Welcome back</div>
+    <div class="auth-sub">Log in to your account.</div>
+    <button class="auth-google" onclick="authGoogle()"><svg width="18" height="18" viewBox="0 0 48 48" style="flex-shrink:0"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> Continue with Google</button>
+    <div class="auth-divider"><div class="auth-divider-line"></div><div class="auth-divider-txt">or</div><div class="auth-divider-line"></div></div>
+    <div class="auth-err" id="login-err"></div>
+    <input class="auth-input" id="login-email" type="email" placeholder="Email address">
+    <input class="auth-input" id="login-pw" type="password" placeholder="Password">
+    <button class="auth-btn" onclick="doLogin()">Log In</button>
+    <div class="auth-switch">No account? <b onclick="showAuthScreen('signup')">Sign up</b></div>
+    <div class="auth-back" onclick="showAuthScreen('welcome')">&#8592; Back</div>
+  </div>
+</div>
 
 <div class="topbar">
 <div class="topbar-main">
@@ -549,21 +660,18 @@ button{cursor:pointer;border:none;background:none;font-family:var(--fb);color:in
     <div class="tb-bars"><span class="bar-r"></span><span class="bar-c"></span></div>
     <span style="font-size:9px;font-weight:600;letter-spacing:2px;color:rgba(255,255,255,.3);margin-top:1px">add an ad.</span>
   </div>
-  <button id="btn-discover" onclick="openDiscovery()" style="background:rgba(255,45,85,.12);border:1px solid rgba(255,45,85,.3);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;color:var(--rd);cursor:pointer;margin-right:8px;font-family:var(--f)">&#9654; Discover</button>
+  <button id="btn-discover" onclick="openDiscovery()" style="background:rgba(255,45,85,.12);border:1px solid rgba(255,45,85,.3);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;color:var(--rd);cursor:pointer;margin-right:8px">&#x25B6; Discover</button>
   <button id="btn-notif" onclick="go('notifications')" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:50%;width:38px;height:38px;flex-shrink:0;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center">&#128276;</button>
-
 </div>
-<div class="topbar-ticker"><div id="ticker-inner" class="topbar-ticker-inner"></div></div>
 </div>
 <div id="pts-strip" class="pts-strip">
   <span class="pts-icon">&#9733;</span>
   <span id="pts-val">0</span> pts
-  <span class="streak-sep"> | </span>
+  <span style="color:rgba(255,255,255,.2)">|</span>
   <span>&#128293;</span>
-  <span id="streak-val">0</span> day streak<span id="streak-mult-badge" class="streak-mult" style="display:none">1x</span>
+  <span id="streak-val">0</span> day streak
+  <span id="streak-mult-badge" class="streak-mult" style="display:none">1x</span>
 </div>
-
-
 <div id="p-feed" class="page"></div>
 <div id="p-leaderboard" class="page"></div>
 <div id="p-search" class="page"></div>
@@ -575,7 +683,6 @@ button{cursor:pointer;border:none;background:none;font-family:var(--fb);color:in
 <div id="p-support" class="page"></div>
 <div id="p-advertiser" class="page"></div>
 <div id="p-shop" class="page"></div>
-
 <div class="bnav">
   <button class="bn on" id="bn-feed" onclick="go('feed')"><div class="bni">&#9654;</div><div class="bnl">Feed</div></button>
   <button class="bn" id="bn-leaderboard" onclick="go('leaderboard')"><div class="bni">&#127942;</div><div class="bnl">Top</div></button>
@@ -583,12 +690,170 @@ button{cursor:pointer;border:none;background:none;font-family:var(--fb);color:in
   <button class="bn" id="bn-saved" onclick="go('saved')"><div class="bni">&#128278;</div><div class="bnl">Saved</div></button>
   <button class="bn" id="bn-profile" onclick="go('profile')"><div class="bni">&#128100;</div><div class="bnl">Me</div></button>
 </div>
-
 <div id="sbo" class="sbo"></div>
 <div id="sb" class="sheet"></div>
 <div id="vp-overlay" class="vp-overlay"></div>
+<div id="ob-overlay" class="ob-overlay hide" style="display:none">
+  <div class="ob-sheet">
+    <div class="ob-progress">
+      <div class="ob-dot active" id="ob-d1"></div>
+      <div class="ob-dot" id="ob-d2"></div>
+      <div class="ob-dot" id="ob-d3"></div>
+    </div>
+    <div class="ob-content" id="ob-content"></div>
+  </div>
+</div>
 <div id="tc" style="position:fixed;bottom:72px;left:50%;transform:translateX(-50%);z-index:999;pointer-events:none;width:calc(100% - 32px);max-width:340px"></div>
 <script>
+
+function updatePtsDisplay(){
+  var pv=document.getElementById('pts-val');
+  var sv=document.getElementById('streak-val');
+  var mb=document.getElementById('streak-mult-badge');
+  if(pv)pv.textContent=S.pts;
+  if(sv)sv.textContent=S.streak;
+  if(mb){
+    var m=getStreakMultiplier();
+    if(m>1){mb.style.display='inline-block';mb.textContent=m+'x';}
+    else{mb.style.display='none';}
+  }
+}
+window.updatePtsDisplay=updatePtsDisplay;
+
+// ── AUTH SYSTEM ──
+var USERS_KEY='at_users';
+var SESSION_KEY='at_session';
+
+function getUsers(){
+  try{var u=localStorage.getItem(USERS_KEY);return u?JSON.parse(u):{};} catch(e){return {};}
+}
+function saveUsers(users){
+  try{localStorage.setItem(USERS_KEY,JSON.stringify(users));}catch(e){}
+}
+function getSession(){
+  try{var s=localStorage.getItem(SESSION_KEY);return s?JSON.parse(s):null;}catch(e){return null;}
+}
+function saveSession(user){
+  try{localStorage.setItem(SESSION_KEY,JSON.stringify(user));}catch(e){}
+}
+
+function showAuthScreen(name){
+  var screens=['welcome','signup','login'];
+  for(var i=0;i<screens.length;i++){
+    var el=document.getElementById('auth-'+screens[i]);
+    if(el)el.className='auth-screen'+(screens[i]===name?'':' hide');
+  }
+  var errs=['signup-err','login-err'];
+  for(var j=0;j<errs.length;j++){
+    var e=document.getElementById(errs[j]);
+    if(e)e.textContent='';
+  }
+}
+window.showAuthScreen=showAuthScreen;
+
+function authGuest(){
+  S.user={name:'Guest',email:'',isGuest:true};
+  S.showOnboarding=true;
+  hideAllAuthScreens();
+  checkOnboarding();
+}
+window.authGuest=authGuest;
+
+function authGoogle(){
+  // Simulated Google login - in production connect to real Google OAuth
+  var name=prompt('Enter your name (Google login simulation):');
+  if(!name)return;
+  var email=name.toLowerCase().replace(/\s+/g,'.')+Math.floor(Math.random()*100)+'@gmail.com';
+  var user={name:name,email:email,provider:'google',joined:new Date().toISOString(),pts:0};
+  var users=getUsers();
+  users[email]=user;
+  saveUsers(users);
+  saveSession(user);
+  S.user=user;
+  S.showOnboarding=true;
+  hideAllAuthScreens();
+  updatePtsDisplay();
+  checkOnboarding();
+  toast('Welcome '+name+'! \uD83D\uDC4B +10 bonus pts','suc');
+  addPoints(10,'Welcome bonus');
+}
+window.authGoogle=authGoogle;
+
+function doSignup(){
+  var name=(document.getElementById('signup-name')||{}).value||'';
+  var email=(document.getElementById('signup-email')||{}).value||'';
+  var pw=(document.getElementById('signup-pw')||{}).value||'';
+  var pw2=(document.getElementById('signup-pw2')||{}).value||'';
+  var err=document.getElementById('signup-err');
+  if(!name.trim()){err.textContent='Please enter your name';return;}
+  if(!email.match(/^[^@]+@[^@]+\.[^@]+$/)){err.textContent='Please enter a valid email';return;}
+  if(pw.length<6){err.textContent='Password must be at least 6 characters';return;}
+  if(pw!==pw2){err.textContent='Passwords do not match';return;}
+  var users=getUsers();
+  if(users[email]){err.textContent='Email already registered. Log in instead.';return;}
+  var user={name:name.trim(),email:email.toLowerCase(),joined:new Date().toISOString(),pts:0};
+  users[email]=user;
+  saveUsers(users);
+  saveSession(user);
+  S.user=user;
+  S.showOnboarding=true;
+  hideAllAuthScreens();
+  updatePtsDisplay();
+  checkOnboarding();
+  toast('Welcome to Addtok '+name.split(' ')[0]+'! \uD83C\uDF89 +10 bonus pts','suc');
+  addPoints(10,'Welcome bonus');
+}
+window.doSignup=doSignup;
+
+function doLogin(){
+  var email=(document.getElementById('login-email')||{}).value||'';
+  var pw=(document.getElementById('login-pw')||{}).value||'';
+  var err=document.getElementById('login-err');
+  if(!email||!pw){err.textContent='Please fill in all fields';return;}
+  var users=getUsers();
+  var user=users[email.toLowerCase()];
+  if(!user){err.textContent='No account found with that email';return;}
+  // Note: in production use real password hashing
+  saveSession(user);
+  S.user=user;
+  hideAllAuthScreens();
+  updatePtsDisplay();
+  toast('Welcome back '+user.name.split(' ')[0]+'!','suc');
+}
+window.doLogin=doLogin;
+
+function doLogout(){
+  localStorage.removeItem(SESSION_KEY);
+  S.user=null;
+  showAuthScreen('welcome');
+  var screens=['welcome','signup','login'];
+  for(var i=0;i<screens.length;i++){
+    var el=document.getElementById('auth-'+screens[i]);
+    if(el)el.className='auth-screen'+(screens[i]==='welcome'?'':' hide');
+  }
+}
+window.doLogout=doLogout;
+
+function hideAllAuthScreens(){
+  var screens=['welcome','signup','login'];
+  for(var i=0;i<screens.length;i++){
+    var el=document.getElementById('auth-'+screens[i]);
+    if(el)el.className='auth-screen hide';
+  }
+}
+
+function checkAuth(){
+  var session=getSession();
+  if(session){
+    S.user=session;
+    hideAllAuthScreens();
+  } else {
+    // Show welcome screen
+    showAuthScreen('welcome');
+  }
+}
+
+
 var fmt=function(n){return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':n+'';};
 var apr=function(a){return a.vu+a.vd>0?Math.round(a.vu/(a.vu+a.vd)*100):0;};
 var gc={A:'#30d158',B:'#00e5ff',C:'#ffd60a'};
@@ -628,7 +893,7 @@ var ADVS={
   JakeCole:{name:'Jake Cole',handle:'@jakecole',bio:'Fitness influencer. No BS, just results.',color:'#7c3aed',init:'J',ver:1,type:'INFLUENCER'}
 };
 
-var S={pg:'feed',ff:'all',lt:'voted',sq:'',saved:[],voted:{},bought:[],shared:[],ap:null,pts:0,streak:1,rxn:{},rxnVoted:{},reported:{},lastVisit:new Date().toDateString(),dailyVotes:0,dailyVoteDate:'',dailyVisits:{}};
+var S={pg:'feed',ff:'all',lt:'voted',sq:'',saved:[],voted:{},bought:[],shared:[],ap:null,pts:0,streak:1,rxn:{},rxnVoted:{},reported:{},lastVisit:new Date().toDateString(),dailyVotes:0,dailyVoteDate:'',dailyVisits:{},user:null};
 
 // Heat score: weighted combo of votes, reactions, clicks, approval
 function heatScore(ad){
@@ -1058,66 +1323,223 @@ function rSaved(){
 }
 
 function rProfile(){
-  var interests=buildInterestProfile();
-  var totalVotes=0;
-  for(var k in S.voted) totalVotes++;
+  var totalVotes=0; for(var k in S.voted) totalVotes++;
   var totalSaved=S.saved.length;
+  var totalVisits=0; for(var vk in S.dailyVisits) totalVisits++;
+  var user=S.user||{name:'Guest',email:'',isGuest:true};
 
-  var tasteHtml='';
-  if(interests.length>0){
-    tasteHtml='<div style="background:var(--c1);border:1px solid var(--bo);border-radius:14px;padding:14px;margin-bottom:12px">'+
-      '<div style="font-size:13px;font-weight:800;margin-bottom:4px">&#127919; Taste Profile</div>'+
-      '<div style="font-size:11px;color:var(--t3);margin-bottom:10px">Based on your votes and saves</div>'+
-      '<div style="display:flex;gap:6px;flex-wrap:wrap">';
-    for(var ii=0;ii<interests.length;ii++){
-      tasteHtml+='<span style="background:rgba(255,45,85,.1);border:1px solid rgba(255,45,85,.2);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;color:var(--rd)">'+interests[ii]+'</span>';
-    }
-    tasteHtml+='</div></div>';
+  // ── USER HEADER ──
+  var headerHtml='';
+  if(!user.isGuest){
+    var initials=user.name.split(' ').map(function(n){return n[0]||'';}).join('').toUpperCase().slice(0,2)||'?';
+    var avatarColor=user.avatarColor||'linear-gradient(135deg,#ff2d55,#bf5af2)';
+    headerHtml='<div style="background:var(--c1);border:1px solid var(--bo);border-radius:18px;padding:16px;margin-bottom:12px">'+
+      '<div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">'+
+        '<div id="prof-avatar" onclick="openAvatarPicker()" style="width:56px;height:56px;border-radius:50%;background:'+avatarColor+';display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff;flex-shrink:0;cursor:pointer;position:relative">'+
+          initials+
+          '<div style="position:absolute;bottom:0;right:0;width:18px;height:18px;background:var(--c1);border:1.5px solid var(--bo);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px">&#9998;</div>'+
+        '</div>'+
+        '<div style="flex:1;min-width:0">'+
+          '<div id="prof-name" style="font-size:17px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+user.name+'</div>'+
+          '<div style="font-size:12px;color:var(--t2);margin-top:1px">'+user.email+'</div>'+
+          '<div style="font-size:10px;color:var(--t3);margin-top:2px">&#x1F4C5; Joined '+(user.joined?user.joined.slice(0,10):'today')+'</div>'+
+        '</div>'+
+        '<button onclick="openEditProfile()" style="background:rgba(255,255,255,.06);border:1px solid var(--bo);border-radius:10px;padding:7px 12px;font-size:11px;font-weight:700;color:var(--t2);cursor:pointer;font-family:var(--f)">Edit</button>'+
+      '</div>'+
+      // Referral row
+      '<div style="background:rgba(255,214,10,.06);border:1px solid rgba(255,214,10,.15);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px">'+
+        '<div style="flex:1">'+
+          '<div style="font-size:11px;font-weight:800;color:var(--gd)">&#127381; Invite friends — both get 50 pts</div>'+
+          '<div style="font-size:10px;color:var(--t3);margin-top:2px">Your code: <b style="color:var(--gd);letter-spacing:1px">'+getReferralCode(user)+'</b></div>'+
+        '</div>'+
+        '<button onclick="shareReferral()" style="background:rgba(255,214,10,.15);border:1px solid rgba(255,214,10,.3);border-radius:9px;padding:6px 12px;font-size:11px;font-weight:800;color:var(--gd);cursor:pointer;font-family:var(--f)">Share</button>'+
+      '</div>'+
+    '</div>';
+  } else {
+    headerHtml='<div style="background:rgba(255,214,10,.06);border:1px solid rgba(255,214,10,.15);border-radius:18px;padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;gap:12px">'+
+      '<div style="font-size:28px">&#x1F464;</div>'+
+      '<div style="flex:1"><div style="font-size:13px;font-weight:800">Browsing as Guest</div>'+
+      '<div style="font-size:11px;color:var(--t2);margin-top:1px">Create an account to save progress across devices</div></div>'+
+      '<button onclick="showAuthScreen(\'signup\')" style="background:linear-gradient(135deg,var(--rd),var(--pu));border:none;border-radius:10px;padding:7px 12px;font-size:11px;font-weight:800;color:#fff;cursor:pointer;font-family:var(--f)">Sign up</button>'+
+    '</div>';
   }
 
-  var streakColor=S.streak>=7?'var(--gd)':S.streak>=3?'var(--or)':'var(--t3)';
+  // ── STATS ──
+  var statsHtml='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">'+
+    statCard('&#9733;',S.pts,'Points Earned','var(--gd)')+
+    statCard('&#128293;',S.streak,'Day Streak','var(--rd)')+
+    statCard('&#128077;',totalVotes,'Ads Voted','var(--cy)')+
+    statCard('&#128278;',totalSaved,'Ads Saved','var(--pu)')+
+    statCard('&#128279;',totalVisits,'Products Visited','var(--gr)')+
+    statCard('&#127381;',S.bought.length,'Deals Bought','#ff9f0a')+
+  '</div>';
 
-  return '<div style="padding:14px">'+
-    '<div style="background:linear-gradient(135deg,var(--rd),var(--pu));border-radius:18px;padding:20px;margin-bottom:14px;text-align:center">'+
-      '<div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 10px">&#128100;</div>'+
-      '<div style="font-size:17px;font-weight:800;margin-bottom:2px">Addtok User</div>'+
-      '<div style="font-size:12px;color:rgba(255,255,255,.7)">Member since today</div>'+
+  // ── STREAK CALENDAR ──
+  var today=new Date();
+  var calDays='';
+  for(var ci=6;ci>=0;ci--){
+    var d=new Date(today); d.setDate(d.getDate()-ci);
+    var ds=d.toDateString();
+    var visited=S.lastVisit===ds||(S.dailyVisits&&Object.keys(S.dailyVisits).some(function(k){return k;}));
+    var isToday=ci===0;
+    var active=ci<S.streak;
+    calDays+='<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">'+
+      '<div style="width:28px;height:28px;border-radius:50%;background:'+(active?'var(--rd)':'rgba(255,255,255,.06)')+';border:1.5px solid '+(isToday?'var(--rd)':'transparent')+';display:flex;align-items:center;justify-content:center;font-size:12px">'+(active?'&#128293;':'')+'</div>'+
+      '<div style="font-size:9px;color:'+(isToday?'var(--tx)':'var(--t3)')+'">'+['S','M','T','W','T','F','S'][d.getDay()]+'</div>'+
+    '</div>';
+  }
+  var mult=getStreakMultiplier();
+  var streakHtml='<div style="background:var(--c1);border:1px solid var(--bo);border-radius:14px;padding:14px;margin-bottom:12px">'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'+
+      '<div style="font-size:13px;font-weight:800">&#128293; Daily Streak</div>'+
+      '<div style="background:linear-gradient(135deg,var(--gd),rgba(255,159,10,.7));border-radius:20px;padding:3px 10px;font-size:11px;font-weight:800;color:#000">'+mult+'x multiplier</div>'+
     '</div>'+
-    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">'+
-      '<div style="background:var(--c1);border:1px solid var(--bo);border-radius:12px;padding:12px;text-align:center">'+
-        '<div style="font-size:22px;font-weight:800;color:var(--cy)">'+S.pts+'</div>'+
-        '<div style="font-size:10px;color:var(--t3);margin-top:2px">POINTS</div>'+
-      '</div>'+
-      '<div style="background:var(--c1);border:1px solid var(--bo);border-radius:12px;padding:12px;text-align:center">'+
-        '<div style="font-size:22px;font-weight:800;color:'+streakColor+'">'+S.streak+'</div>'+
-        '<div style="font-size:10px;color:var(--t3);margin-top:2px">DAY STREAK</div>'+
-      '</div>'+
-      '<div style="background:var(--c1);border:1px solid var(--bo);border-radius:12px;padding:12px;text-align:center">'+
-        '<div style="font-size:22px;font-weight:800;color:var(--gd)">'+totalVotes+'</div>'+
-        '<div style="font-size:10px;color:var(--t3);margin-top:2px">VOTES CAST</div>'+
-      '</div>'+
+    '<div style="display:flex;gap:4px;margin-bottom:8px">'+calDays+'</div>'+
+    '<div style="font-size:11px;color:var(--t3)">'+
+      (S.streak>=30?'&#x1F451; 30+ day streak! Max multiplier unlocked.':
+       S.streak>=14?'&#x1F525; '+(30-S.streak)+' days to 3x multiplier':
+       S.streak>=7?'&#x26A1; '+(14-S.streak)+' days to 2x multiplier':
+       '&#x1F4A1; Reach 7 days for a 1.5x points multiplier')+
     '</div>'+
-    tasteHtml+
-    '<div style="background:var(--c1);border:1px solid var(--bo);border-radius:14px;overflow:hidden;margin-bottom:12px">'+
-      menuItem('&#127942;','Leaderboard','See top ads this week',"go('leaderboard')")+
-      menuItem('&#9878;&#65039;','Spin the Ad','3 free spins daily',"go('spin')")+
-      menuItem('&#9876;&#65039;','Tournament','Vote in Brand vs Brand',"go('tournament')")+
-      menuItem('&#127377;','Marketplace','Spend points on rewards',"go('shop')")+
-      menuItem('&#129302;','AI Support','Chat with Addtok AI',"go('support')")+
-    '</div>'+
-    '<div style="background:var(--c1);border:1px solid var(--bo);border-radius:14px;overflow:hidden;margin-bottom:12px">'+
-      menuItem('&#128227;','Advertise on Addtok','Get your brand in front of thousands',"go('advertiser')")+
-    '</div>'+
-    '<div style="text-align:center;padding:8px 0 4px">'+
-      '<div style="font-size:20px;font-weight:800;letter-spacing:-1px;color:#fff">Addtok</div>'+
-      '<div style="display:flex;gap:3px;justify-content:center;margin:3px 0">'+
-        '<span style="width:36px;height:2px;border-radius:2px;background:var(--rd);display:block"></span>'+
-        '<span style="width:32px;height:2px;border-radius:2px;background:var(--cy);display:block"></span>'+
-      '</div>'+
-      '<div style="font-size:10px;color:var(--t3)">add an ad. &middot; addtok.online</div>'+
+  '</div>';
+
+  // ── ACHIEVEMENTS ──
+  var BADGES=[
+    {id:'first_vote',icon:'&#x1F5F3;',name:'First Vote',desc:'Cast your first vote',check:function(){return totalVotes>=1;}},
+    {id:'voter10',icon:'&#x1F4CA;',name:'Power Voter',desc:'Vote on 10 ads',check:function(){return totalVotes>=10;}},
+    {id:'streak7',icon:'&#x1F525;',name:'On Fire',desc:'7-day streak',check:function(){return S.streak>=7;}},
+    {id:'streak30',icon:'&#x1F451;',name:'Dedicated',desc:'30-day streak',check:function(){return S.streak>=30;}},
+    {id:'pts100',icon:'&#x2B50;',name:'Point Collector',desc:'Earn 100 points',check:function(){return S.pts>=100;}},
+    {id:'pts500',icon:'&#x1F48E;',name:'High Earner',desc:'Earn 500 points',check:function(){return S.pts>=500;}},
+    {id:'saver5',icon:'&#x1F516;',name:'Bookworm',desc:'Save 5 ads',check:function(){return totalSaved>=5;}},
+    {id:'deal_hunter',icon:'&#x1F3F7;',name:'Deal Hunter',desc:'Buy your first deal',check:function(){return S.bought.length>=1;}},
+    {id:'sharer',icon:'&#x1F517;',name:'Connector',desc:'Share your first ad',check:function(){return S.shared.length>=1;}},
+    {id:'collab',icon:'&#x1F91D;',name:'Collaborator',desc:'Request a collab',check:function(){return false;}},
+  ];
+  var badgesHtml='<div style="background:var(--c1);border:1px solid var(--bo);border-radius:14px;padding:14px;margin-bottom:12px">'+
+    '<div style="font-size:13px;font-weight:800;margin-bottom:10px">&#x1F3C6; Achievements <span style="font-size:11px;font-weight:600;color:var(--t3)">'+BADGES.filter(function(b){return b.check();}).length+'/'+BADGES.length+' unlocked</span></div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
+  for(var bi=0;bi<BADGES.length;bi++){
+    var b=BADGES[bi]; var unlocked=b.check();
+    badgesHtml+='<div style="background:'+(unlocked?'rgba(255,214,10,.08)':'rgba(255,255,255,.03)')+';border:1px solid '+(unlocked?'rgba(255,214,10,.25)':'rgba(255,255,255,.06)')+';border-radius:11px;padding:10px;display:flex;align-items:center;gap:8px">'+
+      '<div style="font-size:22px;opacity:'+(unlocked?'1':'.3')+'">'+b.icon+'</div>'+
+      '<div><div style="font-size:11px;font-weight:800;color:'+(unlocked?'var(--gd)':'var(--t3)')+'">'+b.name+'</div>'+
+      '<div style="font-size:10px;color:var(--t3)">'+b.desc+'</div></div>'+
+    '</div>';
+  }
+  badgesHtml+='</div></div>';
+
+  // ── NOTIFICATIONS ──
+  var notifHtml='<div style="background:var(--c1);border:1px solid var(--bo);border-radius:14px;padding:14px;margin-bottom:12px">'+
+    '<div style="font-size:13px;font-weight:800;margin-bottom:10px">&#x1F514; Notifications</div>'+
+    notifToggle('notif-drops','New Drops','Alert me when limited drops go live',(S.notifPrefs&&S.notifPrefs.drops!==false))+
+    notifToggle('notif-challenge','Weekly Challenge','Remind me about the weekly ad challenge',(S.notifPrefs&&S.notifPrefs.challenge!==false))+
+    notifToggle('notif-points','Points Updates','Notify me when I earn bonus points',(S.notifPrefs&&S.notifPrefs.points!==false))+
+    notifToggle('notif-deals','Exclusive Deals','Alert me about deals expiring soon',(S.notifPrefs&&S.notifPrefs.deals!==false))+
+  '</div>';
+
+  // ── ACCOUNT SETTINGS ──
+  var settingsHtml='<div style="background:var(--c1);border:1px solid var(--bo);border-radius:14px;padding:14px;margin-bottom:12px">'+
+    '<div style="font-size:13px;font-weight:800;margin-bottom:10px">&#x2699;&#xFE0F; Account</div>'+
+    menuItem('&#x1F4D6;','How Addtok Works','Re-watch the intro guide','obShow()')+
+    menuItem('&#x1F6E1;&#xFE0F;','Privacy','Manage your data','')+
+    menuItem('&#x1F4AC;','Give Feedback','Help us improve','toast(\'Thanks for the feedback!\',\'suc\')')+
+    menuItem('&#x1F310;','addtok.online','Visit our website','window.open(\'https://addtok.online\')')+
+    ((!user.isGuest)?menuItem('&#x1F6AA;','Log Out','Sign out of your account','doLogout()'):'')+
+  '</div>';
+
+  return '<div class="page-inner">'+
+    headerHtml+statsHtml+streakHtml+badgesHtml+notifHtml+settingsHtml+
+    '<div style="text-align:center;padding:8px 0 4px;font-size:10px;color:var(--t3)">Addtok v1.0 &middot; addtok.online</div>'+
+  '</div>';
+}
+
+function statCard(icon,val,label,color){
+  return '<div style="background:var(--c1);border:1px solid var(--bo);border-radius:14px;padding:14px;text-align:center">'+
+    '<div style="font-size:13px;margin-bottom:4px">'+icon+'</div>'+
+    '<div style="font-size:22px;font-weight:900;color:'+color+'">'+val+'</div>'+
+    '<div style="font-size:10px;color:var(--t3);font-weight:600;margin-top:2px">'+label+'</div>'+
+  '</div>';
+}
+
+function notifToggle(id,title,desc,on){
+  return '<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05)">'+
+    '<div><div style="font-size:12px;font-weight:700">'+title+'</div><div style="font-size:10px;color:var(--t3)">'+desc+'</div></div>'+
+    '<div onclick="toggleNotif(\''+id+'\')" id="'+id+'" style="width:42px;height:24px;border-radius:12px;background:'+(on?'var(--gr)':'rgba(255,255,255,.1)')+';position:relative;cursor:pointer;transition:background .2s;flex-shrink:0">'+
+      '<div style="position:absolute;top:3px;left:'+(on?'21px':'3px')+';width:18px;height:18px;border-radius:50%;background:#fff;transition:left .2s"></div>'+
     '</div>'+
   '</div>';
 }
+
+function toggleNotif(id){
+  if(!S.notifPrefs)S.notifPrefs={};
+  var key=id.replace('notif-','');
+  S.notifPrefs[key]=!(S.notifPrefs[key]!==false);
+  saveState();
+  rp('profile');
+}
+window.toggleNotif=toggleNotif;
+
+function getReferralCode(user){
+  if(!user||!user.name)return 'ADDTOK50';
+  var base=user.name.toUpperCase().replace(/[^A-Z]/g,'').slice(0,5)||'USER';
+  return base+(user.joined?user.joined.slice(2,4).replace(/-/g,''):'25');
+}
+
+function shareReferral(){
+  var user=S.user||{};
+  var code=getReferralCode(user);
+  var msg='Join Addtok and earn points voting on ads! Use my code '+code+' for 50 bonus pts: https://addtok.online';
+  if(navigator.share){navigator.share({title:'Addtok',text:msg});}
+  else{toast('Code '+code+' - share it to earn 50 pts each!','i');}
+}
+window.shareReferral=shareReferral;
+
+function openEditProfile(){
+  var user=S.user||{};
+  var name=prompt('Edit display name:',user.name||'');
+  if(name&&name.trim()){
+    S.user.name=name.trim();
+    var users=getUsers();
+    if(users[user.email]){users[user.email].name=name.trim();saveUsers(users);}
+    saveSession(S.user);
+    rp('profile');
+    toast('Profile updated!','suc');
+  }
+}
+window.openEditProfile=openEditProfile;
+
+var AVATAR_COLORS=[
+  'linear-gradient(135deg,#ff2d55,#bf5af2)',
+  'linear-gradient(135deg,#00e5ff,#30d158)',
+  'linear-gradient(135deg,#ffd60a,#ff9f0a)',
+  'linear-gradient(135deg,#0891b2,#635bff)',
+  'linear-gradient(135deg,#ff6b00,#ff2d55)',
+  'linear-gradient(135deg,#30d158,#00e5ff)',
+];
+
+function openAvatarPicker(){
+  var html='<div style="padding:16px"><div style="font-size:14px;font-weight:800;margin-bottom:12px">Choose avatar colour</div><div style="display:flex;gap:10px;flex-wrap:wrap">';
+  for(var ai=0;ai<AVATAR_COLORS.length;ai++){
+    html+='<div onclick="setAvatarColor('+ai+')" style="width:44px;height:44px;border-radius:50%;background:'+AVATAR_COLORS[ai]+';cursor:pointer;border:2px solid '+(S.user&&S.user.avatarColor===AVATAR_COLORS[ai]?'#fff':'transparent')+'"></div>';
+  }
+  html+='</div></div>';
+  var sb=document.getElementById('sb');
+  var sbo=document.getElementById('sbo');
+  if(sb&&sbo){sb.innerHTML=html;sb.style.transform='translateY(0)';sbo.style.opacity='1';sbo.style.pointerEvents='auto';}
+}
+window.openAvatarPicker=openAvatarPicker;
+
+function setAvatarColor(idx){
+  if(!S.user)return;
+  S.user.avatarColor=AVATAR_COLORS[idx];
+  var users=getUsers();
+  if(users[S.user.email]){users[S.user.email].avatarColor=AVATAR_COLORS[idx];saveUsers(users);}
+  saveSession(S.user);
+  closeSheet();
+  rp('profile');
+}
+window.setAvatarColor=setAvatarColor;
 
 function menuItem(icon, label, sub, action){
   return '<div onclick="'+action+'" style="display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid var(--bo);cursor:pointer">'+
@@ -1298,7 +1720,6 @@ function vote(id,dir){
     }
   }
   saveState();
-  buildTicker();
   rp(S.pg);
   aiAutoUpdateLeaderboard();
 }
@@ -2489,7 +2910,6 @@ function startTimers(){
   if(!window._timerStarted){window._timerStarted=true;setInterval(tick,1000);}
   aiWeeklyReset();
   aiCheckTournamentStatus();
-  buildTicker();
 }
 
 // AI AUTO-UPDATE ENGINE
@@ -2738,40 +3158,9 @@ function videoCardHtml(ad){
 
 // ── TRENDING TICKER ──
 var _tickerInt=0;
-function buildTicker(){
-  var el=document.getElementById('ticker-inner');
-  if(!el)return;
-  var sorted=ADS.slice().sort(function(a,b){return (b.vu+b.vd)-(a.vu+a.vd);});
-  var fns=[
-    function(a){return '\uD83D\uDD25 <b>'+a.title+'</b> trending &middot; '+fmt(a.vu+a.vd)+' votes';},
-    function(a){return '\u26A1 <b>'+a.adv+'</b> &middot; '+fmt(a.views)+' views';},
-    function(a){return '\u2B50 <b>'+a.adv+'</b> &middot; '+a.appr+'% community approval';},
-    function(a){return '\uD83D\uDED2 '+fmt(a.bought)+' bought from <b>'+a.adv+'</b> today';},
-  ];
-  var html='';
-  for(var i=0;i<sorted.length&&i<5;i++){
-    html+='<span>'+fns[i%fns.length](sorted[i])+'</span>';
-  }
-  el.innerHTML=html;
-  // Show ticker wrapper now that it has content
-  var wrap=el.parentNode;
-  if(wrap){wrap.style.opacity='1';wrap.style.maxHeight='20px';}
-  // JS-driven scroll
-  var pos=el.parentNode.offsetWidth||360;
-  el.style.transform='translateX('+pos+'px)';
-  if(window._tickerAnim)clearInterval(window._tickerAnim);
-  var speed=0.6;
-  var totalWidth=0;
-  window._tickerAnim=setInterval(function(){
-    totalWidth=totalWidth||el.offsetWidth;
-    pos-=speed;
-    if(pos<-totalWidth)pos=el.parentNode.offsetWidth||360;
-    el.style.transform='translateX('+pos+'px)';
-  },16);
-}
+function buildTicker(){}
 window.buildTicker=buildTicker;
 function startTicker(){
-  buildTicker();
   clearInterval(_tickerInt);
   _tickerInt=setInterval(buildTicker,30000);
 }
@@ -3102,9 +3491,184 @@ function updateTopbarHeight(){
 }
 window.updateTopbarHeight=updateTopbarHeight;
 
+
+// ── ONBOARDING ──
+var OB_STEPS=[
+  {
+    icon:'\uD83D\uDC4B',
+    title:'Welcome to Addtok',
+    body:'The platform where your opinion on ads actually earns you rewards. Vote on ads, earn points, and spend them on real perks.',
+    cta:'Show me how'
+  },
+  {
+    icon:'\u2B50',
+    title:'How you earn points',
+    earnGrid:true,
+    body:'Points stack up fast. Keep a daily streak for bonus multipliers.',
+    cta:'What can I spend them on?'
+  },
+  {
+    icon:'\uD83C\uDFEA',
+    title:'Spend in the Points Shop',
+    body:'Unlock deal codes, ad-free browsing, 2x point boosts, early drop access, and leaderboard badges. Access it from the Me tab.',
+    cta:'Let me explore!'
+  }
+];
+
+var obStep=0;
+
+function obRender(){
+  var s=OB_STEPS[obStep];
+  var dots=['ob-d1','ob-d2','ob-d3'];
+  for(var i=0;i<dots.length;i++){
+    var d=document.getElementById(dots[i]);
+    if(d){d.className='ob-dot'+(i===obStep?' active':i<obStep?' done':'');}
+  }
+  var c=document.getElementById('ob-content');
+  if(!c)return;
+  var html='<div class="ob-icon">'+s.icon+'</div>'+
+    '<div class="ob-title">'+s.title+'</div>';
+  if(s.earnGrid){
+    html+='<div class="ob-earn-grid">'+
+      '<div class="ob-earn-item"><div class="ob-earn-pts">+2 pts</div><div class="ob-earn-label">Vote on an ad<br>(up or down)</div></div>'+
+      '<div class="ob-earn-item"><div class="ob-earn-pts">+10 pts</div><div class="ob-earn-label">Visit a product page</div></div>'+
+      '<div class="ob-earn-item"><div class="ob-earn-pts">+5 pts</div><div class="ob-earn-label">React to an ad<br>(fire, funny, wow)</div></div>'+
+      '<div class="ob-earn-item"><div class="ob-earn-pts">+25 pts</div><div class="ob-earn-label">Share an ad with friends</div></div>'+
+    '</div>';
+  }
+  html+='<div class="ob-body">'+s.body+'</div>'+
+    '<button class="ob-btn" onclick="obNext()">'+s.cta+'</button>'+
+    (obStep===0?'<span class="ob-skip" onclick="obDismiss()">Skip intro</span>':'');
+  c.innerHTML=html;
+}
+
+function obNext(){
+  if(obStep<OB_STEPS.length-1){
+    obStep++;
+    obRender();
+  } else {
+    obDismiss();
+  }
+}
+
+function obDismiss(){
+  var el=document.getElementById('ob-overlay');
+  if(el){el.classList.add('hide');el.style.display='none';}
+  localStorage.setItem('at_ob_v3','1');
+}
+
+function obShow(){
+  var el=document.getElementById('ob-overlay');
+  if(el){el.style.display='flex';el.classList.remove('hide');}
+  obStep=0;
+  obRender();
+}
+
+window.obNext=obNext;
+window.obDismiss=obDismiss;
+window.obShow=obShow;
+
+// Show on first visit (never shown before)
+function checkOnboarding(){
+  if(S.showOnboarding){
+    S.showOnboarding=false;
+    setTimeout(obShow,1000);
+  }
+}
+
+checkAuth();
+updatePtsDisplay();
 go('feed');
-setTimeout(updateTopbarHeight,100);
+
+dateTopbarHeight=updateTopbarHeight;
+
+
+// ── ONBOARDING ──
+var OB_STEPS=[
+  {
+    icon:'\uD83D\uDC4B',
+    title:'Welcome to Addtok',
+    body:'The platform where your opinion on ads actually earns you rewards. Vote on ads, earn points, and spend them on real perks.',
+    cta:'Show me how'
+  },
+  {
+    icon:'\u2B50',
+    title:'How you earn points',
+    earnGrid:true,
+    body:'Points stack up fast. Keep a daily streak for bonus multipliers.',
+    cta:'What can I spend them on?'
+  },
+  {
+    icon:'\uD83C\uDFEA',
+    title:'Spend in the Points Shop',
+    body:'Unlock deal codes, ad-free browsing, 2x point boosts, early drop access, and leaderboard badges. Access it from the Me tab.',
+    cta:'Let me explore!'
+  }
+];
+
+var obStep=0;
+
+function obRender(){
+  var s=OB_STEPS[obStep];
+  var dots=['ob-d1','ob-d2','ob-d3'];
+  for(var i=0;i<dots.length;i++){
+    var d=document.getElementById(dots[i]);
+    if(d){d.className='ob-dot'+(i===obStep?' active':i<obStep?' done':'');}
+  }
+  var c=document.getElementById('ob-content');
+  if(!c)return;
+  var html='<div class="ob-icon">'+s.icon+'</div>'+
+    '<div class="ob-title">'+s.title+'</div>';
+  if(s.earnGrid){
+    html+='<div class="ob-earn-grid">'+
+      '<div class="ob-earn-item"><div class="ob-earn-pts">+2 pts</div><div class="ob-earn-label">Vote on an ad<br>(up or down)</div></div>'+
+      '<div class="ob-earn-item"><div class="ob-earn-pts">+10 pts</div><div class="ob-earn-label">Visit a product page</div></div>'+
+      '<div class="ob-earn-item"><div class="ob-earn-pts">+5 pts</div><div class="ob-earn-label">React to an ad<br>(fire, funny, wow)</div></div>'+
+      '<div class="ob-earn-item"><div class="ob-earn-pts">+25 pts</div><div class="ob-earn-label">Share an ad with friends</div></div>'+
+    '</div>';
+  }
+  html+='<div class="ob-body">'+s.body+'</div>'+
+    '<button class="ob-btn" onclick="obNext()">'+s.cta+'</button>'+
+    (obStep===0?'<span class="ob-skip" onclick="obDismiss()">Skip intro</span>':'');
+  c.innerHTML=html;
+}
+
+function obNext(){
+  if(obStep<OB_STEPS.length-1){
+    obStep++;
+    obRender();
+  } else {
+    obDismiss();
+  }
+}
+
+function obDismiss(){
+  var el=document.getElementById('ob-overlay');
+  if(el){el.classList.add('hide');el.style.display='none';}
+  localStorage.setItem('at_ob_v3','1');
+}
+
+function obShow(){
+  var el=document.getElementById('ob-overlay');
+  if(el){el.style.display='flex';el.classList.remove('hide');}
+  obStep=0;
+  obRender();
+}
+
+window.obNext=obNext;
+window.obDismiss=obDismiss;
+window.obShow=obShow;
+
+// Show on first visit (never shown before)
+function checkOnboarding(){
+  if(S.showOnboarding){
+    S.showOnboarding=false;
+    setTimeout(obShow,1000);
+  }
+}
+
+go('feed');
 
 </script>
 </body>
-</html>
+  </html>
