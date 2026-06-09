@@ -595,7 +595,6 @@ button{cursor:pointer;border:none;background:none;font-family:var(--fb);color:in
 </style>
 </head>
 <body>
-
 <div id="auth-welcome" class="auth-screen">
   <div class="auth-logo-wrap">
     <div class="auth-logo">Addtok</div>
@@ -612,12 +611,8 @@ button{cursor:pointer;border:none;background:none;font-family:var(--fb);color:in
     <div class="auth-guest" onclick="authGuest()">Continue as Guest</div>
   </div>
 </div>
-
 <div id="auth-signup" class="auth-screen hide">
-  <div class="auth-logo-wrap">
-    <div class="auth-logo">Addtok</div>
-    <div class="auth-bars"><span class="auth-bar-r"></span><span class="auth-bar-c"></span></div>
-  </div>
+  <div class="auth-logo-wrap"><div class="auth-logo">Addtok</div><div class="auth-bars"><span class="auth-bar-r"></span><span class="auth-bar-c"></span></div></div>
   <div class="auth-card">
     <div class="auth-title">Create account</div>
     <div class="auth-sub">Start earning points from day one.</div>
@@ -633,12 +628,8 @@ button{cursor:pointer;border:none;background:none;font-family:var(--fb);color:in
     <div class="auth-back" onclick="showAuthScreen('welcome')">&#8592; Back</div>
   </div>
 </div>
-
 <div id="auth-login" class="auth-screen hide">
-  <div class="auth-logo-wrap">
-    <div class="auth-logo">Addtok</div>
-    <div class="auth-bars"><span class="auth-bar-r"></span><span class="auth-bar-c"></span></div>
-  </div>
+  <div class="auth-logo-wrap"><div class="auth-logo">Addtok</div><div class="auth-bars"><span class="auth-bar-r"></span><span class="auth-bar-c"></span></div></div>
   <div class="auth-card">
     <div class="auth-title">Welcome back</div>
     <div class="auth-sub">Log in to your account.</div>
@@ -652,7 +643,6 @@ button{cursor:pointer;border:none;background:none;font-family:var(--fb);color:in
     <div class="auth-back" onclick="showAuthScreen('welcome')">&#8592; Back</div>
   </div>
 </div>
-
 <div class="topbar">
 <div class="topbar-main">
   <div style="display:flex;flex-direction:column;align-items:flex-start;flex:1">
@@ -699,28 +689,13 @@ button{cursor:pointer;border:none;background:none;font-family:var(--fb);color:in
       <div class="ob-dot active" id="ob-d1"></div>
       <div class="ob-dot" id="ob-d2"></div>
       <div class="ob-dot" id="ob-d3"></div>
+      <div class="ob-dot" id="ob-d4"></div>
     </div>
     <div class="ob-content" id="ob-content"></div>
   </div>
 </div>
 <div id="tc" style="position:fixed;bottom:72px;left:50%;transform:translateX(-50%);z-index:999;pointer-events:none;width:calc(100% - 32px);max-width:340px"></div>
 <script>
-
-function updatePtsDisplay(){
-  var pv=document.getElementById('pts-val');
-  var sv=document.getElementById('streak-val');
-  var mb=document.getElementById('streak-mult-badge');
-  if(pv)pv.textContent=S.pts;
-  if(sv)sv.textContent=S.streak;
-  if(mb){
-    var m=getStreakMultiplier();
-    if(m>1){mb.style.display='inline-block';mb.textContent=m+'x';}
-    else{mb.style.display='none';}
-  }
-}
-window.updatePtsDisplay=updatePtsDisplay;
-
-// ── AUTH SYSTEM ──
 var USERS_KEY='at_users';
 var SESSION_KEY='at_session';
 
@@ -894,6 +869,16 @@ var ADVS={
 };
 
 var S={pg:'feed',ff:'all',lt:'voted',sq:'',saved:[],voted:{},bought:[],shared:[],ap:null,pts:0,streak:1,rxn:{},rxnVoted:{},reported:{},lastVisit:new Date().toDateString(),dailyVotes:0,dailyVoteDate:'',dailyVisits:{},user:null};
+function updatePtsDisplay(){
+  var pv=document.getElementById('pts-val');
+  var sv=document.getElementById('streak-val');
+  var mb=document.getElementById('streak-mult-badge');
+  if(pv)pv.textContent=S.pts;
+  if(sv)sv.textContent=S.streak;
+  if(mb){var m=getStreakMultiplier();if(m>1){mb.style.display='inline-block';mb.textContent=m+'x';}else{mb.style.display='none';}}
+}
+window.updatePtsDisplay=updatePtsDisplay;
+
 
 // Heat score: weighted combo of votes, reactions, clicks, approval
 function heatScore(ad){
@@ -3511,6 +3496,13 @@ var OB_STEPS=[
     icon:'\uD83C\uDFEA',
     title:'Spend in the Points Shop',
     body:'Unlock deal codes, ad-free browsing, 2x point boosts, early drop access, and leaderboard badges. Access it from the Me tab.',
+    cta:'Next'
+  },
+  {
+    icon:'\uD83D\uDC64',
+    title:'Your Profile Dashboard',
+    dashGrid:true,
+    body:'Everything about your Addtok account lives in the Me tab. Tap it anytime.',
     cta:'Let me explore!'
   }
 ];
@@ -3519,7 +3511,7 @@ var obStep=0;
 
 function obRender(){
   var s=OB_STEPS[obStep];
-  var dots=['ob-d1','ob-d2','ob-d3'];
+  var dots=['ob-d1','ob-d2','ob-d3','ob-d4'];
   for(var i=0;i<dots.length;i++){
     var d=document.getElementById(dots[i]);
     if(d){d.className='ob-dot'+(i===obStep?' active':i<obStep?' done':'');}
@@ -3534,6 +3526,26 @@ function obRender(){
       '<div class="ob-earn-item"><div class="ob-earn-pts">+10 pts</div><div class="ob-earn-label">Visit a product page</div></div>'+
       '<div class="ob-earn-item"><div class="ob-earn-pts">+5 pts</div><div class="ob-earn-label">React to an ad<br>(fire, funny, wow)</div></div>'+
       '<div class="ob-earn-item"><div class="ob-earn-pts">+25 pts</div><div class="ob-earn-label">Share an ad with friends</div></div>'+
+    '</div>';
+  }
+  if(s.dashGrid){
+    html+='<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;text-align:left">'+
+      '<div style="background:rgba(255,45,85,.08);border:1px solid rgba(255,45,85,.2);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px">'+
+        '<div style="font-size:22px">\uD83D\uDCCA</div>'+
+        '<div><div style="font-size:12px;font-weight:800;color:#f2f2f7">Stats &amp; Streaks</div><div style="font-size:11px;color:rgba(242,242,247,.5)">Track your votes, points earned and daily streak</div></div>'+
+      '</div>'+
+      '<div style="background:rgba(255,214,10,.08);border:1px solid rgba(255,214,10,.2);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px">'+
+        '<div style="font-size:22px">\uD83C\uDFC6</div>'+
+        '<div><div style="font-size:12px;font-weight:800;color:#f2f2f7">Achievements</div><div style="font-size:11px;color:rgba(242,242,247,.5)">Unlock badges as you vote, save and share ads</div></div>'+
+      '</div>'+
+      '<div style="background:rgba(99,91,255,.08);border:1px solid rgba(99,91,255,.2);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px">'+
+        '<div style="font-size:22px">\uD83D\uDC65</div>'+
+        '<div><div style="font-size:12px;font-weight:800;color:#f2f2f7">Refer Friends</div><div style="font-size:11px;color:rgba(242,242,247,.5)">Share your invite code — both get 50 bonus pts</div></div>'+
+      '</div>'+
+      '<div style="background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px">'+
+        '<div style="font-size:22px">\u2699\uFE0F</div>'+
+        '<div><div style="font-size:12px;font-weight:800;color:#f2f2f7">Settings &amp; Notifications</div><div style="font-size:11px;color:rgba(242,242,247,.5)">Manage alerts, privacy and account details</div></div>'+
+      '</div>'+
     '</div>';
   }
   html+='<div class="ob-body">'+s.body+'</div>'+
@@ -3579,96 +3591,6 @@ function checkOnboarding(){
 checkAuth();
 updatePtsDisplay();
 go('feed');
-
-dateTopbarHeight=updateTopbarHeight;
-
-
-// ── ONBOARDING ──
-var OB_STEPS=[
-  {
-    icon:'\uD83D\uDC4B',
-    title:'Welcome to Addtok',
-    body:'The platform where your opinion on ads actually earns you rewards. Vote on ads, earn points, and spend them on real perks.',
-    cta:'Show me how'
-  },
-  {
-    icon:'\u2B50',
-    title:'How you earn points',
-    earnGrid:true,
-    body:'Points stack up fast. Keep a daily streak for bonus multipliers.',
-    cta:'What can I spend them on?'
-  },
-  {
-    icon:'\uD83C\uDFEA',
-    title:'Spend in the Points Shop',
-    body:'Unlock deal codes, ad-free browsing, 2x point boosts, early drop access, and leaderboard badges. Access it from the Me tab.',
-    cta:'Let me explore!'
-  }
-];
-
-var obStep=0;
-
-function obRender(){
-  var s=OB_STEPS[obStep];
-  var dots=['ob-d1','ob-d2','ob-d3'];
-  for(var i=0;i<dots.length;i++){
-    var d=document.getElementById(dots[i]);
-    if(d){d.className='ob-dot'+(i===obStep?' active':i<obStep?' done':'');}
-  }
-  var c=document.getElementById('ob-content');
-  if(!c)return;
-  var html='<div class="ob-icon">'+s.icon+'</div>'+
-    '<div class="ob-title">'+s.title+'</div>';
-  if(s.earnGrid){
-    html+='<div class="ob-earn-grid">'+
-      '<div class="ob-earn-item"><div class="ob-earn-pts">+2 pts</div><div class="ob-earn-label">Vote on an ad<br>(up or down)</div></div>'+
-      '<div class="ob-earn-item"><div class="ob-earn-pts">+10 pts</div><div class="ob-earn-label">Visit a product page</div></div>'+
-      '<div class="ob-earn-item"><div class="ob-earn-pts">+5 pts</div><div class="ob-earn-label">React to an ad<br>(fire, funny, wow)</div></div>'+
-      '<div class="ob-earn-item"><div class="ob-earn-pts">+25 pts</div><div class="ob-earn-label">Share an ad with friends</div></div>'+
-    '</div>';
-  }
-  html+='<div class="ob-body">'+s.body+'</div>'+
-    '<button class="ob-btn" onclick="obNext()">'+s.cta+'</button>'+
-    (obStep===0?'<span class="ob-skip" onclick="obDismiss()">Skip intro</span>':'');
-  c.innerHTML=html;
-}
-
-function obNext(){
-  if(obStep<OB_STEPS.length-1){
-    obStep++;
-    obRender();
-  } else {
-    obDismiss();
-  }
-}
-
-function obDismiss(){
-  var el=document.getElementById('ob-overlay');
-  if(el){el.classList.add('hide');el.style.display='none';}
-  localStorage.setItem('at_ob_v3','1');
-}
-
-function obShow(){
-  var el=document.getElementById('ob-overlay');
-  if(el){el.style.display='flex';el.classList.remove('hide');}
-  obStep=0;
-  obRender();
-}
-
-window.obNext=obNext;
-window.obDismiss=obDismiss;
-window.obShow=obShow;
-
-// Show on first visit (never shown before)
-function checkOnboarding(){
-  if(S.showOnboarding){
-    S.showOnboarding=false;
-    setTimeout(obShow,1000);
-  }
-}
-
-go('feed');
-
 </script>
 </body>
   </html>
