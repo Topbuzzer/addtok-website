@@ -2,1245 +2,708 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Addtok — Advertiser Dashboard</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' rx='13' fill='%23161830'/%3E%3Ctext x='30' y='37' text-anchor='middle' font-family='DM Sans,Arial Black,sans-serif' font-size='30' font-weight='800' fill='%23ffffff'%3EA%3C/text%3E%3Crect x='8' y='43' width='20' height='4' rx='2' fill='%23FF2D55'/%3E%3Crect x='31' y='43' width='20' height='4' rx='2' fill='%2300e5ff'/%3E%3C/svg%3E">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0d0d1a;--bg2:#12121f;--card:#1a1a3a;--card2:#1e1e3e;
-  --border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.12);
-  --text:#f2f2f7;--t2:rgba(242,242,247,.7);--t3:rgba(242,242,247,.4);
-  --red:#FF2D55;--cyan:#00e5ff;--gold:#ffd60a;--green:#30d158;
-  --pu:#bf5af2;--or:#ff9f0a;--blue:#0a84ff;
-  --r:10px;--r2:16px;--r3:20px;
-  --fb:'DM Sans',sans-serif;
-  --nav-h:64px;
+  --bg:#0d0d1a;--c1:#12122a;--card:#12122a;--c2:#1a1a38;
+  --rd:#ff2d55;--cy:#00e5ff;--pu:#bf5af2;--gd:#ffd60a;--gr:#30d158;
+  --tx:#f2f2f7;--t2:rgba(242,242,247,.65);--t3:rgba(242,242,247,.38);
+  --bo:rgba(255,255,255,.08);--border:rgba(255,255,255,.08);
+  --r:12px;--r2:14px;
+  --f:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
 }
-body{background:var(--bg);color:var(--text);font-family:var(--fb);min-height:100vh;overflow-x:hidden}
-
-/* ── TOPBAR ── */
-.topbar{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(13,13,26,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:12px;z-index:100}
-.tb-logo{display:flex;flex-direction:column;align-items:flex-start;gap:1px;flex-shrink:0}
-.tb-logo-text{font-size:20px;font-weight:800;letter-spacing:-1px;color:#fff;line-height:1}
-.tb-logo-bars{display:flex;gap:2px}
-.tb-logo-bars span:first-child{width:36px;height:2.5px;border-radius:2px;background:var(--red)}
-.tb-logo-bars span:last-child{width:34px;height:2.5px;border-radius:2px;background:var(--cyan)}
-.tb-brand{flex:1;font-size:13px;font-weight:700;color:var(--t2);padding:6px 12px;background:var(--card);border-radius:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tb-brand span{color:var(--text)}
-.tb-notif{width:36px;height:36px;border-radius:50%;background:var(--card);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;position:relative;flex-shrink:0}
-.tb-notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--red);border:2px solid var(--bg)}
-.tb-menu{width:36px;height:36px;border-radius:50%;background:var(--card);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-
-/* ── BOTTOM NAV ── */
-.bnav{position:fixed;bottom:0;left:0;right:0;height:64px;background:rgba(13,13,26,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;z-index:100;padding:0 4px}
-.bn{flex:1;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;cursor:pointer;padding:8px 0;transition:opacity .15s}
-.bn-icon{font-size:20px;line-height:1}
-.bn-lbl{font-size:9px;font-weight:600;color:var(--t3);letter-spacing:.3px;text-transform:uppercase}
-.bn.active .bn-lbl{color:var(--red)}
-.bn.active .bn-icon{filter:drop-shadow(0 0 6px var(--red))}
-.bn-indicator{width:4px;height:4px;border-radius:50%;background:var(--red);opacity:0;margin-top:-2px}
-.bn.active .bn-indicator{opacity:1}
-
-/* ── MAIN ── */
-.main{margin-top:var(--nav-h);margin-bottom:72px;padding:16px}
-.page{display:none}.page.active{display:block}
-
-/* ── CARDS ── */
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-bottom:14px}
-.card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.card-title{font-size:14px;font-weight:700}
-.card-sub{font-size:11px;color:var(--t3);margin-top:2px}
-
-/* ── STAT CARDS ── */
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:14px}
-.stat-val{font-size:26px;font-weight:800;line-height:1;margin-bottom:4px}
-.stat-lbl{font-size:11px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-.stat-trend{font-size:11px;margin-top:5px;font-weight:600}
-.stat-bar{height:3px;border-radius:2px;margin-top:10px;background:var(--border)}
-.stat-bar-fill{height:100%;border-radius:2px}
-
-/* ── PILLS ── */
-.pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.3px}
-.pill-live{background:rgba(48,209,88,.15);color:#30d158;border:1px solid rgba(48,209,88,.3)}
-.pill-pending{background:rgba(255,214,10,.15);color:#ffd60a;border:1px solid rgba(255,214,10,.3)}
-.pill-paused{background:rgba(255,159,10,.15);color:#ff9f0a;border:1px solid rgba(255,159,10,.3)}
-.pill-rejected{background:rgba(255,45,85,.15);color:#ff2d55;border:1px solid rgba(255,45,85,.3)}
-.pill-ai{background:rgba(191,90,242,.15);color:#bf5af2;border:1px solid rgba(191,90,242,.3)}
-
-/* ── CHART ── */
-.bar-chart{display:flex;align-items:flex-end;gap:4px;height:80px;margin-bottom:6px}
-.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
-.bar{width:100%;border-radius:4px 4px 0 0;min-height:4px;transition:height .3s}
-.bar-lbl{font-size:9px;color:var(--t3);text-align:center}
-
-/* ── TABLES ── */
-.tbl{width:100%;border-collapse:collapse}
-.tbl th{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;padding:8px 0;text-align:left;border-bottom:1px solid var(--border)}
-.tbl td{padding:12px 0;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle}
-.tbl tr:last-child td{border-bottom:none}
-
-/* ── BUTTONS ── */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border-radius:var(--r);border:none;cursor:pointer;font-family:var(--fb);font-size:13px;font-weight:700;transition:all .15s}
-.btn-primary{background:linear-gradient(135deg,var(--red),#d4004a);color:#fff;width:100%;padding:14px;border-radius:var(--r2);font-size:15px}
-.btn-secondary{background:var(--card2);color:var(--text);border:1px solid var(--border2)}
-.btn-sm{padding:6px 12px;font-size:11px;border-radius:8px}
-.btn-danger{background:rgba(255,45,85,.1);color:var(--red);border:1px solid rgba(255,45,85,.3)}
-.btn-green{background:rgba(48,209,88,.1);color:var(--green);border:1px solid rgba(48,209,88,.3)}
-.btn-row{display:flex;gap:8px}
-
-/* ── AI PANEL ── */
-.ai-panel{background:linear-gradient(135deg,rgba(99,91,255,.12),rgba(191,90,242,.08));border:1px solid rgba(99,91,255,.25);border-radius:var(--r2);padding:14px;margin-bottom:14px}
-.ai-panel-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.ai-panel-icon{font-size:20px}
-.ai-panel-title{font-size:13px;font-weight:700}
-.ai-panel-body{font-size:12px;color:var(--t2);line-height:1.7}
-.ai-btn{background:linear-gradient(90deg,rgba(99,91,255,.3),rgba(191,90,242,.2));border:1px solid rgba(99,91,255,.4);border-radius:var(--r);padding:8px 14px;color:#a78bfa;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--fb);margin-top:10px;width:100%}
-
-/* ── AD CARD ── */
-.ad-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:14px;margin-bottom:10px;display:flex;flex-direction:column;gap:10px}
-.ad-card-top{display:flex;align-items:flex-start;gap:12px}
-.ad-em{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.ad-info{flex:1;min-width:0}
-.ad-title{font-size:14px;font-weight:700;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ad-meta{font-size:11px;color:var(--t3)}
-.ad-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.ad-stat{background:var(--card2);border-radius:8px;padding:8px 6px;text-align:center}
-.ad-stat-val{font-size:14px;font-weight:800}
-.ad-stat-lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.3px}
-.ad-actions{display:flex;gap:8px}
-
-/* ── DONUT / BREAKDOWN ── */
-.breakdown{display:flex;flex-direction:column;gap:8px}
-.br-row{display:flex;align-items:center;gap:8px}
-.br-label{font-size:12px;color:var(--t2);width:90px;flex-shrink:0}
-.br-bar{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
-.br-fill{height:100%;border-radius:4px}
-.br-val{font-size:12px;font-weight:700;width:36px;text-align:right;flex-shrink:0}
-
-/* ── TIME GRID ── */
-.time-grid{display:flex;gap:2px;margin-bottom:6px}
-.time-col{flex:1;display:flex;flex-direction:column;gap:2px;align-items:center}
-.time-cell{width:100%;height:14px;border-radius:2px}
-.time-col-lbl{font-size:8px;color:var(--t3);margin-top:2px}
-
-/* ── FORM ELEMENTS ── */
-.fi{margin-bottom:14px}
-.fi label{display:block;font-size:11px;font-weight:700;color:var(--t3);margin-bottom:6px;letter-spacing:.3px;text-transform:uppercase}
-.fi input,.fi textarea,.fi select{width:100%;background:var(--card2);border:1.5px solid var(--border);border-radius:var(--r);padding:11px 14px;color:var(--text);font-size:14px;font-family:var(--fb);outline:none;box-sizing:border-box;-webkit-appearance:none}
-.fi input:focus,.fi textarea:focus,.fi select:focus{border-color:var(--red)}
-.fi textarea{min-height:80px;resize:none}
-.range-wrap{position:relative}
-.range-wrap input[type=range]{width:100%;-webkit-appearance:none;height:6px;background:linear-gradient(90deg,var(--red) var(--pct,50%),var(--border) var(--pct,50%));border-radius:3px;border:none;padding:0;outline:none}
-.range-val{font-size:20px;font-weight:800;color:var(--red);text-align:center;margin-bottom:8px}
-
-/* ── INVOICE ROW ── */
-.inv-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
-.inv-row:last-child{border-bottom:none}
-.inv-date{font-size:12px;color:var(--t3)}
-.inv-amt{font-size:14px;font-weight:700}
-
-/* ── SECTION HEADER ── */
-.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.sec-title{font-size:17px;font-weight:800}
-.sec-sub{font-size:12px;color:var(--t3);margin-top:2px}
-
-/* ── LIVE DOT ── */
-.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-right:4px;animation:pulse 1.5s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-
-/* ── TOAST ── */
-.toast-wrap{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:999;pointer-events:none;width:calc(100% - 32px);max-width:340px}
-.tst{border-radius:14px;padding:12px 16px;font-size:13px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:8px;backdrop-filter:blur(20px)}
-.tst.suc{background:rgba(48,209,88,.9);color:#fff}
-.tst.err{background:rgba(255,45,85,.9);color:#fff}
-.tst.info{background:rgba(26,26,58,.95);color:var(--text);border:1px solid var(--border2)}
-@keyframes tIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes tOut{from{opacity:1}to{opacity:0}}
-
-/* ── MODAL ── */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:flex-end;justify-content:center}
-.modal-bg.open{display:flex}
-.modal{background:var(--card);border-radius:var(--r2) var(--r2) 0 0;padding:20px;width:100%;max-width:480px;max-height:80vh;overflow-y:auto}
-.modal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.modal-title{font-size:16px;font-weight:800}
-.modal-close{background:var(--card2);border:none;color:var(--text);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px}
-
-/* ── SIDEBAR ── */
-.sidebar{position:fixed;top:0;left:-280px;width:280px;height:100%;background:var(--bg2);border-right:1px solid var(--border);z-index:150;transition:left .25s;overflow-y:auto;padding:20px 0}
-.sidebar.open{left:0}
-.sb-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:149;display:none}
-.sb-overlay.open{display:block}
-.sb-brand{padding:16px 20px 20px;border-bottom:1px solid var(--border)}
-.sb-brand-name{font-size:18px;font-weight:800}
-.sb-brand-handle{font-size:12px;color:var(--t3);margin-top:2px}
-.sb-plan{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;background:rgba(255,45,85,.15);color:var(--red);border:1px solid rgba(255,45,85,.3);margin-top:8px}
-.sb-nav{padding:12px 0}
-.sb-item{display:flex;align-items:center;gap:12px;padding:12px 20px;font-size:14px;font-weight:600;color:var(--t2);cursor:pointer;transition:all .15s}
-.sb-item:hover,.sb-item.active{background:rgba(255,45,85,.08);color:var(--text)}
-.sb-item.active{border-right:3px solid var(--red)}
-.sb-icon{font-size:18px;width:24px;text-align:center}
-.sb-divider{height:1px;background:var(--border);margin:8px 20px}
-
-/* ── MISC ── */
-.empty-state{text-align:center;padding:32px 20px;color:var(--t3)}
-.empty-state .emi{font-size:40px;margin-bottom:10px}
-.heat-badge{display:inline-flex;align-items:center;gap:3px;background:rgba(255,45,85,.1);border:1px solid rgba(255,45,85,.2);border-radius:20px;padding:2px 8px;font-size:11px;font-weight:700;color:var(--red)}
-.badge-cyan{background:rgba(0,229,255,.1);border-color:rgba(0,229,255,.2);color:var(--cyan)}
-.divider{height:1px;background:var(--border);margin:14px 0}
-.tag{display:inline-block;background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:10px;font-weight:600;color:var(--t2);margin:2px}
+html,body{min-height:100vh;background:var(--bg);color:var(--tx);font-family:var(--f)}
+.topbar{position:fixed;top:0;left:0;right:0;background:rgba(13,13,26,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;z-index:100}
+.logo{font-size:20px;font-weight:900;letter-spacing:-1px;color:#fff}
+.logo-bars{display:flex;gap:3px;margin-top:2px}
+.bar-r{width:38px;height:2.5px;border-radius:2px;background:#FF2D55;display:block}
+.bar-c{width:32px;height:2.5px;border-radius:2px;background:#00e5ff;display:block}
+.main{margin-top:60px;padding:0 0 80px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(13,13,26,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;overflow-x:auto;scrollbar-width:none;z-index:100}
+.nav::-webkit-scrollbar{display:none}
+.ni{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 14px;cursor:pointer;border:none;background:none;color:var(--t3);font-family:var(--f);min-width:60px}
+.ni.on{color:var(--rd)}
+.ni-icon{font-size:18px}
+.ni-lbl{font-size:9px;font-weight:700;letter-spacing:.3px}
+.page{padding:16px;display:none}
+.page.active{display:block}
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.sec-title{font-size:18px;font-weight:900;letter-spacing:-.3px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:14px;margin-bottom:10px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:14px;text-align:center}
+.stat-val{font-size:22px;font-weight:900;margin-bottom:2px}
+.stat-lbl{font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.badge-live{background:rgba(48,209,88,.15);border:1px solid rgba(48,209,88,.3);border-radius:20px;padding:2px 8px;font-size:10px;font-weight:700;color:var(--gr)}
+.badge-pending{background:rgba(255,214,10,.15);border:1px solid rgba(255,214,10,.3);border-radius:20px;padding:2px 8px;font-size:10px;font-weight:700;color:var(--gd)}
+.badge-paused{background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:20px;padding:2px 8px;font-size:10px;font-weight:700;color:var(--t3)}
+.btn{padding:10px 16px;border:none;border-radius:var(--r);font-size:13px;font-weight:700;cursor:pointer;font-family:var(--f)}
+.btn-primary{background:linear-gradient(135deg,var(--rd),var(--pu));color:#fff}
+.btn-sm{padding:6px 12px;font-size:11px}
+.btn-secondary{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--t2)}
+.fi{margin-bottom:10px}
+.fi label{display:block;font-size:12px;font-weight:700;color:var(--t2);margin-bottom:5px}
+.fi input,.fi textarea,.fi select{width:100%;background:rgba(255,255,255,.05);border:1.5px solid var(--border);border-radius:var(--r);padding:11px 13px;font-size:14px;color:var(--tx);font-family:var(--f);outline:none;transition:border-color .2s}
+.fi input:focus,.fi textarea:focus,.fi select:focus{border-color:var(--rd)}
+.fi select option{background:#1a1a38}
+.fi textarea{resize:vertical;min-height:70px}
+.pp-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px}
+.pp-row .lbl{color:var(--t2)}
+.pp-row .val{font-weight:700}
+.chart-bar{background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;height:120px;display:flex;align-items:flex-end;gap:4px;padding:8px}
+.chart-col{flex:1;border-radius:3px 3px 0 0;background:linear-gradient(to top,var(--rd),var(--pu));min-height:4px;transition:height .3s}
+.toast-area{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:9999;pointer-events:none;width:calc(100% - 32px);max-width:340px}
+.toast{background:#1e1e3a;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:600;margin-top:6px;color:var(--tx);animation:slideUp .3s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
-<div class="sb-overlay" id="sbo" onclick="closeSB()"></div>
-<div class="sidebar" id="sb">
-  <div class="sb-brand">
-    <div style="display:flex;flex-direction:column;align-items:flex-start;margin-bottom:14px">
-      <div style="font-size:26px;font-weight:800;letter-spacing:-1px;color:#fff;line-height:1">Addtok</div>
-      <div style="display:flex;gap:2px;margin-top:3px">
-        <span style="width:46px;height:3px;border-radius:2px;background:#FF2D55;display:block"></span>
-        <span style="width:42px;height:3px;border-radius:2px;background:#00e5ff;display:block"></span>
-      </div>
-      <div style="font-size:10px;font-weight:600;letter-spacing:3px;color:rgba(255,255,255,.35);text-transform:lowercase;margin-top:4px">add an ad.</div>
-    </div>
-    <div class="sb-brand-name" id="sb-name">KicksWorld</div>
-    <div class="sb-brand-handle" id="sb-handle">@kicksworld</div>
-    <div class="sb-plan" id="sb-plan">Growth Plan</div>
-  </div>
-  <div class="sb-nav">
-    <div class="sb-item active" onclick="go('overview');closeSB()"><span class="sb-icon">📊</span>Overview</div>
-    <div class="sb-item" onclick="go('ads');closeSB()"><span class="sb-icon">📢</span>My Ads</div>
-    <div class="sb-item" onclick="go('analytics');closeSB()"><span class="sb-icon">📈</span>Analytics</div>
-    <div class="sb-item" onclick="go('billing');closeSB()"><span class="sb-icon">💳</span>Budget &amp; Billing</div>
-    <div class="sb-item" onclick="go('audience');closeSB()"><span class="sb-icon">👥</span>Audience</div>
-    <div class="sb-item" onclick="go('tournament');closeSB()"><span class="sb-icon">⚔️</span>Tournament</div>
-    <div class="sb-divider"></div>
-    <div class="sb-item" onclick="go('settings');closeSB()"><span class="sb-icon">⚙️</span>Settings</div>
-    <div class="sb-item" onclick="toast('Opening support email…','info');closeSB()"><span class="sb-icon">💬</span>Support</div>
-  </div>
-</div>
-
-<!-- TOPBAR -->
 <div class="topbar">
-  <button class="tb-menu" onclick="openSB()">☰</button>
-  <div class="tb-logo">
-    <div class="tb-logo-text">Addtok</div>
-    <div class="tb-logo-bars"><span></span><span></span></div>
-    <div style="font-size:8px;font-weight:600;letter-spacing:2px;color:rgba(255,255,255,.3);text-transform:lowercase;margin-top:1px">add an ad.</div>
+  <div>
+    <div class="logo">Addtok</div>
+    <div class="logo-bars"><span class="bar-r"></span><span class="bar-c"></span></div>
+    <div style="font-size:8px;font-weight:600;letter-spacing:2px;color:rgba(255,255,255,.3);margin-top:3px;text-transform:uppercase">add an ad.</div>
   </div>
-  <div class="tb-brand">Ad Dashboard · <span id="tb-brand-name">KicksWorld</span></div>
-  <button class="tb-notif" onclick="go('alerts')">🔔<span class="tb-notif-dot" id="notif-dot"></span></button>
+  <div style="font-size:11px;color:var(--t3);font-weight:600">Advertiser Dashboard</div>
 </div>
 
-<!-- PAGES -->
 <div class="main">
-  <div class="page" id="p-overview"></div>
-  <div class="page" id="p-ads"></div>
-  <div class="page" id="p-analytics"></div>
-  <div class="page" id="p-billing"></div>
-  <div class="page" id="p-audience"></div>
-  <div class="page" id="p-tournament"></div>
-  <div class="page" id="p-settings"></div>
-  <div class="page" id="p-alerts"></div>
-  <div class="page" id="p-create"></div>
+  <div id="p-overview" class="page"></div>
+  <div id="p-ads" class="page"></div>
+  <div id="p-analytics" class="page"></div>
+  <div id="p-create" class="page"></div>
+  <div id="p-alerts" class="page"></div>
+  <div id="p-schedule" class="page"></div>
+  <div id="p-abtest" class="page"></div>
+  <div id="p-conversions" class="page"></div>
+  <div id="p-billing" class="page"></div>
+  <div id="p-settings" class="page"></div>
 </div>
 
-<!-- BOTTOM NAV -->
-<div class="bnav">
-  <button class="bn active" id="bn-overview" onclick="go('overview')">
-    <div class="bn-icon">📊</div><div class="bn-lbl">Overview</div><div class="bn-indicator"></div>
-  </button>
-  <button class="bn" id="bn-ads" onclick="go('ads')">
-    <div class="bn-icon">📢</div><div class="bn-lbl">My Ads</div><div class="bn-indicator"></div>
-  </button>
-  <button class="bn" id="bn-analytics" onclick="go('analytics')">
-    <div class="bn-icon">📈</div><div class="bn-lbl">Analytics</div><div class="bn-indicator"></div>
-  </button>
-  <button class="bn" id="bn-billing" onclick="go('billing')">
-    <div class="bn-icon">💳</div><div class="bn-lbl">Billing</div><div class="bn-indicator"></div>
-  </button>
-  <button class="bn" id="bn-settings" onclick="go('settings')">
-    <div class="bn-icon">⚙️</div><div class="bn-lbl">Settings</div><div class="bn-indicator"></div>
-  </button>
-</div>
+<nav class="nav">
+  <button class="ni on" id="ni-overview" onclick="go('overview')"><div class="ni-icon">&#x1F4CA;</div><div class="ni-lbl">Overview</div></button>
+  <button class="ni" id="ni-ads" onclick="go('ads')"><div class="ni-icon">&#x1F4E2;</div><div class="ni-lbl">My Ads</div></button>
+  <button class="ni" id="ni-analytics" onclick="go('analytics')"><div class="ni-icon">&#x1F4C8;</div><div class="ni-lbl">Analytics</div></button>
+  <button class="ni" id="ni-create" onclick="go('create')"><div class="ni-icon">&#x2795;</div><div class="ni-lbl">New Ad</div></button>
+  <button class="ni" id="ni-alerts" onclick="go('alerts')"><div class="ni-icon">&#x1F514;</div><div class="ni-lbl">Alerts</div></button>
+  <button class="ni" id="ni-schedule" onclick="go('schedule')"><div class="ni-icon">&#x1F4C5;</div><div class="ni-lbl">Schedule</div></button>
+  <button class="ni" id="ni-billing" onclick="go('billing')"><div class="ni-icon">&#x1F4C3;</div><div class="ni-lbl">Billing</div></button>
+</nav>
 
-<!-- MODALS -->
-<div class="modal-bg" id="modal-topup">
-  <div class="modal">
-    <div class="modal-hd"><div class="modal-title">💳 Top Up Balance</div><button class="modal-close" onclick="closeModal('topup')">✕</button></div>
-    <div class="fi"><label>Amount</label>
-      <select id="topup-amount">
-        <option value="50">£50</option><option value="100" selected>£100</option>
-        <option value="250">£250</option><option value="500">£500</option>
-      </select>
-    </div>
-    <div style="background:var(--card2);border-radius:var(--r);padding:12px;margin-bottom:14px;font-size:12px;color:var(--t3)">
-      💳 Card ending in 4242 will be charged
-    </div>
-    <button class="btn btn-primary" onclick="confirmTopup()">Confirm Top Up</button>
-  </div>
-</div>
+<div class="toast-area" id="toast-area"></div>
 
-<div class="modal-bg" id="modal-budget">
-  <div class="modal">
-    <div class="modal-hd"><div class="modal-title">⚡ Adjust Daily Cap</div><button class="modal-close" onclick="closeModal('budget')">✕</button></div>
-    <div class="range-val" id="budget-display">£<span id="budget-val">45</span>/day</div>
-    <div class="fi">
-      <input type="range" min="5" max="500" value="45" id="budget-slider" oninput="updateBudgetSlider(this.value)" style="width:100%">
-    </div>
-    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-bottom:16px"><span>£5/day</span><span>£500/day</span></div>
-    <div id="budget-ai-tip" style="font-size:12px;color:var(--t2);background:rgba(99,91,255,.1);border:1px solid rgba(99,91,255,.2);border-radius:var(--r);padding:10px;margin-bottom:14px">🤖 AI tip: Your current CTR of 7.3% suggests £45–£60/day would maximise reach without overspending.</div>
-    <button class="btn btn-primary" onclick="saveBudget()">Save Daily Cap</button>
-  </div>
-</div>
-
-<div class="modal-bg" id="modal-edit-ad">
-  <div class="modal">
-    <div class="modal-hd"><div class="modal-title">✏️ Edit Ad</div><button class="modal-close" onclick="closeModal('edit-ad')">✕</button></div>
-    <div class="fi"><label>Ad Title</label><input id="edit-title" placeholder="Ad title"></div>
-    <div class="fi"><label>Description</label><textarea id="edit-desc" placeholder="Ad description"></textarea></div>
-    <div class="fi"><label>Product URL</label><input id="edit-url" placeholder="https://"></div>
-    <div class="fi"><label>&#128230; Stock remaining</label><input id="edit-stock" type="number" min="0" placeholder="Leave blank for unlimited"></div>
-    <div class="fi">
-      <label style="display:flex;align-items:center;gap:6px"><span style="background:rgba(255,45,85,.12);border:1px solid rgba(255,45,85,.3);border-radius:5px;padding:2px 7px;font-size:9px;font-weight:800;color:var(--red)">&#x1F4F9; VIDEO</span>Video URL <span style="color:rgba(255,255,255,.4);font-weight:400;font-size:11px">(optional)</span></label>
-      <input id="edit-video" type="url" placeholder="YouTube / TikTok / Vimeo link...">
-      <div id="evp" style="margin-top:4px;min-height:0"></div>
-    </div>
-    <button class="btn btn-primary" onclick="saveEditAd()" style="margin-top:4px">Save Changes</button>
-  </div>
-</div>
-<div id="tc" class="tct" style="position:fixed;bottom:70px;left:50%;transform:translateX(-50%);z-index:999;pointer-events:none;width:calc(100% - 32px);max-width:340px"></div>
 <script>
-
-// ── DATA ──
-var D = {
-  brand: {name:'KicksWorld', handle:'kicksworld', email:'hello@kicksworld.com', plan:'growth', joined:'March 2026', website:'kicksworld.com'},
-  balance: 127.40,
-  dailyCap: 45,
-  totalSpend: 1842.60,
-  ads: [
-    {id:1,em:'👟',bg:'linear-gradient(135deg,#241340,#3d2462)',title:'Air Phantom X — Limited Drop',url:'https://kicksworld.com/phantom',stock:500,stockLeft:350,videoUrl:'https://www.youtube.com/watch?v=dQw4w9WgXcQ',status:'live',clicks:1247,ctr:7.3,spend:487.20,heat:87,appr:94,views:8420,rxn:{fire:312,funny:48,wow:189,deal:94},budget:45,desc:'Exclusive collab. Only 500 pairs made.'},
-    {id:2,em:'🧢',bg:'linear-gradient(135deg,#1a3040,#2a4060)',title:'Summer Cap Collection 2026',url:'https://kicksworld.com/caps',status:'live',clicks:634,ctr:5.1,spend:198.40,heat:72,appr:88,views:4120,rxn:{fire:198,funny:32,wow:87,deal:143},budget:25,desc:'Fresh summer styles, ships same day.'},
-    {id:3,em:'🔥',bg:'linear-gradient(135deg,#3d1a1a,#5a2020)',title:'Flash Sale — 48 Hours Only',url:'https://kicksworld.com/sale',status:'paused',clicks:892,ctr:9.1,spend:312.00,heat:91,appr:97,views:6240,rxn:{fire:421,funny:18,wow:234,deal:312},budget:60,desc:'Everything must go. Up to 70% off.'},
-    {id:4,em:'✨',bg:'linear-gradient(135deg,#1a2840,#2a3a5a)',title:'KW Loyalty Program Launch',url:'https://kicksworld.com/loyalty',status:'pending',clicks:0,ctr:0,spend:0,heat:0,appr:0,views:0,rxn:{fire:0,funny:0,wow:0,deal:0},budget:30,desc:'Earn points on every purchase.'},
+var D={
+  brand:'KicksWorld',
+  plan:'boost',
+  budget:30,
+  ads:[
+    {id:1,em:'\uD83D\uDC5F',title:'Air Phantom X \u2014 Limited Drop',status:'live',clicks:3210,views:84200,spend:48.60,stock:500,stockLeft:350,drop:1,videoUrl:'https://youtube.com/watch?v=dQw4w9WgXcQ',approval:96,votes:2840,rxn:{fire:247,funny:12,wow:89,deal:156}},
+    {id:2,scheduleStart:'18:00',scheduleEnd:'22:00',em:'\uD83C\uDFAE',title:'NovaBit Gaming Chair Pro',status:'live',clicks:1840,views:52100,spend:31.20,stock:null,stockLeft:null,drop:0,videoUrl:'',approval:87,votes:1200,rxn:{fire:120,funny:45,wow:67,deal:210}},
+    {id:3,em:'\uD83D\uDC84',title:'GlowLab Rose Glow Serum',status:'pending',clicks:0,views:0,spend:0,stock:200,stockLeft:140,drop:0,videoUrl:'',approval:0,votes:0,rxn:{fire:0,funny:0,wow:0,deal:0}},
+    {id:4,em:'\uD83E\uDDE2',title:'UrbanForge Caps Season 4',status:'paused',clicks:890,views:28400,spend:18.90,stock:150,stockLeft:105,drop:1,videoUrl:'',approval:78,votes:650,rxn:{fire:80,funny:20,wow:30,deal:90}}
   ],
-  weekly: [142,198,167,234,189,287,312],
-  monthly: [48,72,91,134,156,198,167,234,189,287,312,487],
-  invoices: [
-    {id:'INV-2026-041',date:'1 Jun 2026',amount:487.20,status:'paid'},
-    {id:'INV-2026-032',date:'1 May 2026',amount:342.80,status:'paid'},
-    {id:'INV-2026-021',date:'1 Apr 2026',amount:198.60,status:'paid'},
-    {id:'INV-2026-012',date:'1 Mar 2026',amount:89.40,status:'paid'},
+  notifs:[
+    {type:'good',read:false,title:'Air Phantom X trending!',body:'Your ad reached 2,840 votes and 96% approval. Highest performing ad this week.',time:'2h ago'},
+    {type:'ai',read:false,title:'AI Recommendation',body:'Boost your budget by 20% today \u2014 high traffic period detected.',time:'4h ago'},
+    {type:'good',read:true,title:'Ad approved',body:'GlowLab Rose Glow Serum has been approved and will go live shortly.',time:'1d ago'},
   ],
-  tournament: {active:true,name:'June Championship',round:'Semi Finals',position:3,votes:5840,leader:'EmmaRay',leaderVotes:8210,prize:'Free Featured Slot (worth £250)',history:[{name:'May Championship',pos:2,prize:'Runner Up Badge'},{name:'April Championship',pos:5,prize:''}]},
-  notifs: [
-    {id:1,msg:'Your ad got 47 new clicks today — best day this week!',time:'2h ago',read:false,type:'good'},
-    {id:2,msg:'AI tip: Your CTR peaks at 7pm — consider increasing cap to £60 tonight',time:'5h ago',read:false,type:'ai'},
-    {id:3,msg:'Flash Sale ad was paused — daily budget reached',time:'Yesterday',read:true,type:'info'},
-    {id:4,msg:'KW Loyalty Program ad submitted — under review',time:'2 days ago',read:true,type:'info'},
+  schedule:{days:[0,1,2,3,4],hours:[0,1,2,3]},
+  abTests:[
+    {id:1,adId:1,variantA:'Air Phantom X \u2014 Limited Drop',variantB:'Air Phantom X \u2014 Only 350 Pairs Left!',clicksA:1240,clicksB:1970,votesA:1200,votesB:1640,complete:false}
   ]
 };
 
-var currentPage = 'overview';
-var editAdId = null;
-
-// ── NAVIGATION ──
-function go(page) {
-  var _pages=document.querySelectorAll('.page');for(var _pi2=0;_pi2<_pages.length;_pi2++){_pages[_pi2].classList.remove('active');}
-  var _bns=document.querySelectorAll('.bn');for(var _bi=0;_bi<_bns.length;_bi++){_bns[_bi].classList.remove('active');}
-  var _sbis=document.querySelectorAll('.sb-item');for(var _si=0;_si<_sbis.length;_si++){_sbis[_si].classList.remove('active');}
-
-  var el = document.getElementById('p-'+page);
-  if (!el) return;
-  el.classList.add('active');
-
-  var bn = document.getElementById('bn-'+page);
-  if (bn) bn.classList.add('active');
-
-  currentPage = page;
-  render(page);
-  window.scrollTo(0,0);
-}
-
-function openSB(){
-  document.getElementById('sb').classList.add('open');
-  document.getElementById('sbo').classList.add('open');
-}
-function closeSB(){
-  document.getElementById('sb').classList.remove('open');
-  document.getElementById('sbo').classList.remove('open');
-}
-window.openSB=openSB;window.closeSB=closeSB;
-
-function openModal(id){document.getElementById('modal-'+id).classList.add('open');}
-function closeModal(id){document.getElementById('modal-'+id).classList.remove('open');}
-window.openModal=openModal;window.closeModal=closeModal;
+function fmt(n){return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':String(n);}
 
 function toast(msg,type){
-  var tc=document.getElementById('tc');if(!tc)return;
-  var el=document.createElement('div');
-  el.className='tst '+(type||'info');
-  el.innerHTML=(type==='suc'?'✅':type==='err'?'❌':'ℹ️')+' '+msg;
-  el.style.animation='tIn .2s ease forwards';
-  tc.appendChild(el);
-  setTimeout(function(){el.style.animation='tOut .2s ease forwards';setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},200);},3000);
+  var area=document.getElementById('toast-area');
+  if(!area)return;
+  var colors={suc:'rgba(48,209,88,.15)',w:'rgba(255,214,10,.15)',i:'rgba(0,229,255,.1)'};
+  var div=document.createElement('div');
+  div.className='toast';
+  div.style.borderColor=type==='suc'?'rgba(48,209,88,.3)':type==='w'?'rgba(255,214,10,.3)':'rgba(0,229,255,.2)';
+  div.style.background=colors[type]||colors.i;
+  div.textContent=msg;
+  area.appendChild(div);
+  setTimeout(function(){div.remove();},3000);
 }
 window.toast=toast;
 
-function fmt(n){n=parseInt(n)||0;return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':String(n);}
-function fm(n){return '£'+parseFloat(n).toFixed(2);}
+function go(page){
+  var pages=document.querySelectorAll('.page');
+  for(var i=0;i<pages.length;i++)pages[i].classList.remove('active');
+  var btns=document.querySelectorAll('.ni');
+  for(var j=0;j<btns.length;j++)btns[j].classList.remove('on');
+  var el=document.getElementById('p-'+page);
+  if(el){el.classList.add('active');el.innerHTML=renderPage(page);}
+  var btn=document.getElementById('ni-'+page);
+  if(btn)btn.classList.add('on');
+}
+window.go=go;
 
-// ── RENDER ──
-function render(page) {
-  var map = {
-    overview: rOverview, ads: rAds, analytics: rAnalytics,
-    billing: rBilling, audience: rAudience, tournament: rTournament,
-    settings: rSettings, alerts: rAlerts, create: rCreate
-  };
-  var el = document.getElementById('p-'+page);
-  if (el && map[page]) el.innerHTML = map[page]();
-
-  // Update notif dot
-  var unread = D.notifs.filter(function(n){return !n.read;}).length;
-  var dot = document.getElementById('notif-dot');
-  if (dot) dot.style.display = unread > 0 ? 'block' : 'none';
-  document.getElementById('tb-brand-name').textContent = D.brand.name;
-  document.getElementById('sb-name').textContent = D.brand.name;
-  document.getElementById('sb-handle').textContent = '@'+D.brand.handle;
-  document.getElementById('sb-plan').textContent = D.brand.plan.charAt(0).toUpperCase()+D.brand.plan.slice(1)+' Plan';
+function renderPage(p){
+  var map={
+    overview:rOverview,ads:rAds,analytics:rAnalytics,
+    create:rCreate,alerts:rAlerts,schedule:rSchedule,
+    abtest:rABTest,conversions:rConversions,billing:rBilling,settings:rSettings
+  ,campaign:rCampaign,scheduling:rScheduling,conversions:rConversions};
+  return map[p]?map[p]():'<div style="padding:20px;color:var(--t3)">Loading...</div>';
 }
 
 // ── OVERVIEW ──
-function rOverview() {
-  var liveAds = D.ads.filter(function(a){return a.status==='live';}).length;
-  var todayClicks = D.weekly[D.weekly.length-1];
-  var totalClicks = D.ads.reduce(function(s,a){return s+a.clicks;},0);
-  var avgCTR = (D.ads.filter(function(a){return a.ctr>0;}).reduce(function(s,a){return s+a.ctr;},0)/Math.max(1,D.ads.filter(function(a){return a.ctr>0;}).length)).toFixed(1);
-  var topAd = D.ads.slice().sort(function(a,b){return b.clicks-a.clicks;})[0];
-
-  var weekMax = Math.max.apply(null, D.weekly);
-  var barsHtml = '';
-  var days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-  for (var i=0;i<D.weekly.length;i++) {
-    var h = Math.round(D.weekly[i]/weekMax*64);
-    var isToday = i===D.weekly.length-1;
-    barsHtml += '<div class="bar-wrap"><div class="bar" style="height:'+h+'px;background:'+(isToday?'var(--red)':'rgba(0,229,255,.5)')+'"></div><div class="bar-lbl">'+days[i]+'</div></div>';
-  }
-
-  var aiTip = aiPerformanceCoach();
-
-  return '<div class="sec-hd" style="margin-bottom:16px">'+
-    '<div><div class="sec-title">Good to see you 👋</div><div class="sec-sub">'+D.brand.name+' · '+D.brand.plan.charAt(0).toUpperCase()+D.brand.plan.slice(1)+' Plan</div></div>'+
-    '<span class="pill pill-live"><span class="live-dot"></span> Live</span>'+
-  '</div>'+
-
-  '<div class="stats-grid">'+
-    '<div class="stat"><div class="stat-val" style="color:var(--cyan)">'+fmt(todayClicks)+'</div><div class="stat-lbl">Clicks Today</div><div class="stat-trend" style="color:var(--green)">↑ 23% vs yesterday</div><div class="stat-bar"><div class="stat-bar-fill" style="width:73%;background:var(--cyan)"></div></div></div>'+
-    '<div class="stat"><div class="stat-val" style="color:var(--gold)">'+fm(D.balance)+'</div><div class="stat-lbl">Balance</div><div class="stat-trend" style="color:var(--t3)">£'+D.dailyCap+'/day cap</div><div class="stat-bar"><div class="stat-bar-fill" style="width:42%;background:var(--gold)"></div></div></div>'+
-    '<div class="stat"><div class="stat-val" style="color:var(--green)">'+avgCTR+'%</div><div class="stat-lbl">Avg CTR</div><div class="stat-trend" style="color:var(--green)">↑ Top 15% of ads</div><div class="stat-bar"><div class="stat-bar-fill" style="width:'+Math.min(100,avgCTR*10)+'%;background:var(--green)"></div></div></div>'+
-    '<div class="stat"><div class="stat-val" style="color:var(--pu)">'+liveAds+'</div><div class="stat-lbl">Live Ads</div><div class="stat-trend" style="color:var(--t3)">'+D.ads.filter(function(a){return a.status==='pending';}).length+' pending review</div><div class="stat-bar"><div class="stat-bar-fill" style="width:'+(liveAds/D.ads.length*100)+'%;background:var(--pu)"></div></div></div>'+
-  '</div>'+
-
-  '<div class="card">'+
-    '<div class="card-hd"><div class="card-title">📅 This Week</div><div style="font-size:11px;color:var(--t3)">'+fmt(D.weekly.reduce(function(s,v){return s+v;},0))+' total clicks</div></div>'+
-    '<div class="bar-chart">'+barsHtml+'</div>'+
-  '</div>'+
-
-  '<div class="ai-panel">'+
-    '<div class="ai-panel-hd"><div class="ai-panel-icon">🤖</div><div><div class="ai-panel-title">AI Performance Coach</div><span class="pill pill-ai">AI</span></div></div>'+
-    '<div class="ai-panel-body">'+aiTip+'</div>'+
-    '<button class="ai-btn" onclick="showAiCoachDetail()">Get Full AI Report →</button>'+
-  '</div>'+
-
-  (topAd ? '<div class="card"><div class="card-hd"><div class="card-title">🏆 Best Performing Ad</div><span class="pill pill-live">Live</span></div>'+
-    '<div class="ad-card-top"><div class="ad-em" style="background:'+topAd.bg+'">'+topAd.em+'</div>'+
-    '<div class="ad-info"><div class="ad-title">'+topAd.title+'</div>'+
-    '<div class="ad-meta">'+fmt(topAd.clicks)+' clicks · '+topAd.ctr+'% CTR · '+fm(topAd.spend)+' spent</div></div></div>'+
-    '<div class="btn-row" style="margin-top:10px"><button class="btn btn-secondary btn-sm" onclick="go(\'ads\')">View All Ads</button><button class="btn btn-secondary btn-sm" onclick="openModal(\'budget\')">Adjust Budget</button></div>'+
-  '</div>' : '') +
-
-  '<div class="card">'+
-    '<div class="card-hd"><div class="card-title">⚡ Quick Actions</div></div>'+
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'+
-      '<button class="btn btn-secondary" onclick="go(\'create\')" style="flex-direction:column;gap:4px;padding:14px"><span style="font-size:20px">➕</span><span style="font-size:11px">New Ad</span></button>'+
-      '<button class="btn btn-secondary" onclick="openModal(\'topup\')" style="flex-direction:column;gap:4px;padding:14px"><span style="font-size:20px">💳</span><span style="font-size:11px">Top Up</span></button>'+
-      '<button class="btn btn-secondary" onclick="openModal(\'budget\')" style="flex-direction:column;gap:4px;padding:14px"><span style="font-size:20px">⚡</span><span style="font-size:11px">Set Cap</span></button>'+
-      '<button class="btn btn-secondary" onclick="go(\'analytics\')" style="flex-direction:column;gap:4px;padding:14px"><span style="font-size:20px">📈</span><span style="font-size:11px">Analytics</span></button>'+
+function rOverview(){
+  var totalClicks=D.ads.reduce(function(s,a){return s+a.clicks;},0);
+  var totalViews=D.ads.reduce(function(s,a){return s+a.views;},0);
+  var totalSpend=D.ads.reduce(function(s,a){return s+a.spend;},0);
+  var liveAds=D.ads.filter(function(a){return a.status==='live';}).length;
+  var avgAppr=Math.round(D.ads.filter(function(a){return a.approval>0;}).reduce(function(s,a){return s+a.approval;},0)/Math.max(1,D.ads.filter(function(a){return a.approval>0;}).length));
+  return '<div style="padding:16px">'+
+    '<div style="margin-bottom:16px"><div style="font-size:11px;color:var(--t3);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Welcome back</div>'+
+    '<div style="font-size:22px;font-weight:900;letter-spacing:-.5px">'+D.brand+'</div>'+
+    '<div style="font-size:12px;color:var(--t3);margin-top:2px">&#x1F4C5; '+D.plan.charAt(0).toUpperCase()+D.plan.slice(1)+' Plan &middot; £'+D.budget+'/day budget</div></div>'+
+    '<div class="stat-grid">'+
+      '<div class="stat"><div class="stat-val" style="color:var(--rd)">'+fmt(totalClicks)+'</div><div class="stat-lbl">Total Clicks</div></div>'+
+      '<div class="stat"><div class="stat-val" style="color:var(--cy)">'+fmt(totalViews)+'</div><div class="stat-lbl">Total Views</div></div>'+
+      '<div class="stat"><div class="stat-val" style="color:var(--gd)">£'+totalSpend.toFixed(2)+'</div><div class="stat-lbl">Total Spend</div></div>'+
+      '<div class="stat"><div class="stat-val" style="color:var(--gr)">'+avgAppr+'%</div><div class="stat-lbl">Avg Approval</div></div>'+
+    '</div>'+
+    '<div class="card">'+
+      '<div style="font-size:13px;font-weight:800;margin-bottom:10px">&#x1F4E2; Active Ads ('+liveAds+')</div>'+
+      D.ads.filter(function(a){return a.status==='live';}).map(function(ad){
+        return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05)">'+
+          '<div style="font-size:24px">'+ad.em+'</div>'+
+          '<div style="flex:1"><div style="font-size:12px;font-weight:700">'+ad.title+'</div>'+
+          '<div style="font-size:10px;color:var(--t3)">'+fmt(ad.clicks)+' clicks &middot; '+fmt(ad.votes)+' votes &middot; '+ad.approval+'% approval</div></div>'+
+          '<div class="badge-live">live</div>'+
+        '</div>';
+      }).join('')+
+    '</div>'+
+    '<div class="card">'+
+      '<div style="font-size:13px;font-weight:800;margin-bottom:10px">&#x26A1; Quick Actions</div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
+        '<button onclick="go(\'create\')" class="btn btn-primary" style="font-size:12px">&#x2795; New Ad</button>'+
+        '<button onclick="go(\'analytics\')" class="btn btn-secondary" style="font-size:12px">&#x1F4C8; Analytics</button>'+
+        '<button onclick="go(\'schedule\')" class="btn btn-secondary" style="font-size:12px">&#x1F4C5; Schedule</button>'+
+        '<button onclick="go(\'abtest\')" class="btn btn-secondary" style="font-size:12px">&#x1F9EA; A/B Test</button>'+
+      '</div>'+
     '</div>'+
   '</div>';
 }
 
 // ── MY ADS ──
-function rAds() {
-  var liveCount = D.ads.filter(function(a){return a.status==='live';}).length;
-  var html = '<div class="sec-hd"><div><div class="sec-title">My Ads</div><div class="sec-sub">'+liveCount+' live · '+D.ads.length+' total</div></div>'+
-    '<button class="btn btn-sm" style="background:var(--red);color:#fff" onclick="go(\'create\')">＋ New Ad</button></div>';
 
-  for (var i=0; i<D.ads.length; i++) {
-    var ad = D.ads[i];
-    var statusPill = '<span class="pill pill-'+ad.status+'">'+ad.status.toUpperCase()+'</span>'+(ad.videoUrl?'<span style="background:rgba(255,45,85,.12);border:1px solid rgba(255,45,85,.3);border-radius:5px;padding:2px 7px;font-size:9px;font-weight:800;color:var(--red);margin-left:5px">&#x1F4F9; VIDEO</span>':'');
-    var heatHtml = ad.heat > 0 ? '<span class="heat-badge">\uD83D\uDD25 '+ad.heat+'</span>' : '';
-    var stockHtml='';
-    if(ad.stock){var pct=Math.round((ad.stockLeft||0)/ad.stock*100);var so=(ad.stockLeft||0)===0;stockHtml='<span style="margin-left:6px;font-size:10px;font-weight:700;color:'+(so?'var(--t3)':pct<=20?'var(--red)':pct<=40?'#ffd60a':'#30d158')+'">'+(so?'&#128683; Sold out':'&#128230; '+ad.stockLeft+'/'+ad.stock)+'</span>';}
-    var actionBtns = '';
-    if (ad.status === 'live') {
-      actionBtns = '<button class="btn btn-sm btn-danger" onclick="pauseAd('+ad.id+')">Pause</button>';
-    } else if (ad.status === 'paused') {
-      actionBtns = '<button class="btn btn-sm btn-green" onclick="resumeAd('+ad.id+')">Resume</button>';
-    }
-    html += '<div class="ad-card">'+
-      '<div class="ad-card-top">'+
-        '<div class="ad-em" style="background:'+ad.bg+'">'+ad.em+'</div>'+
-        '<div class="ad-info">'+
-          '<div class="ad-title">'+ad.title+'</div>'+
-          '<div style="display:flex;align-items:center;gap:6px;margin-top:4px">'+statusPill+heatHtml+'</div>'+
-        '</div>'+
+function newCampaign(){alert("Campaign builder coming soon!");}
+window.newCampaign=newCampaign;
+function rCampaigns(){
+  var camps=[
+    {id:1,name:'Summer Drops 2025',ads:['Air Phantom X','UrbanForge Caps'],budget:500,spent:287,status:'active',startDate:'2025-06-01',endDate:'2025-08-31'},
+    {id:2,name:'Fitness Push',ads:['MassiveGains Protein'],budget:200,spent:89,status:'active',startDate:'2025-06-01',endDate:'2025-06-30'},
+  ];
+  var html='<div class="sec-hd"><div><div class="sec-title">Campaigns</div></div>'+
+    '<button class="btn btn-sm btn-primary" onclick="newCampaign()">+ New Campaign</button></div>';
+  for(var ci=0;ci<camps.length;ci++){
+    var c=camps[ci];
+    var pct=Math.round(c.spent/c.budget*100);
+    html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:14px;margin-bottom:10px">'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">'+
+        '<div><div style="font-size:14px;font-weight:800">'+c.name+'</div>'+
+        '<div style="font-size:11px;color:var(--t3)">'+c.ads.join(' &middot; ')+'</div></div>'+
+        '<span class="badge-'+c.status+'">'+c.status+'</span>'+
       '</div>'+
-      (ad.clicks > 0 ? '<div class="ad-stats">'+
-        '<div class="ad-stat"><div class="ad-stat-val" style="color:var(--cyan)">'+fmt(ad.clicks)+'</div><div class="ad-stat-lbl">Clicks</div></div>'+
-        '<div class="ad-stat"><div class="ad-stat-val" style="color:var(--green)">'+ad.ctr+'%</div><div class="ad-stat-lbl">CTR</div></div>'+
-        '<div class="ad-stat"><div class="ad-stat-val" style="color:var(--gold)">'+fm(ad.spend)+'</div><div class="ad-stat-lbl">Spent</div></div>'+
-        '<div class="ad-stat"><div class="ad-stat-val" style="color:var(--red)">'+ad.appr+'%</div><div class="ad-stat-lbl">Approval</div></div>'+
-      '</div>' : '<div style="font-size:12px;color:var(--t3);padding:4px 0">Awaiting first clicks after approval</div>')+
-      '<div class="ad-actions">'+
-        actionBtns+
-        '<button class="btn btn-secondary btn-sm" onclick="editAd('+ad.id+')">✏️ Edit</button>'+
-        '<button class="btn btn-secondary btn-sm" onclick="viewAdAnalytics('+ad.id+')">📊 Stats</button>'+
+      '<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px">'+
+        '<span style="color:var(--t3)">Budget used</span>'+
+        '<span style="font-weight:700">£'+c.spent+' / £'+c.budget+' ('+pct+'%)</span>'+
       '</div>'+
+      '<div style="height:6px;background:rgba(255,255,255,.08);border-radius:3px">'+
+        '<div style="width:'+pct+'%;height:100%;background:'+(pct>80?'var(--red)':pct>50?'var(--gd)':'var(--gr)')+';border-radius:3px"></div>'+
+      '</div>'+
+      '<div style="font-size:10px;color:var(--t3);margin-top:6px">'+c.startDate+' → '+c.endDate+'</div>'+
     '</div>';
   }
-
-  html += '<div class="ai-panel"><div class="ai-panel-hd"><div class="ai-panel-icon">🤖</div><div class="ai-panel-title">AI Ad Refresher</div></div>'+
-    '<div class="ai-panel-body">'+aiAdRefresher()+'</div>'+
-    '<button class="ai-btn" onclick="runAiRefresh()">✨ Auto-Optimise My Ads</button></div>';
-
   return html;
 }
-
-// ── ANALYTICS ──
-function rAnalytics() {
-  var totalClicks = D.ads.reduce(function(s,a){return s+a.clicks;},0);
-  var totalSpend = D.ads.reduce(function(s,a){return s+a.spend;},0);
-  var avgCTR = (D.ads.filter(function(a){return a.ctr>0;}).reduce(function(s,a){return s+a.ctr;},0)/Math.max(1,D.ads.filter(function(a){return a.ctr>0;}).length)).toFixed(1);
-
-  var monthMax = Math.max.apply(null, D.monthly);
-  var monthBars = '';
-  var mLabels = ['J','F','M','A','M','J','J','A','S','O','N','D'];
-  for (var i=0;i<D.monthly.length;i++) {
-    var h = Math.round(D.monthly[i]/monthMax*64);
-    monthBars += '<div class="bar-wrap"><div class="bar" style="height:'+h+'px;background:linear-gradient(to top,var(--red),var(--pu))"></div><div class="bar-lbl">'+mLabels[i]+'</div></div>';
-  }
-
-  // Reaction totals
-  var rxnTotals={fire:0,funny:0,wow:0,deal:0};
-  for(var _ri=0;_ri<D.ads.length;_ri++){
-    var _ra=D.ads[_ri];
-    if(_ra.rxn){rxnTotals.fire+=_ra.rxn.fire||0;rxnTotals.funny+=_ra.rxn.funny||0;rxnTotals.wow+=_ra.rxn.wow||0;rxnTotals.deal+=_ra.rxn.deal||0;}
-  }
-  var rxnTotal=rxnTotals.fire+rxnTotals.funny+rxnTotals.wow+rxnTotals.deal||1;
-  var mLabels=['🔥 Fire','😂 Funny','🤯 Wow','🏷️ Deal'];
-  var mValues=[rxnTotals.fire,rxnTotals.funny,rxnTotals.wow,rxnTotals.deal];
-  var mColors=['var(--red)','var(--gd)','var(--cy)','#a78bfa'];
-  var rxnHtml='';
-  for(var _mi=0;_mi<mLabels.length;_mi++){
-    var pct=Math.round(mValues[_mi]/rxnTotal*100);
-    rxnHtml+='<div style="margin-bottom:8px">'+
-      '<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px">'+
-        '<span>'+mLabels[_mi]+'</span>'+
-        '<span style="font-weight:700">'+fmt(mValues[_mi])+' ('+pct+'%)</span>'+
+window.rCampaigns=rCampaigns;
+function rAds(){
+  var adRows=D.ads.map(function(ad){
+    var stockBar='';
+    if(ad.stock){
+      var pct=Math.round((ad.stockLeft/ad.stock)*100);
+      var col=pct<=20?'var(--rd)':pct<=40?'var(--gd)':'var(--gr)';
+      stockBar='<div style="margin-top:4px"><div style="display:flex;justify-content:space-between;font-size:9px;color:var(--t3);margin-bottom:2px"><span>Stock</span><span>'+ad.stockLeft+'/'+ad.stock+'</span></div>'+
+        '<div style="height:3px;background:rgba(255,255,255,.08);border-radius:2px"><div style="width:'+pct+'%;height:100%;background:'+col+';border-radius:2px"></div></div></div>';
+    }
+    var badges='<span class="badge-'+ad.status+'">'+ad.status+'</span>';
+    if(ad.videoUrl)badges+=' <span style="background:rgba(255,45,85,.1);border:1px solid rgba(255,45,85,.25);border-radius:4px;padding:1px 5px;font-size:9px;font-weight:800;color:var(--rd)">&#x1F4F9;</span>';
+    if(ad.drop)badges+=' <span style="background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.25);border-radius:4px;padding:1px 5px;font-size:9px;font-weight:800;color:var(--cy)">&#x1F4A7; DROP</span>';
+    if(ad.approval>0&&ad.votes>=10&&ad.approval<30)badges+=' <span style="background:rgba(255,45,85,.15);border:1px solid rgba(255,45,85,.3);border-radius:4px;padding:1px 5px;font-size:9px;font-weight:800;color:var(--rd)">&#x26A0; FLAGGED</span>';
+    return '<div class="card">'+
+      '<div style="display:flex;align-items:flex-start;gap:10px">'+
+        '<div style="font-size:28px;flex-shrink:0">'+ad.em+'</div>'+
+        '<div style="flex:1;min-width:0">'+
+          '<div style="font-size:13px;font-weight:800;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+ad.title+'</div>'+
+          '<div style="margin-bottom:4px">'+badges+'</div>'+
+          '<div style="display:flex;gap:10px;font-size:11px;color:var(--t3)">'+
+            '<span>&#x1F517; '+fmt(ad.clicks)+' clicks</span>'+
+            '<span>&#x1F440; '+fmt(ad.views)+' views</span>'+
+            '<span>&#x1F44D; '+ad.approval+'%</span>'+
+          '</div>'+
+          stockBar+
+        '</div>'+
       '</div>'+
-      '<div style="height:6px;background:rgba(255,255,255,.08);border-radius:4px">'+
-        '<div style="height:100%;width:'+pct+'%;background:'+mColors[_mi]+';border-radius:4px"></div>'+
-      '</div>'+
-    '</div>';
-  }
-  // Time of day heatmap
-  var timeData = [2,3,4,6,7,8,9,9,8,7,6,8,9,9,8,7,6,7,9,10,10,9,7,4];
-  var timeHtml = '';
-  var timeLabels = ['12a','3a','6a','9a','12p','3p','6p','9p'];
-  for (var i=0;i<24;i++) {
-    var intensity = timeData[i]/10;
-    timeHtml += '<div class="time-col">'+
-      '<div class="time-cell" style="background:rgba(255,45,85,'+intensity+')"></div>'+
-      (i%3===0?'<div class="time-col-lbl">'+timeLabels[i/3]+'</div>':'<div class="time-col-lbl"></div>')+
-    '</div>';
-  }
-
-  return '<div class="sec-hd"><div><div class="sec-title">Analytics</div><div class="sec-sub">All time performance</div></div></div>'+
-
-  '<div class="stats-grid">'+
-    '<div class="stat"><div class="stat-val" style="color:var(--cyan)">'+fmt(totalClicks)+'</div><div class="stat-lbl">Total Clicks</div></div>'+
-    '<div class="stat"><div class="stat-val" style="color:var(--gold)">'+fm(totalSpend)+'</div><div class="stat-lbl">Total Spent</div></div>'+
-    '<div class="stat"><div class="stat-val" style="color:var(--green)">'+avgCTR+'%</div><div class="stat-lbl">Avg CTR</div></div>'+
-    '<div class="stat"><div class="stat-val" style="color:var(--pu)">'+fmt(D.ads.reduce(function(s,a){return s+(a.rxn.fire+a.rxn.funny+a.rxn.wow+a.rxn.deal);},0))+'</div><div class="stat-lbl">Reactions</div></div>'+
-  '</div>'+
-
-  '<div class="card"><div class="card-hd"><div class="card-title">📅 Monthly Clicks</div></div>'+
-    '<div class="bar-chart">'+monthBars+'</div>'+
-  '</div>'+
-
-  '<div class="card"><div class="card-hd"><div class="card-title">😮 Reaction Breakdown</div></div>'+
-    '<div class="breakdown">'+rxnHtml+'</div>'+
-  '</div>'+
-
-  '<div class="card"><div class="card-hd"><div class="card-title">⏰ Best Time to Run</div><span style="font-size:11px;color:var(--t3)">Click intensity by hour</span></div>'+
-    '<div class="time-grid">'+timeHtml+'</div>'+
-    '<div style="font-size:12px;color:var(--t2);margin-top:8px">Peak: <b style="color:var(--red)">6pm–10pm UK</b> — 3x more clicks</div>'+
-  '</div>'+
-
-  '<div class="card"><div class="card-hd"><div class="card-title">📊 Platform Benchmarks</div></div>'+
-    '<div class="breakdown">'+
-      '<div class="br-row"><div class="br-label">Your CTR</div><div class="br-bar"><div class="br-fill" style="width:73%;background:var(--cyan)"></div></div><div class="br-val" style="color:var(--cyan)">7.3%</div></div>'+
-      '<div class="br-row"><div class="br-label">Avg CTR</div><div class="br-bar"><div class="br-fill" style="width:32%;background:var(--t3)"></div></div><div class="br-val" style="color:var(--t3)">3.2%</div></div>'+
-      '<div class="br-row"><div class="br-label">Your Appr.</div><div class="br-bar"><div class="br-fill" style="width:94%;background:var(--green)"></div></div><div class="br-val" style="color:var(--green)">94%</div></div>'+
-      '<div class="br-row"><div class="br-label">Avg Appr.</div><div class="br-bar"><div class="br-fill" style="width:78%;background:var(--t3)"></div></div><div class="br-val" style="color:var(--t3)">78%</div></div>'+
-    '</div>'+
-  '</div>'+
-
-  '<div class="ai-panel"><div class="ai-panel-hd"><div class="ai-panel-icon">🤖</div><div class="ai-panel-title">AI Insights</div></div>'+
-    '<div class="ai-panel-body">'+aiAnalyticsInsight()+'</div>'+
-    '<button class="ai-btn" onclick="toast(\'Full AI report — coming at launch\',\'info\')">Get Full AI Breakdown →</button></div>';
-}
-
-// ── BILLING ──
-function rBilling() {
-  var forecastAmt = Math.round(D.dailyCap * 30 * 0.85);
-  var invHtml = '';
-  for (var i=0;i<D.invoices.length;i++) {
-    var inv = D.invoices[i];
-    invHtml += '<div class="inv-row">'+
-      '<div><div style="font-size:13px;font-weight:600">'+inv.id+'</div><div class="inv-date">'+inv.date+'</div></div>'+
-      '<div style="display:flex;align-items:center;gap:10px">'+
-        '<span class="pill pill-live" style="font-size:10px">PAID</span>'+
-        '<div class="inv-amt">'+fm(inv.amount)+'</div>'+
-        '<button class="btn btn-sm btn-secondary" onclick="toast(\'Invoice downloaded\',\'suc\')">↓</button>'+
+      '<div style="display:flex;gap:6px;margin-top:10px">'+
+        '<button onclick="toggleAdStatus('+ad.id+')" class="btn btn-secondary btn-sm">'+
+          (ad.status==='live'?'&#x23F8; Pause':'&#x25B6; Resume')+
+        '</button>'+
+        '<button onclick="editAd('+ad.id+')" class="btn btn-secondary btn-sm">&#x270F; Edit</button>'+
+        '<button onclick="viewAdInsights('+ad.id+')" class="btn btn-secondary btn-sm">&#x1F4CA; Insights</button>'+
       '</div>'+
     '</div>';
-  }
-
-  return '<div class="sec-hd"><div><div class="sec-title">Budget &amp; Billing</div><div class="sec-sub">Manage spend and payments</div></div></div>'+
-
-  '<div class="stats-grid">'+
-    '<div class="stat"><div class="stat-val" style="color:var(--gold)">'+fm(D.balance)+'</div><div class="stat-lbl">Balance</div><div class="stat-trend" style="color:var(--t3)">~'+Math.round(D.balance/D.dailyCap)+' days left</div></div>'+
-    '<div class="stat"><div class="stat-val" style="color:var(--red)">£'+D.dailyCap+'</div><div class="stat-lbl">Daily Cap</div><div class="stat-trend" style="color:var(--t3)">Per click billing</div></div>'+
-  '</div>'+
-
-  '<div class="card">'+
-    '<div class="card-hd"><div class="card-title">💰 Balance &amp; Top Up</div></div>'+
-    '<div style="text-align:center;padding:8px 0 16px">'+
-      '<div style="font-size:40px;font-weight:800;color:var(--gold)">'+fm(D.balance)+'</div>'+
-      '<div style="font-size:12px;color:var(--t3);margin-top:4px">Approx. '+Math.round(D.balance/D.dailyCap)+' days at current cap</div>'+
-    '</div>'+
-    '<button class="btn btn-primary" onclick="openModal(\'topup\')">💳 Top Up Balance</button>'+
-    '<button class="btn btn-secondary" style="width:100%;margin-top:8px" onclick="openModal(\'budget\')">⚡ Change Daily Cap</button>'+
-  '</div>'+
-
-  '<div class="ai-panel"><div class="ai-panel-hd"><div class="ai-panel-icon">🤖</div><div class="ai-panel-title">AI Budget Optimiser</div></div>'+
-    '<div class="ai-panel-body">'+aiBudgetOptimiser()+'</div>'+
-    '<button class="ai-btn" onclick="applyAiBudget()">Apply AI Recommendation</button></div>'+
-
-  '<div class="card"><div class="card-hd"><div class="card-title">📋 Invoice History</div></div>'+invHtml+'</div>'+
-
-  '<div class="card">'+
-    '<div class="card-hd"><div class="card-title">💳 Payment Method</div></div>'+
-    '<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">'+
-      '<div style="background:linear-gradient(135deg,#1a1a4a,#2a2a6a);border-radius:10px;padding:12px 16px;font-size:16px;font-weight:800;letter-spacing:2px;flex:1">•••• •••• •••• 4242</div>'+
-      '<div style="font-size:12px;color:var(--t3)">12/27</div>'+
-    '</div>'+
-    '<button class="btn btn-secondary" style="width:100%" onclick="toast(\'Card management — available at launch\',\'info\')">Update Payment Method</button>'+
-  '</div>'+
-
-  '<div class="card">'+
-    '<div class="card-hd"><div class="card-title">🔮 Spend Forecast</div></div>'+
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">'+
-      '<div style="font-size:12px;color:var(--t2)">Projected this month</div>'+
-      '<div style="font-size:20px;font-weight:800;color:var(--pu)">'+fm(forecastAmt)+'</div>'+
-    '</div>'+
-    '<div style="font-size:11px;color:var(--t3)">Based on £'+D.dailyCap+'/day cap × 30 days × 85% utilisation</div>'+
+  }).join('');
+  return '<div style="padding:16px">'+
+    '<div class="sec-hd"><div class="sec-title">My Ads</div>'+
+    '<button onclick="go(\'create\')" class="btn btn-primary btn-sm">+ New</button></div>'+
+    adRows+
   '</div>';
 }
 
-// ── AUDIENCE ──
-function rAudience() {
-  var interests = [
-    {label:'Fashion / Streetwear',pct:38,color:'var(--red)'},
-    {label:'Sports / Fitness',pct:22,color:'var(--cyan)'},
-    {label:'Tech / Gaming',pct:17,color:'var(--pu)'},
-    {label:'Beauty / Lifestyle',pct:13,color:'var(--gold)'},
-    {label:'Food / Travel',pct:10,color:'var(--green)'},
-  ];
-  var intHtml = '';
-  for (var i=0;i<interests.length;i++) {
-    var it = interests[i];
-    intHtml += '<div class="br-row"><div class="br-label">'+it.label.split(' ')[0]+'</div>'+
-      '<div class="br-bar"><div class="br-fill" style="width:'+it.pct+'%;background:'+it.color+'"></div></div>'+
-      '<div class="br-val" style="color:'+it.color+'">'+it.pct+'%</div></div>';
+function toggleAdStatus(id){
+  var ad=D.ads.filter(function(a){return a.id===id;})[0];
+  if(!ad)return;
+  ad.status=ad.status==='live'?'paused':'live';
+  go('ads');
+  toast(ad.status==='live'?'Ad resumed!':'Ad paused.','suc');
+}
+window.toggleAdStatus=toggleAdStatus;
+
+function editAd(id){toast('Edit mode coming soon!','i');}
+window.editAd=editAd;
+
+function viewAdInsights(id){
+  var ad=D.ads.filter(function(a){return a.id===id;})[0];
+  if(!ad)return;
+  var total=(ad.rxn.fire||0)+(ad.rxn.funny||0)+(ad.rxn.wow||0)+(ad.rxn.deal||0)||1;
+  alert('Insights: '+ad.title+'\nClicks: '+fmt(ad.clicks)+'\nApproval: '+ad.approval+'%\nTop reaction: '+(ad.rxn.fire>ad.rxn.deal?'\uD83D\uDD25 Fire (desire)':'\uD83C\uDFF7 Deal (value)'));
+}
+window.viewAdInsights=viewAdInsights;
+
+// ── ANALYTICS ──
+
+function applyWinningVariant(adId){
+  var ad=D.ads.filter(function(a){return a.id===parseInt(adId);})[0];
+  if(ad&&ad.abTest){
+    var winner=ad.abTest.aVotes>ad.abTest.bVotes?ad.abTest.a:ad.abTest.b;
+    ad.title=winner;
+    delete ad.abTest;
+    toast('Applied winning variant: '+winner,'suc');
+    rp('analytics');
   }
-
-  var devices = [{l:'Android',p:67,c:'var(--green)'},{l:'iPhone',p:28,c:'var(--cyan)'},{l:'Desktop',p:5,c:'var(--t3)'}];
-  var devHtml = '';
-  for (var i=0;i<devices.length;i++) {
-    devHtml += '<div class="br-row"><div class="br-label">'+devices[i].l+'</div><div class="br-bar"><div class="br-fill" style="width:'+devices[i].p+'%;background:'+devices[i].c+'"></div></div><div class="br-val" style="color:'+devices[i].c+'">'+devices[i].p+'%</div></div>';
-  }
-
-  return '<div class="sec-hd"><div><div class="sec-title">Audience</div><div class="sec-sub">Who is clicking your ads</div></div></div>'+
-
-  '<div class="stats-grid">'+
-    '<div class="stat"><div class="stat-val" style="color:var(--cyan)">18–24</div><div class="stat-lbl">Top Age Group</div><div class="stat-trend" style="color:var(--t3)">54% of clicks</div></div>'+
-    '<div class="stat"><div class="stat-val" style="color:var(--gold)">UK 🇬🇧</div><div class="stat-lbl">Top Location</div><div class="stat-trend" style="color:var(--t3)">London · Manchester</div></div>'+
-  '</div>'+
-
-  '<div class="card"><div class="card-hd"><div class="card-title">🎯 Interest Breakdown</div></div>'+
-    '<div class="breakdown">'+intHtml+'</div>'+
-  '</div>'+
-
-  '<div class="card"><div class="card-hd"><div class="card-title">📱 Device Split</div></div>'+
-    '<div class="breakdown">'+devHtml+'</div>'+
-  '</div>'+
-
-  '<div class="card"><div class="card-hd"><div class="card-title">🗺️ UK Hotspots</div></div>'+
-    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">'+
-      (function(){var cs=['London','Manchester','Birmingham','Leeds','Bristol','Glasgow','Edinburgh','Liverpool','Sheffield'];var ps=[28,14,11,9,7,6,5,5,4];var ch='';for(var ci=0;ci<cs.length;ci++){ch+='<div style="background:var(--card2);border-radius:8px;padding:8px;text-align:center"><div style="font-size:13px;font-weight:700">'+ps[ci]+'%</div><div style="font-size:10px;color:var(--t3)">'+cs[ci]+'</div></div>';}return ch;})()+
+}
+window.applyWinningVariant=applyWinningVariant;
+function rAnalytics(){
+  var totalClicks=D.ads.reduce(function(s,a){return s+a.clicks;},0);
+  var totalSpend=D.ads.reduce(function(s,a){return s+a.spend;},0);
+  var cpc=totalClicks>0?(totalSpend/totalClicks).toFixed(2):'0.00';
+  var rxnTotals={fire:0,funny:0,wow:0,deal:0};
+  for(var i=0;i<D.ads.length;i++){var r=D.ads[i].rxn;rxnTotals.fire+=r.fire||0;rxnTotals.funny+=r.funny||0;rxnTotals.wow+=r.wow||0;rxnTotals.deal+=r.deal||0;}
+  var rxnTotal=rxnTotals.fire+rxnTotals.funny+rxnTotals.wow+rxnTotals.deal||1;
+  var mLabels=['\uD83D\uDD25 Fire','\uD83D\uDE02 Funny','\uD83E\uDD2F Wow','\uD83C\uDFF7 Deal'];
+  var mVals=[rxnTotals.fire,rxnTotals.funny,rxnTotals.wow,rxnTotals.deal];
+  var mColors=['var(--rd)','var(--gd)','var(--cy)','var(--gr)'];
+  var rxnBars=mLabels.map(function(l,i){
+    var pct=Math.round(mVals[i]/rxnTotal*100);
+    return '<div style="margin-bottom:8px">'+
+      '<div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span>'+l+'</span><span style="font-weight:700">'+fmt(mVals[i])+' ('+pct+'%)</span></div>'+
+      '<div style="height:6px;background:rgba(255,255,255,.08);border-radius:4px"><div style="height:100%;width:'+pct+'%;background:'+mColors[i]+';border-radius:4px"></div></div>'+
+    '</div>';
+  }).join('');
+  // Sentiment insight
+  var dominant='fire';var domMax=0;
+  var keys=['fire','funny','wow','deal'];
+  for(var ki=0;ki<keys.length;ki++){if(rxnTotals[keys[ki]]>domMax){domMax=rxnTotals[keys[ki]];dominant=keys[ki];}}
+  var insights={fire:'Users desire your product \u2014 strong intent signal, great for conversion campaigns.',funny:'Your ad is memorable and shareable \u2014 great for brand awareness.',wow:'Users are genuinely impressed \u2014 lean into the wow factor.',deal:'Users see strong value \u2014 highlight your price or offer more prominently.'};
+  var sentiment=insights[dominant]||'';
+  // Per-ad table
+  var adRows=D.ads.map(function(ad){
+    return '<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05)">'+
+      '<div style="font-size:20px">'+ad.em+'</div>'+
+      '<div style="flex:1;font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+ad.title+'</div>'+
+      '<div style="font-size:11px;color:var(--t3);flex-shrink:0">'+fmt(ad.clicks)+' clicks</div>'+
+      '<div style="font-size:11px;font-weight:700;flex-shrink:0;color:'+(ad.approval>=70?'var(--gr)':ad.approval>=40?'var(--gd)':'var(--rd)')+'">'+ad.approval+'%</div>'+
+    '</div>';
+  }).join('');
+  return '<div style="padding:16px">'+
+    '<div class="sec-hd"><div class="sec-title">Analytics</div></div>'+
+    '<div class="stat-grid">'+
+      '<div class="stat"><div class="stat-val" style="color:var(--rd)">'+fmt(totalClicks)+'</div><div class="stat-lbl">Clicks</div></div>'+
+      '<div class="stat"><div class="stat-val" style="color:var(--gd)">£'+totalSpend.toFixed(2)+'</div><div class="stat-lbl">Spend</div></div>'+
+      '<div class="stat"><div class="stat-val" style="color:var(--cy)">£'+cpc+'</div><div class="stat-lbl">Cost/Click</div></div>'+
+      '<div class="stat"><div class="stat-val" style="color:var(--gr)">'+fmt(rxnTotal)+'</div><div class="stat-lbl">Reactions</div></div>'+
     '</div>'+
-  '</div>'+
-
-  '<div class="ai-panel"><div class="ai-panel-hd"><div class="ai-panel-icon">🤖</div><div class="ai-panel-title">AI Audience Matcher</div></div>'+
-    '<div class="ai-panel-body">'+aiAudienceMatcher()+'</div>'+
-    '<button class="ai-btn" onclick="toast(\'Advanced targeting — available at launch\',\'info\')">Refine Targeting →</button></div>';
+    '<div class="card"><div style="font-size:13px;font-weight:800;margin-bottom:10px">Reaction Breakdown</div>'+
+    rxnBars+
+    '<div style="background:rgba(99,91,255,.08);border:1px solid rgba(99,91,255,.2);border-radius:10px;padding:10px;margin-top:8px">'+
+      '<div style="font-size:10px;font-weight:800;color:#a78bfa;margin-bottom:3px">\uD83E\uDD16 AI Sentiment Insight</div>'+
+      '<div style="font-size:11px;color:var(--t2);line-height:1.5">'+sentiment+'</div>'+
+    '</div></div>'+
+    '<div class="card"><div style="font-size:13px;font-weight:800;margin-bottom:10px">Per-Ad Performance</div>'+adRows+'</div>'+
+  '</div>';
 }
 
-// ── TOURNAMENT ──
-function rTournament() {
-  var t = D.tournament;
-  var posOrdinal = t.position === 1 ? '1st' : t.position === 2 ? '2nd' : t.position === 3 ? '3rd' : t.position+'th';
-  var pctToLeader = Math.round(t.votes / t.leaderVotes * 100);
+// ── CREATE AD ──
+function rCreate(){
+  return '<div style="padding:16px">'+
+    '<div class="sec-hd"><div class="sec-title">New Ad</div></div>'+
+    '<div class="fi"><label>Ad title</label><input type="text" id="create-title" placeholder="e.g. Air Phantom X \u2014 Limited Drop" oninput="updatePreview()"></div>'+
+    '<div class="fi"><label>Description</label><textarea id="create-desc" placeholder="What makes your product unique?" oninput="updatePreview()"></textarea></div>'+
+    '<div class="fi"><label>Destination URL</label><input type="url" id="create-url" placeholder="https://yoursite.com/product"></div>'+
+    '<div class="fi"><label>Ad type</label><select id="create-type"><option value="merch">\uD83D\uDECD Merch Drop</option><option value="sponsor">\uD83D\uDCB0 Sponsored</option><option value="influencer">\uD83D\uDC51 Influencer</option><option value="brand">\u2B50 Brand</option></select></div>'+
+    '<div class="fi"><label>Video URL <span style="color:var(--t3);font-weight:400">(optional)</span></label><input type="url" id="create-video" placeholder="YouTube, TikTok or Vimeo link"></div>'+
+    '<div class="fi" style="background:rgba(255,214,10,.04);border:1px solid rgba(255,214,10,.12);border-radius:var(--r);padding:12px">'+
+    '<label style="display:flex;align-items:center;gap:6px"><span style="background:rgba(255,214,10,.15);border-radius:5px;padding:2px 7px;font-size:9px;font-weight:800;color:var(--gd)">\uD83D\uDCE6 STOCK</span>Inventory <span style="color:var(--t3);font-weight:400;font-size:11px">(optional)</span></label>'+
+    '<input type="number" id="create-stock" min="0" placeholder="Leave blank for unlimited" style="margin-top:6px"></div>'+
+    '<div class="fi" style="background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.12);border-radius:var(--r);padding:12px">'+
+    '<label style="display:flex;align-items:center;gap:6px"><span style="background:rgba(0,229,255,.15);border-radius:5px;padding:2px 7px;font-size:9px;font-weight:800;color:var(--cy)">\uD83D\uDCA7 DROP</span>Limited Drop <span style="color:var(--t3);font-weight:400;font-size:11px">(optional)</span></label>'+
+    '<select id="create-drop" style="margin-top:6px"><option value="">No \u2014 standard ad</option><option value="24">24-hour drop</option><option value="12">12-hour drop</option><option value="6">6-hour flash drop</option></select></div>'+
+    '<div class="fi"><label>Daily budget</label>'+
+    '<div style="display:flex;align-items:center;gap:8px">'+
+    '<span style="font-size:16px;font-weight:800;color:var(--t2);background:rgba(255,255,255,.05);border:1.5px solid var(--border);border-radius:var(--r);padding:9px 12px">\u00A3</span>'+
+    '<input type="number" id="create-budget" min="10" placeholder="30" style="flex:1"></div></div>'+
+    '<button class="btn btn-primary" style="width:100%;padding:14px;font-size:15px" onclick="submitNewAd()">Submit for Review \u2192</button>'+
+  '</div>';
+}
 
-  var histHtml = '';
-  for (var i=0;i<t.history.length;i++) {
-    var h = t.history[i];
-    histHtml += '<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">'+
-      '<div style="font-size:13px;font-weight:600">'+h.name+'</div>'+
-      '<div style="font-size:12px;color:var(--t3)">'+posOrdinal+' place'+(h.prize?' · '+h.prize:'')+'</div>'+
-    '</div>';
+function submitNewAd(){
+  var title=(document.getElementById('create-title')||{}).value||'';
+  var url=(document.getElementById('create-url')||{}).value||'';
+  if(!title.trim()){toast('Please enter an ad title','w');return;}
+  if(!url.trim()){toast('Please enter a destination URL','w');return;}
+  toast('Ad submitted for review! We\u2019ll notify you within 24 hours.','suc');
+  setTimeout(function(){go('ads');},1500);
+}
+window.submitNewAd=submitNewAd;
+
+// ── ALERTS ──
+function rAlerts(){
+  var stockAlerts=[];
+  for(var i=0;i<D.ads.length;i++){
+    var ad=D.ads[i];
+    if(ad.stock&&ad.stockLeft!==null){
+      var pct=Math.round((ad.stockLeft/ad.stock)*100);
+      if(ad.stockLeft===0)stockAlerts.push({type:'error',icon:'\u26D4',msg:'<b>'+ad.title+'</b> is sold out!',time:'just now'});
+      else if(pct<=10)stockAlerts.push({type:'warning',icon:'\u26A0\uFE0F',msg:'<b>'+ad.title+'</b> almost sold out \u2014 '+ad.stockLeft+' remaining',time:'just now'});
+      else if(pct<=25)stockAlerts.push({type:'info',icon:'\uD83D\uDCE6',msg:'<b>'+ad.title+'</b> stock low: '+ad.stockLeft+'/'+ad.stock,time:'just now'});
+    }
   }
+  var stockHtml=stockAlerts.map(function(sa){
+    var sc=sa.type==='error'?'255,45,85':'255,159,10';
+    return '<div style="display:flex;gap:10px;padding:12px;background:rgba('+sc+',.08);border:1px solid rgba('+sc+',.2);border-radius:12px;margin-bottom:8px">'+
+      '<div style="font-size:20px">'+sa.icon+'</div>'+
+      '<div><div style="font-size:12px;line-height:1.5">'+sa.msg+'</div><div style="font-size:10px;color:var(--t3);margin-top:2px">'+sa.time+'</div></div>'+
+    '</div>';
+  }).join('');
+  var collabHtml='<div style="background:rgba(99,91,255,.08);border:1px solid rgba(99,91,255,.2);border-radius:12px;padding:12px;margin-bottom:10px">'+
+    '<div style="font-size:12px;font-weight:800;margin-bottom:8px">\uD83E\uDD1D 2 Collab Requests</div>'+
+    ['@streetwear_kai \u2022 Air Phantom X \u2022 Ref: COLLAB-KICKS-A3F2','@fitness_by_mia \u2022 42K followers \u2022 Ref: COLLAB-KICKS-B7D1'].map(function(c){
+      return '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'+
+        '<div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--rd),var(--pu));display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0">\uD83D\uDC64</div>'+
+        '<div style="flex:1;font-size:11px;color:var(--t2)">'+c+'</div>'+
+        '<button onclick="newCampaign()" style="background:rgba(99,91,255,.2);border:1px solid rgba(99,91,255,.4);border-radius:8px;padding:4px 10px;font-size:10px;font-weight:700;color:#a78bfa;cursor:pointer;font-family:var(--f)">Reply</button>'+
+      '</div>';
+    }).join('')+
+  '</div>';
+  var notifHtml=D.notifs.map(function(n){
+    var icon=n.type==='good'?'\u2705':n.type==='ai'?'\uD83E\uDD16':'\u2139\uFE0F';
+    return '<div style="display:flex;gap:12px;padding:12px;background:var(--card);border-radius:12px;margin-bottom:8px;border:1.5px solid '+(n.read?'var(--border)':'rgba(255,45,85,.3)')+'">'+'<div style="font-size:20px;flex-shrink:0">'+icon+'</div>'+
+      '<div><div style="font-size:12px;font-weight:800;margin-bottom:2px">'+n.title+'</div>'+
+      '<div style="font-size:11px;color:var(--t2)">'+n.body+'</div>'+
+      '<div style="font-size:10px;color:var(--t3);margin-top:3px">'+n.time+'</div></div>'+
+    '</div>';
+  }).join('');
+  return '<div style="padding:16px">'+
+    '<div class="sec-hd"><div class="sec-title">Alerts</div>'+
+    '<button onclick="markAllRead()" class="btn btn-secondary btn-sm">Mark all read</button></div>'+
+    stockHtml+collabHtml+notifHtml+
+  '</div>';
+}
+function markAllRead(){D.notifs.forEach(function(n){n.read=true;});go('alerts');toast('All read','suc');}
+window.markAllRead=markAllRead;
 
-  return '<div class="sec-hd"><div><div class="sec-title">⚔️ Tournament</div><div class="sec-sub">'+t.name+'</div></div><span class="pill pill-live">'+t.round+'</span></div>'+
-
-  '<div class="card" style="text-align:center;padding:24px">'+
-    '<div style="font-size:48px;font-weight:800;color:var(--gold);line-height:1;margin-bottom:6px">'+posOrdinal+'</div>'+
-    '<div style="font-size:14px;color:var(--t2);margin-bottom:16px">Current Position · '+t.round+'</div>'+
-    '<div style="font-size:28px;font-weight:800;margin-bottom:4px">'+fmt(t.votes)+' votes</div>'+
-    '<div style="font-size:12px;color:var(--t3);margin-bottom:20px">'+pctToLeader+'% of leader ('+t.leader+': '+fmt(t.leaderVotes)+')</div>'+
-    '<div style="background:var(--border);border-radius:4px;height:8px;margin-bottom:16px">'+
-      '<div style="width:'+pctToLeader+'%;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--red),var(--pu))"></div>'+
+// ── SCHEDULE ──
+function rSchedule(){
+  var days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  var hours=['6am','9am','12pm','3pm','6pm','9pm'];
+  if(!D.schedule)D.schedule={days:[0,1,2,3,4],hours:[0,1,2,3]};
+  var dayBtns=days.map(function(d,i){
+    var on=D.schedule.days.indexOf(i)>=0;
+    return '<button onclick="toggleDay('+i+')" style="flex:1;padding:8px 2px;border:1.5px solid '+(on?'var(--rd)':'var(--border)')+';border-radius:8px;background:'+(on?'rgba(255,45,85,.12)':'transparent')+';color:'+(on?'var(--rd)':'var(--t3)')+';font-size:11px;font-weight:700;cursor:pointer;font-family:var(--f)">'+d+'</button>';
+  }).join('');
+  var hourBtns=hours.map(function(h,i){
+    var on=D.schedule.hours.indexOf(i)>=0;
+    return '<button onclick="toggleHour('+i+')" style="flex:1;padding:7px 2px;border:1.5px solid '+(on?'var(--cy)':'var(--border)')+';border-radius:8px;background:'+(on?'rgba(0,229,255,.1)':'transparent')+';color:'+(on?'var(--cy)':'var(--t3)')+';font-size:10px;font-weight:700;cursor:pointer;font-family:var(--f)">'+h+'</button>';
+  }).join('');
+  var activeDays=D.schedule.days.length;
+  var activeHours=D.schedule.hours.length*4;
+  return '<div style="padding:16px">'+
+    '<div class="sec-hd"><div class="sec-title">\uD83D\uDCC5 Ad Scheduling</div></div>'+
+    '<div class="card">'+
+      '<div style="font-size:12px;font-weight:800;margin-bottom:10px">Active Days</div>'+
+      '<div style="display:flex;gap:4px;margin-bottom:16px">'+dayBtns+'</div>'+
+      '<div style="font-size:12px;font-weight:800;margin-bottom:10px">Active Hours (Time Slots)</div>'+
+      '<div style="display:flex;gap:4px;margin-bottom:16px">'+hourBtns+'</div>'+
+      '<div style="background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.15);border-radius:10px;padding:10px;margin-bottom:12px;font-size:11px;color:var(--t2)">'+
+        '\uD83D\uDCA1 Ads active '+activeDays+' days/week during '+activeHours+' hour slots. Budget pauses automatically outside these times.'+
+      '</div>'+
+      '<button onclick="saveSchedule()" class="btn btn-primary" style="width:100%;padding:13px">Save Schedule</button>'+
     '</div>'+
-    '<div style="background:rgba(255,214,10,.1);border:1px solid rgba(255,214,10,.3);border-radius:12px;padding:12px">'+
-      '<div style="font-size:11px;font-weight:700;color:var(--gold);margin-bottom:4px">🏆 Prize if you win</div>'+
-      '<div style="font-size:13px;font-weight:600">'+t.prize+'</div>'+
+  '</div>';
+}
+function toggleDay(i){if(!D.schedule)D.schedule={days:[0,1,2,3,4],hours:[0,1,2,3]};var idx=D.schedule.days.indexOf(i);if(idx>=0)D.schedule.days.splice(idx,1);else D.schedule.days.push(i);go('schedule');}
+function toggleHour(i){if(!D.schedule)D.schedule={days:[0,1,2,3,4],hours:[0,1,2,3]};var idx=D.schedule.hours.indexOf(i);if(idx>=0)D.schedule.hours.splice(idx,1);else D.schedule.hours.push(i);go('schedule');}
+function saveSchedule(){toast('Schedule saved! Ads will follow this timetable.','suc');}
+window.toggleDay=toggleDay;window.toggleHour=toggleHour;window.saveSchedule=saveSchedule;
+
+// ── A/B TEST ──
+function rABTest(){
+  var tests=D.abTests;
+  if(!tests||!tests.length)return '<div style="padding:16px"><div class="sec-hd"><div class="sec-title">\uD83E\uDDEA A/B Tests</div></div><div class="card" style="text-align:center;padding:30px"><div style="font-size:32px;margin-bottom:10px">\uD83E\uDDEA</div><div style="font-size:14px;font-weight:700;margin-bottom:6px">No active A/B tests</div><div style="font-size:12px;color:var(--t3)">Test two versions of an ad title to find what works best</div></div></div>';
+  var testHtml=tests.map(function(t){
+    var totA=t.clicksA+t.votesA,totB=t.clicksB+t.votesB;
+    var total=totA+totB||1;
+    var pctA=Math.round(totA/total*100);
+    var pctB=100-pctA;
+    var winner=pctB>pctA?'B':'A';
+    return '<div class="card">'+
+      '<div style="font-size:12px;font-weight:800;color:var(--t3);margin-bottom:10px">AD BATTLE TEST</div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">'+
+        '<div style="background:rgba(255,45,85,.08);border:1.5px solid '+(winner==='A'?'var(--rd)':'var(--border)')+';border-radius:12px;padding:12px">'+
+          '<div style="font-size:10px;font-weight:800;color:var(--rd);margin-bottom:4px">VERSION A'+(winner==='A'?' \uD83C\uDFC6':'')+' </div>'+
+          '<div style="font-size:12px;font-weight:700;margin-bottom:8px">'+t.variantA+'</div>'+
+          '<div style="font-size:18px;font-weight:900;color:var(--rd)">'+pctA+'%</div>'+
+          '<div style="font-size:10px;color:var(--t3)">'+t.clicksA+' clicks &middot; '+t.votesA+' votes</div>'+
+          '<div style="height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:6px"><div style="width:'+pctA+'%;height:100%;background:var(--rd);border-radius:2px"></div></div>'+
+        '</div>'+
+        '<div style="background:rgba(0,229,255,.08);border:1.5px solid '+(winner==='B'?'var(--cy)':'var(--border)')+';border-radius:12px;padding:12px">'+
+          '<div style="font-size:10px;font-weight:800;color:var(--cy);margin-bottom:4px">VERSION B'+(winner==='B'?' \uD83C\uDFC6':'')+' </div>'+
+          '<div style="font-size:12px;font-weight:700;margin-bottom:8px">'+t.variantB+'</div>'+
+          '<div style="font-size:18px;font-weight:900;color:var(--cy)">'+pctB+'%</div>'+
+          '<div style="font-size:10px;color:var(--t3)">'+t.clicksB+' clicks &middot; '+t.votesB+' votes</div>'+
+          '<div style="height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:6px"><div style="width:'+pctB+'%;height:100%;background:var(--cy);border-radius:2px"></div></div>'+
+        '</div>'+
+      '</div>'+
+      '<div style="font-size:11px;color:var(--t2);text-align:center;margin-bottom:10px">Version '+winner+' is winning with '+Math.max(pctA,pctB)+'% of engagement</div>'+
+      '<button onclick="pickWinner()" class="btn btn-primary" style="width:100%;padding:11px;font-size:13px">Apply Winner to Campaign</button>'+
+    '</div>';
+  }).join('');
+  return '<div style="padding:16px"><div class="sec-hd"><div class="sec-title">\uD83E\uDDEA A/B Tests</div></div>'+testHtml+'</div>';
+}
+function pickWinner(){toast('Winner applied! Campaign updated to use the best version.','suc');}
+window.pickWinner=pickWinner;
+
+// ── CONVERSIONS ──
+function rConversions(){
+  return '<div style="padding:16px">'+
+    '<div class="sec-hd"><div class="sec-title">\uD83D\uDCC8 Conversions</div></div>'+
+    '<div class="card">'+
+      '<div style="font-size:13px;font-weight:800;margin-bottom:8px">\uD83D\uDD17 UTM Link Builder</div>'+
+      '<div style="font-size:12px;color:var(--t2);margin-bottom:12px;line-height:1.5">Add tracking to your ad URLs to measure conversions in Google Analytics or your own tool.</div>'+
+      '<div class="fi"><label>Your URL</label><input type="url" id="utm-url" placeholder="https://yoursite.com/product"></div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'+
+        '<div class="fi"><label>Campaign</label><input id="utm-campaign" placeholder="spring_sale"></div>'+
+        '<div class="fi"><label>Ad name</label><input id="utm-ad" placeholder="phantom_ad1"></div>'+
+      '</div>'+
+      '<button onclick="buildUTM()" class="btn btn-primary" style="width:100%;padding:12px">Generate Link</button>'+
+      '<div id="utm-result" style="margin-top:10px"></div>'+
     '</div>'+
-  '</div>'+
+  '</div>';
+}
+function buildUTM(){
+  var url=(document.getElementById('utm-url')||{}).value||'';
+  var camp=(document.getElementById('utm-campaign')||{}).value||'addtok';
+  var ad=(document.getElementById('utm-ad')||{}).value||'addtok_ad';
+  if(!url){toast('Please enter your URL','w');return;}
+  var link=url+(url.indexOf('?')>=0?'&':'?')+'utm_source=addtok&utm_medium=cpc&utm_campaign='+encodeURIComponent(camp)+'&utm_content='+encodeURIComponent(ad);
+  var el=document.getElementById('utm-result');
+  if(el)el.innerHTML='<div style="background:rgba(48,209,88,.08);border:1px solid rgba(48,209,88,.2);border-radius:10px;padding:10px">'+
+    '<div style="font-size:10px;font-weight:800;color:var(--gr);margin-bottom:4px">\u2713 Tracking link ready</div>'+
+    '<div style="font-size:11px;color:var(--t2);word-break:break-all;margin-bottom:8px">'+link+'</div>'+
+    '<button onclick="copyUTM()" style="background:rgba(48,209,88,.15);border:1px solid rgba(48,209,88,.3);border-radius:8px;padding:5px 12px;font-size:11px;font-weight:700;color:var(--gr);cursor:pointer;font-family:var(--f)">Copy</button>'+
+  '</div>';
+  window._utmLink=link;
+}
+function copyUTM(){if(window._utmLink&&navigator.clipboard)navigator.clipboard.writeText(window._utmLink).then(function(){toast('Link copied!','suc');});}
+window.buildUTM=buildUTM;window.copyUTM=copyUTM;
 
-  '<div class="ai-panel"><div class="ai-panel-hd"><div class="ai-panel-icon">🤖</div><div class="ai-panel-title">AI Tournament Strategy</div></div>'+
-    '<div class="ai-panel-body">Your CTR is the highest in your bracket. The best strategy is to boost your ad spend slightly today to drive more exposure and votes. Consider pushing to social media to get your audience to vote on Addtok.</div>'+
-    '<button class="ai-btn" onclick="toast(\'Boost strategy applied — cap increased to £55 for today\',\'suc\')">Apply Boost Strategy</button></div>'+
-
-  '<div class="card"><div class="card-hd"><div class="card-title">📜 Tournament History</div></div>'+histHtml+'</div>';
+// ── BILLING ──
+function rBilling(){
+  var invoices=[
+    {id:'INV-001',date:'2025-06-01',plan:'Boost',amount:'£840.00',status:'paid',clicks:2800},
+    {id:'INV-002',date:'2025-05-01',plan:'Boost',amount:'£720.00',status:'paid',clicks:2400},
+    {id:'INV-003',date:'2025-04-01',plan:'Basic',amount:'£210.00',status:'paid',clicks:700},
+  ];
+  var rows=invoices.map(function(inv){
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)">'+
+      '<div><div style="font-size:12px;font-weight:700">'+inv.id+' \u00b7 '+inv.plan+'</div>'+
+      '<div style="font-size:11px;color:var(--t3)">'+inv.date+' \u00b7 '+inv.clicks.toLocaleString()+' clicks</div></div>'+
+      '<div style="text-align:right"><div style="font-size:14px;font-weight:800">'+inv.amount+'</div>'+
+      '<span class="badge-live">'+inv.status+'</span></div>'+
+    '</div>';
+  }).join('');
+  return '<div style="padding:16px">'+
+    '<div class="sec-hd"><div class="sec-title">\uD83D\uDCC3 Billing</div></div>'+
+    '<div class="stat-grid">'+
+      '<div class="stat"><div class="stat-val" style="color:var(--rd)">\u00A31,770</div><div class="stat-lbl">Total Spent</div></div>'+
+      '<div class="stat"><div class="stat-val" style="color:var(--cy)">5,900</div><div class="stat-lbl">Total Clicks</div></div>'+
+      '<div class="stat"><div class="stat-val" style="color:var(--gr)">\u00A30.30</div><div class="stat-lbl">Avg CPC</div></div>'+
+      '<div class="stat"><div class="stat-val" style="color:var(--gd)">3</div><div class="stat-lbl">Invoices</div></div>'+
+    '</div>'+
+    '<div class="card">'+rows+
+      '<button onclick="newCampaign()" class="btn btn-secondary" style="width:100%;margin-top:12px;padding:11px">\u2B07 Download All Invoices</button>'+
+    '</div>'+
+  '</div>';
 }
 
 // ── SETTINGS ──
-function rSettings() {
-  return '<div class="sec-hd"><div><div class="sec-title">Settings</div></div></div>'+
-
-  '<div class="card">'+
-    '<div class="card-hd"><div class="card-title">🏷️ Brand Profile</div><button class="btn btn-sm btn-secondary" onclick="saveProfile()">Save</button></div>'+
-    '<div class="fi"><label>Brand Name</label><input id="s-name" value="'+D.brand.name+'"></div>'+
-    '<div class="fi"><label>Handle</label><input id="s-handle" value="'+D.brand.handle+'"></div>'+
-    '<div class="fi"><label>Email</label><input id="s-email" value="'+D.brand.email+'"></div>'+
-    '<div class="fi"><label>Website</label><input id="s-website" value="'+D.brand.website+'"></div>'+
-  '</div>'+
-
-  '<div class="card">'+
-    '<div class="card-hd"><div class="card-title">📣 Notifications</div></div>'+
-    settingToggle('Email alerts on new clicks','email-clicks',true)+
-    settingToggle('Daily performance summary','daily-summary',true)+
-    settingToggle('Budget running low alert','budget-alert',true)+
-    settingToggle('Tournament updates','tournament-notifs',true)+
-    settingToggle('AI tips and suggestions','ai-tips',true)+
-  '</div>'+
-
-  '<div class="card">'+
-    '<div class="card-hd"><div class="card-title">📦 Plan &amp; Subscription</div></div>'+
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">'+
-      '<div><div style="font-size:14px;font-weight:700">'+D.brand.plan.charAt(0).toUpperCase()+D.brand.plan.slice(1)+' Plan</div><div style="font-size:11px;color:var(--t3)">Pay per click · No monthly fee</div></div>'+
-      '<span class="pill pill-live">Active</span>'+
+function rSettings(){
+  return '<div style="padding:16px">'+
+    '<div class="sec-hd"><div class="sec-title">\u2699\uFE0F Settings</div></div>'+
+    '<div class="card">'+
+      '<div style="font-size:12px;font-weight:800;margin-bottom:10px">Account</div>'+
+      ['Brand name: '+D.brand,'Plan: '+D.plan.charAt(0).toUpperCase()+D.plan.slice(1),'Daily budget: \u00A3'+D.budget].map(function(s){
+        return '<div style="font-size:12px;color:var(--t2);padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05)">'+s+'</div>';
+      }).join('')+
+      '<button onclick="newCampaign()" class="btn btn-secondary" style="width:100%;margin-top:10px;padding:11px;font-size:13px">Edit Account Details</button>'+
     '</div>'+
-    '<button class="btn btn-secondary" style="width:100%" onclick="toast(\'Plan changes available at launch\',\'info\')">Upgrade Plan</button>'+
-  '</div>'+
-
-  '<div class="card">'+
-    '<div class="card-hd"><div class="card-title">💬 Support</div></div>'+
-    '<div style="font-size:13px;color:var(--t2);margin-bottom:14px">Questions or issues? Email our team directly.</div>'+
-    '<button class="btn btn-secondary" style="width:100%" onclick="toast(\'Opening support email…\',\'info\')">✉️ Email hello.addtok@gmail.com</button>'+
-  '</div>'+
-
-  '<div class="card" style="border-color:rgba(255,45,85,.3)">'+
-    '<div class="card-hd"><div class="card-title" style="color:var(--red)">⚠️ Danger Zone</div></div>'+
-    '<button class="btn btn-danger" style="width:100%;margin-bottom:8px" onclick="pauseAllAds()">Pause All Ads</button>'+
-    '<button class="btn btn-danger" style="width:100%" onclick="toast(\'Account deletion — contact hello.addtok@gmail.com\',\'info\')">Delete Account</button>'+
+    '<div class="card">'+
+      '<div style="font-size:12px;font-weight:800;margin-bottom:10px">Notifications</div>'+
+      ['Low stock alerts','New collab requests','Weekly performance report','Campaign budget alerts'].map(function(s){
+        return '<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05)">'+
+          '<div style="font-size:12px">'+s+'</div>'+
+          '<div onclick="newCampaign()" style="width:40px;height:22px;border-radius:11px;background:var(--gr);position:relative;cursor:pointer">'+
+            '<div style="position:absolute;top:3px;left:21px;width:16px;height:16px;border-radius:50%;background:#fff"></div>'+
+          '</div>'+
+        '</div>';
+      }).join('')+
+    '</div>'+
   '</div>';
 }
 
-function settingToggle(label, key, val) {
-  var bgOn = 'var(--green)';
-  var bgOff = 'rgba(255,255,255,.2)';
-  var transform = val ? 'translateX(20px)' : 'none';
-  return '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)">'+
-    '<div style="font-size:13px;font-weight:600">'+label+'</div>'+
-    '<label style="position:relative;display:inline-block;width:44px;height:24px">'+
-      '<input type="checkbox" '+(val?'checked':'')+' onchange="toggleSettingItem(this)" style="opacity:0;width:0;height:0">'+
-      '<span style="position:absolute;cursor:pointer;inset:0;background:'+(val?bgOn:bgOff)+';border-radius:24px;transition:.3s">'+
-        '<span style="position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;transform:'+transform+'"></span>'+
-      '</span>'+
-    '</label>'+
-  '</div>';
-}
-function toggleSettingItem(el) {
-  toast(el.checked ? 'Setting enabled' : 'Setting disabled', 'suc');
-  var span = el.nextElementSibling;
-  if (span) {
-    span.style.background = el.checked ? 'var(--green)' : 'rgba(255,255,255,.2)';
-    var dot = span.querySelector('span');
-    if (dot) dot.style.transform = el.checked ? 'translateX(20px)' : 'none';
+// Init
+go('overview');
+
+
+function rCampaign(){
+  var camps=[
+    {id:1,name:'Summer Launch',ads:3,budget:90,spent:67,status:'live',start:'2025-06-01',end:'2025-06-30',clicks:2840,impressions:124000},
+    {id:2,name:'Drop Week',ads:2,budget:60,spent:60,status:'ended',start:'2025-05-15',end:'2025-05-22',clicks:1920,impressions:89000},
+  ];
+  var html='<div class="sec-hd"><div><div class="sec-title">&#x1F4CB; Campaigns</div><div class="sec-sub">Group ads under shared budgets</div></div>'+
+    '<button class="btn btn-sm btn-primary" onclick="toast(\'Campaign builder coming soon!\',\'i\')">+ New Campaign</button></div>';
+  for(var i=0;i<camps.length;i++){
+    var c=camps[i];
+    var pct=Math.round(c.spent/c.budget*100);
+    var statusColor=c.status==='live'?'var(--gr)':c.status==='ended'?'var(--t3)':'var(--gd)';
+    html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-bottom:10px">'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'+
+        '<div><div style="font-size:14px;font-weight:800">'+c.name+'</div>'+
+        '<div style="font-size:11px;color:var(--t3)">'+c.ads+' ads &middot; '+c.start+' – '+c.end+'</div></div>'+
+        '<span style="background:rgba(48,209,88,.1);border:1px solid rgba(48,209,88,.25);border-radius:20px;padding:2px 8px;font-size:10px;font-weight:800;color:'+statusColor+'">'+c.status.toUpperCase()+'</span>'+
+      '</div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">'+
+        '<div style="text-align:center"><div style="font-size:16px;font-weight:900;color:var(--red)">£'+c.spent+'</div><div style="font-size:10px;color:var(--t3)">Spent</div></div>'+
+        '<div style="text-align:center"><div style="font-size:16px;font-weight:900;color:var(--cyan)">'+c.clicks.toLocaleString()+'</div><div style="font-size:10px;color:var(--t3)">Clicks</div></div>'+
+        '<div style="text-align:center"><div style="font-size:16px;font-weight:900;color:var(--gold)">'+Math.round(c.clicks/c.impressions*100)+'%</div><div style="font-size:10px;color:var(--t3)">CTR</div></div>'+
+      '</div>'+
+      '<div style="font-size:10px;color:var(--t3);margin-bottom:4px">Budget used: '+pct+'%</div>'+
+      '<div style="height:6px;background:rgba(255,255,255,.08);border-radius:4px">'+
+        '<div style="height:100%;width:'+Math.min(100,pct)+'%;background:'+(pct>=90?'var(--red)':'var(--green)')+';border-radius:4px"></div>'+
+      '</div>'+
+    '</div>';
   }
+  return html;
 }
-window.toggleSettingItem = toggleSettingItem;
-window.readOnboardingParams = readOnboardingParams;
+window.rCampaign=rCampaign;
 
-// ── ALERTS ──
 
-// ── STOCK ALERTS ──
+function rScheduling(){
+  var timeSlots=['All day','Morning (6am-12pm)','Afternoon (12pm-6pm)','Evening (6pm-11pm)','Night (11pm-6am)'];
+  var days=['M','T','W','T','F','S','S'];
+  var timeBtns='';
+  for(var ti=0;ti<timeSlots.length;ti++){
+    var isFst=ti===0;
+    timeBtns+='<button style="background:'+(isFst?'rgba(255,45,85,.2)':'rgba(255,255,255,.05)')+';border:1px solid '+(isFst?'var(--red)':'var(--border)')+';border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--text);cursor:pointer;font-family:var(--font);margin-bottom:4px">'+timeSlots[ti]+'</button> ';
+  }
+  var dayBtns='';
+  for(var di=0;di<days.length;di++){
+    var isWk=di<5;
+    dayBtns+='<div style="width:36px;height:36px;border-radius:50%;background:'+(isWk?'rgba(255,45,85,.2)':'rgba(255,255,255,.05)')+';border:1.5px solid '+(isWk?'var(--red)':'var(--border)')+';display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;cursor:pointer">'+days[di]+'</div>';
+  }
+  return '<div class="sec-hd"><div><div class="sec-title">&#x23F0; Ad Scheduling</div><div class="sec-sub">Control when your ads run</div></div></div>'+
+    '<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-bottom:12px">'+
+      '<div style="font-size:13px;font-weight:800;margin-bottom:12px">Air Phantom X &#x2014; Schedule</div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">'+
+        '<div><label style="font-size:11px;color:var(--t3);display:block;margin-bottom:4px">Start date</label>'+
+        '<input type="date" style="width:100%;background:rgba(255,255,255,.05);border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;font-size:13px;color:var(--text);font-family:var(--font)"></div>'+
+        '<div><label style="font-size:11px;color:var(--t3);display:block;margin-bottom:4px">End date</label>'+
+        '<input type="date" style="width:100%;background:rgba(255,255,255,.05);border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;font-size:13px;color:var(--text);font-family:var(--font)"></div>'+
+      '</div>'+
+      '<div style="margin-bottom:12px"><label style="font-size:11px;color:var(--t3);display:block;margin-bottom:6px">Active hours</label>'+
+      '<div style="display:flex;gap:6px;flex-wrap:wrap">'+timeBtns+'</div></div>'+
+      '<div style="margin-bottom:12px"><label style="font-size:11px;color:var(--t3);display:block;margin-bottom:6px">Active days</label>'+
+      '<div style="display:flex;gap:6px">'+dayBtns+'</div></div>'+
+      '<button class="btn btn-primary" onclick="toast(\'Schedule saved!\',\'suc\')">Save Schedule</button>'+
+    '</div>';
+}
+window.rScheduling=rScheduling;rScheduling;
+
+
+function rConversions(){
+  var convData=[
+    {date:'Today',clicks:284,est_conv:18,rate:'6.3%',value:'£540'},
+    {date:'Yesterday',clicks:312,est_conv:22,rate:'7.1%',value:'£660'},
+    {date:'This week',clicks:1840,est_conv:127,rate:'6.9%',value:'£3,810'},
+    {date:'This month',clicks:7240,est_conv:498,rate:'6.9%',value:'£14,940'},
+  ];
+  var html='<div class="sec-hd"><div><div class="sec-title">&#x1F4B0; Conversion Tracking</div><div class="sec-sub">Estimated revenue from your ads</div></div></div>'+
+    '<div style="background:rgba(48,209,88,.06);border:1px solid rgba(48,209,88,.2);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:rgba(242,242,247,.7)">'+
+    '&#x1F4A1; <b>How it works:</b> We estimate conversions based on your industry click-through rates. Connect your store for exact tracking.</div>';
+  for(var i=0;i<convData.length;i++){
+    var d=convData[i];
+    html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">'+
+      '<div><div style="font-size:13px;font-weight:800">'+d.date+'</div>'+
+      '<div style="font-size:11px;color:var(--t3)">'+d.clicks+' clicks &middot; ~'+d.est_conv+' conversions</div></div>'+
+      '<div style="text-align:right"><div style="font-size:16px;font-weight:900;color:var(--green)">'+d.value+'</div>'+
+      '<div style="font-size:11px;color:var(--t3)">est. value &middot; '+d.rate+' CVR</div></div>'+
+    '</div>';
+  }
+  html+='<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-top:4px">'+
+    '<div style="font-size:13px;font-weight:800;margin-bottom:10px">&#x1F517; Connect Your Store</div>'+
+    '<div style="font-size:12px;color:var(--t3);margin-bottom:12px">Add our tracking pixel to your website for exact conversion data.</div>'+
+    '<div style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:10px;font-family:monospace;font-size:11px;color:var(--cyan);word-break:break-all;margin-bottom:10px">'+
+    '&lt;script src="https://addtok.online/pixel.js" data-id="'+Math.random().toString(36).slice(2,10).toUpperCase()+'"&gt;&lt;/script&gt;'+
+    '</div>'+
+    '<button class="btn btn-sm btn-secondary" onclick="toast(\'Pixel code copied!\',\'suc\')">Copy Pixel Code</button>'+
+  '</div>';
+  return html;
+}
+window.rConversions=rConversions;
+
 function checkStockAlerts(){
   var alerts=[];
   for(var i=0;i<D.ads.length;i++){
     var ad=D.ads[i];
     if(ad.stock&&ad.stockLeft!==null&&ad.stockLeft!==undefined){
       var pct=Math.round((ad.stockLeft/ad.stock)*100);
-      if(ad.stockLeft===0){
-        alerts.push({type:'error',icon:'\u26D4',msg:'<b>'+ad.title+'</b> is sold out! Top up inventory to resume.',time:'just now'});
-      } else if(pct<=10){
-        alerts.push({type:'warning',icon:'\u26A0\uFE0F',msg:'<b>'+ad.title+'</b> is almost sold out — only '+ad.stockLeft+' left ('+pct+'%).',time:'just now'});
-      } else if(pct<=25){
-        alerts.push({type:'info',icon:'\uD83D\uDCE6',msg:'<b>'+ad.title+'</b> stock running low: '+ad.stockLeft+' remaining.',time:'just now'});
-      }
-    }
-    if(ad.drop&&ad.dropEnds){
-      var diff=ad.dropEnds-Date.now();
-      if(diff>0&&diff<3600000){
-        alerts.push({type:'info',icon:'\uD83D\uDCA7',msg:'<b>'+ad.title+'</b> drop ends in '+Math.round(diff/60000)+' minutes!',time:'just now'});
-      }
+      if(ad.stockLeft===0){alerts.push({type:'error',icon:'\u26D4',msg:'<b>'+ad.title+'</b> is sold out!',time:'just now'});}
+      else if(pct<=10){alerts.push({type:'warning',icon:'\u26A0\uFE0F',msg:'<b>'+ad.title+'</b> almost sold out — '+ad.stockLeft+' left',time:'just now'});}
     }
   }
   return alerts;
 }
 window.checkStockAlerts=checkStockAlerts;
-function rAlerts() {
-  var html = '<div class="sec-hd"><div><div class="sec-title">Notifications</div></div>'+
-    '<button class="btn btn-sm btn-secondary" onclick="markAllRead()">Mark all read</button></div>';
-
-  // Stock alerts
-  var sAlerts=checkStockAlerts();
-  for(var _sai=0;_sai<sAlerts.length;_sai++){
-    var _sa=sAlerts[_sai];
-    var _sc=_sa.type==='error'?'255,45,85':'255,159,10';
-    html+='<div style="display:flex;gap:12px;padding:12px 14px;background:rgba('+_sc+',.08);border:1px solid rgba('+_sc+',.25);border-radius:12px;margin-bottom:8px">'+
-      '<div style="font-size:20px;flex-shrink:0">'+_sa.icon+'</div>'+
-      '<div style="flex:1"><div style="font-size:12px;line-height:1.5">'+_sa.msg+'</div>'+
-      '<div style="font-size:10px;color:var(--t3);margin-top:3px">'+_sa.time+'</div></div>'+
-    '</div>';
-  }
-  // Collab requests
-  html+='<div style="background:rgba(99,91,255,.08);border:1px solid rgba(99,91,255,.2);border-radius:12px;padding:12px 14px;margin-bottom:8px">'+
-    '<div style="font-size:12px;font-weight:700;margin-bottom:8px">&#x1F91D; 2 Collab Requests</div>'+
-    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">'+
-      '<div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--pu));display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">&#x1F464;</div>'+
-      '<div style="flex:1"><div style="font-size:11px;font-weight:700">@streetwear_kai</div><div style="font-size:10px;color:var(--t3)">Air Phantom X &#x2022; Ref: COLLAB-KICKS-A3F2</div></div>'+
-      '<button onclick="toast(\'Reply sent\',\'suc\')" style="background:rgba(99,91,255,.2);border:1px solid rgba(99,91,255,.4);border-radius:8px;padding:4px 10px;font-size:10px;font-weight:700;color:#a78bfa;cursor:pointer;font-family:var(--f)">Reply</button>'+
-    '</div>'+
-    '<div style="display:flex;align-items:center;gap:10px">'+
-      '<div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#0891b2,#0e7490);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">&#x1F464;</div>'+
-      '<div style="flex:1"><div style="font-size:11px;font-weight:700">@fitness_by_mia</div><div style="font-size:10px;color:var(--t3)">42K followers &#x2022; Ref: COLLAB-KICKS-B7D1</div></div>'+
-      '<button onclick="toast(\'Reply sent\',\'suc\')" style="background:rgba(99,91,255,.2);border:1px solid rgba(99,91,255,.4);border-radius:8px;padding:4px 10px;font-size:10px;font-weight:700;color:#a78bfa;cursor:pointer;font-family:var(--f)">Reply</button>'+
-    '</div>'+
-  '</div>';
-  for (var i=0;i<D.notifs.length;i++) {
-    var n = D.notifs[i];
-    var icon = n.type==='good'?'✅':n.type==='ai'?'🤖':'ℹ️';
-    html += '<div style="display:flex;gap:12px;padding:14px;background:var(--card);border-radius:var(--r2);margin-bottom:8px;border:1px solid '+(n.read?'var(--border)':'rgba(255,45,85,.3)')+'">'+
-      '<div style="font-size:20px;flex-shrink:0">'+icon+'</div>'+
-      '<div style="flex:1"><div style="font-size:13px;font-weight:'+(n.read?'500':'700')+';line-height:1.5">'+n.msg+'</div>'+
-      '<div style="font-size:11px;color:var(--t3);margin-top:4px">'+n.time+'</div></div>'+
-    '</div>';
-  }
-  return html;
-}
-
-// ── CREATE AD ──
-function rCreate() {
-  return '<div class="sec-hd"><div><div class="sec-title">➕ Create New Ad</div><div class="sec-sub">Billed per click after approval</div></div></div>'+
-  '<div class="card">'+
-    '<div class="fi"><label>Ad Title <button onclick="aiQuickTitle()" style="float:right;background:linear-gradient(90deg,var(--red),var(--pu));border:none;border-radius:20px;padding:2px 10px;color:#fff;font-size:10px;font-weight:700;cursor:pointer">✨ AI Generate</button></label>'+
-      '<input id="create-title" placeholder="e.g. Summer Drop — Limited Edition"></div>'+
-    '<div class="fi"><label>Product URL</label><input id="create-url" placeholder="https://yoursite.com/product" type="url"></div>'+
-    '<div class="fi"><label>Description <button onclick="aiQuickDesc()" style="float:right;background:linear-gradient(90deg,var(--red),var(--pu));border:none;border-radius:20px;padding:2px 10px;color:#fff;font-size:10px;font-weight:700;cursor:pointer">✨ AI Write</button></label>'+
-      '<textarea id="create-desc" placeholder="What makes your product special? 1-2 sentences."></textarea></div>'+
-    '<div class="fi"><label>Daily Budget Cap</label><input id="create-budget" type="number" value="'+D.dailyCap+'" min="5" placeholder="45"></div>'+
-    '<div class="fi">'+
-      '<label style="display:flex;align-items:center;gap:6px">&#128230; Stock / Inventory <span style="color:var(--t3);font-weight:400;font-size:11px">(optional — leave blank for unlimited)</span></label>'+
-      '<input id="create-stock" type="number" min="0" placeholder="e.g. 500 — leave blank for unlimited">'+
-    '</div>'+
-    '<div class="fi"><label>Ad Type</label>'+
-      '<select id="create-type"><option value="merch">👟 Merch / Products</option><option value="brand">🏢 Brand Awareness</option><option value="influencer">🎬 Creator / Influencer</option><option value="sponsor">📢 Sponsor</option></select>'+
-    '</div>'+
-    '<div class="fi">'+
-      '<label style="display:flex;align-items:center;gap:6px">'+
-        '<span style="background:rgba(255,45,85,.12);border:1px solid rgba(255,45,85,.3);border-radius:5px;padding:2px 7px;font-size:9px;font-weight:800;color:var(--red)">&#x1F4F9; VIDEO</span>'+
-        'Video URL <span style="color:var(--t3);font-weight:400;font-size:11px">(optional — boosts engagement 3x)</span>'+
-      '</label>'+
-      '<input id="create-video" type="url" placeholder="YouTube / TikTok / Vimeo link..." oninput="checkVideoUrl(\'create-video\',\'cvp\')">'+
-      '<div id="cvp" style="margin-top:4px;min-height:0"></div>'+
-    '</div>'+
-    '<div class="fi">'+'<label style="display:flex;align-items:center;gap:6px">'+'<span style="background:rgba(0,229,255,.12);border:1px solid rgba(0,229,255,.25);border-radius:5px;padding:2px 7px;font-size:9px;font-weight:800;color:var(--cy)">&#x1F4A7; DROP</span>'+'Limited Drop <span style="color:var(--t3);font-weight:400;font-size:11px">(optional)</span>'+'</label>'+'<select id="create-drop">'+'<option value="">No — standard ad</option>'+'<option value="24">24-hour drop</option>'+'<option value="12">12-hour drop</option>'+'<option value="6">6-hour flash drop</option>'+'</select>'+'</div>'+'<button class="btn btn-primary" onclick="submitNewAd()" style="margin-top:4px">Submit Ad for Review</button>'+
-    '<div style="font-size:11px;color:var(--t3);text-align:center;margin-top:10px">Ads reviewed within 24 hours. You only pay when users click.</div>'+
-  '</div>';
-}
-
-// ── AI FUNCTIONS ──
-function aiPerformanceCoach() {
-  var liveAds = D.ads.filter(function(a){return a.status==='live';});
-  if (!liveAds.length) return 'No live ads yet. Create your first ad to start getting AI insights.';
-  var bestCTR = Math.max.apply(null, (function(){var _ctrs=[];for(var _i=0;_i<liveAds.length;_i++){if(liveAds[_i].ctr>0)_ctrs.push(liveAds[_i].ctr);}return _ctrs;})());
-  var totalClicks = liveAds.reduce(function(s,a){return s+a.clicks;},0);
-  if (bestCTR > 7) return 'Your CTR of '+bestCTR+'% is in the top 10% of all Addtok advertisers. Your ads are highly relevant to your audience. Consider increasing your daily cap to £'+(D.dailyCap+15)+' to capitalise on this momentum.';
-  if (totalClicks < 100) return 'Your ads are gaining traction. Try refreshing your ad title to include an urgency trigger like "Limited" or "Today Only" — these increase CTR by an average of 23%.';
-  return 'Solid performance across '+liveAds.length+' live ads. Your peak engagement window is 6–10pm UK. Scheduling a budget boost during those hours could increase clicks by up to 35%.';
-}
-window.aiPerformanceCoach=aiPerformanceCoach;
-
-function aiAdRefresher() {
-  var lowCTR = D.ads.filter(function(a){return a.ctr>0&&a.ctr<4;});
-  if (lowCTR.length) return '"'+lowCTR[0].title+'" has a CTR of '+lowCTR[0].ctr+'% — below the 3.2% platform average. AI suggests refreshing the title to include a stronger hook or exclusive offer.';
-  var paused = D.ads.filter(function(a){return a.status==='paused';});
-  if (paused.length) return '"'+paused[0].title+'" is paused but had strong performance ('+paused[0].heat+' heat score). Consider resuming with a refreshed description to re-engage the audience.';
-  return 'All your active ads are performing above average. No immediate refresh needed — check back in 7 days for AI-generated optimisation suggestions.';
-}
-window.aiAdRefresher=aiAdRefresher;
-
-function aiBudgetOptimiser() {
-  var dailyEst = D.dailyCap * 0.87;
-  var suggested = D.dailyCap + 10;
-  return 'Your ads are using £'+dailyEst.toFixed(0)+' of your £'+D.dailyCap+'/day cap on average. Based on your '+D.ads.filter(function(a){return a.status==='live';}).length+' live ads and current CTR trends, AI recommends increasing to £'+suggested+'/day to avoid missing peak-hour clicks.';
-}
-window.aiBudgetOptimiser=aiBudgetOptimiser;
-
-function aiAudienceMatcher(){
-  var totalClicks=D.ads.reduce(function(s,a){return s+a.clicks;},0);
-  var avgCTR=(D.ads.filter(function(a){return a.ctr>0;}).reduce(function(s,a){return s+a.ctr;},0)/Math.max(1,D.ads.filter(function(a){return a.ctr>0;}).length)).toFixed(1);
-  var topRxn='fire';
-  var rxnTotals={fire:0,funny:0,wow:0,deal:0};
-  for(var i=0;i<D.ads.length;i++){var a=D.ads[i];for(var k in rxnTotals)rxnTotals[k]+=a.rxn[k]||0;}
-  var maxRxn=0;
-  for(var k in rxnTotals){if(rxnTotals[k]>maxRxn){maxRxn=rxnTotals[k];topRxn=k;}}
-  var rxnAdvice={fire:'Your audience responds most to excitement and energy. Use bold, limited-edition language in your next ad.',funny:'Your audience loves humour. A witty or unexpected hook in your title could increase CTR by up to 18%.',wow:'Your audience likes to be surprised. Lead with a surprising stat or fact in your next ad title.',deal:'Your audience is deal-driven. Always include a discount code or special offer to maximise CTR.'};
-  return 'Your top '+totalClicks.toLocaleString()+' clicks come from 18-24 UK users interested in fashion and streetwear — a strong match for your brand. '+
-    'Your dominant reaction is '+topRxn+' — '+rxnAdvice[topRxn]+' '+
-    'AI recommends expanding to the 25-34 segment, which has 40% lower competition but similar purchase intent.';
-}
-window.aiAudienceMatcher=aiAudienceMatcher;
-
-function aiAnalyticsInsight() {
-  var totalClicks = D.ads.reduce(function(s,a){return s+a.clicks;},0);
-  var totalRxn = D.ads.reduce(function(s,a){return s+(a.rxn.fire+a.rxn.funny+a.rxn.wow+a.rxn.deal);},0);
-  return 'You have accumulated '+fmt(totalClicks)+' clicks and '+fmt(totalRxn)+' reactions. Your Fire reaction rate is exceptionally high, indicating strong emotional resonance with your audience. Ads with high Fire reactions convert 2.3x better. Consider featuring more limited-edition or exclusive drops.';
-}
-window.aiAnalyticsInsight=aiAnalyticsInsight;
-
-function showAiCoachDetail(){
-  var tip=aiPerformanceCoach();
-  var liveAds=D.ads.filter(function(a){return a.status==='live';});
-  var totalClicks=D.ads.reduce(function(s,a){return s+a.clicks;},0);
-  var totalSpend=D.ads.reduce(function(s,a){return s+a.spend;},0);
-  var roi=totalSpend>0?(totalClicks/totalSpend).toFixed(2):0;
-  var msg=document.createElement('div');
-  msg.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);z-index:200;display:flex;align-items:flex-end;justify-content:center;padding:0';
-  msg.innerHTML='<div style="background:#1a1a3a;border-radius:20px 20px 0 0;padding:24px;width:100%;max-width:480px;max-height:80vh;overflow-y:auto">'+
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">'+
-      '<div style="font-size:16px;font-weight:800">🤖 Full AI Performance Report</div>'+
-      '<button onclick="document.body.removeChild(this.parentNode.parentNode)" style="background:rgba(255,255,255,.1);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px">×</button>'+
-    '</div>'+
-    '<div style="background:rgba(99,91,255,.1);border:1px solid rgba(99,91,255,.2);border-radius:12px;padding:14px;margin-bottom:16px">'+
-      '<div style="font-size:13px;line-height:1.7;color:rgba(242,242,247,.9)">'+tip+'</div>'+
-    '</div>'+
-    '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">'+
-      '<div style="background:rgba(0,229,255,.08);border-radius:10px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:800;color:#00e5ff">'+totalClicks.toLocaleString()+'</div><div style="font-size:10px;color:rgba(242,242,247,.4);text-transform:uppercase">Total Clicks</div></div>'+
-      '<div style="background:rgba(255,214,10,.08);border-radius:10px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:800;color:#ffd60a">£'+totalSpend.toFixed(0)+'</div><div style="font-size:10px;color:rgba(242,242,247,.4);text-transform:uppercase">Total Spend</div></div>'+
-      '<div style="background:rgba(48,209,88,.08);border-radius:10px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:800;color:#30d158">'+roi+'</div><div style="font-size:10px;color:rgba(242,242,247,.4);text-transform:uppercase">Clicks/£</div></div>'+
-    '</div>'+
-    '<div style="font-size:12px;color:rgba(242,242,247,.5);text-align:center;margin-top:8px">Full analytics dashboard with AI insights available when Addtok launches.</div>'+
-  '</div>';
-  document.body.appendChild(msg);
-}
-window.showAiCoachDetail=showAiCoachDetail;
-
-function runAiRefresh(){
-  var lowCTR=D.ads.filter(function(a){return a.ctr>0&&a.ctr<3;});
-  var paused=D.ads.filter(function(a){return a.status==='paused';});
-  var msg='';
-  if(lowCTR.length>0){
-    msg='🤖 AI has analysed '+lowCTR.length+' underperforming ad'+(lowCTR.length>1?'s':'')+'. Suggestions: try adding "Limited" or "Exclusive" to the title, and include a clear call to action. Tap Edit on each ad to apply.';
-  } else if(paused.length>0){
-    msg='🤖 '+paused.length+' ad'+(paused.length>1?'s are':' is')+' paused with strong past performance. Consider refreshing the description and resuming to capture new audience.';
-  } else {
-    msg='🤖 All your active ads are performing above the 3.2% platform average CTR. No refresh needed right now — check back in 7 days.';
-  }
-  toast(msg,'suc');
-}
-window.runAiRefresh=runAiRefresh;
-
-function applyAiBudget() {
-  var suggested = D.dailyCap + 10;
-  D.dailyCap = suggested;
-  toast('Daily cap updated to £'+suggested+'/day by AI','suc');
-  render('billing');
-}
-window.applyAiBudget=applyAiBudget;
-
-// ── ACTIONS ──
-function pauseAd(id) {
-  for (var i=0;i<D.ads.length;i++){if(D.ads[i].id===id){D.ads[i].status='paused';}}
-  toast('Ad paused','suc');
-  render('ads');
-}
-function resumeAd(id) {
-  for (var i=0;i<D.ads.length;i++){if(D.ads[i].id===id){D.ads[i].status='live';}}
-  toast('Ad resumed','suc');
-  render('ads');
-}
-function editAd(id) {
-  editAdId = id;
-  var ad = D.ads.filter(function(a){return a.id===id;})[0];
-  if (!ad) return;
-  document.getElementById('edit-title').value = ad.title;
-  var evid=document.getElementById('edit-video');
-  if(evid)evid.value=ad.videoUrl||'';
-  var estk=document.getElementById('edit-stock');
-  if(estk)estk.value=ad.stockLeft||'';
-  document.getElementById('edit-desc').value = ad.desc || '';
-  document.getElementById('edit-url').value = ad.url || '';
-  openModal('edit-ad');
-}
-function saveEditAd() {
-  if (!editAdId) return;
-  for (var i=0;i<D.ads.length;i++) {
-    if (D.ads[i].id===editAdId) {
-      D.ads[i].title = document.getElementById('edit-title').value || D.ads[i].title;
-      D.ads[i].desc = document.getElementById('edit-desc').value;
-      D.ads[i].url = document.getElementById('edit-url').value || D.ads[i].url;
-      var evf=document.getElementById('edit-video');
-      if(evf)D.ads[i].videoUrl=evf.value.trim();
-      var estk=document.getElementById('edit-stock');
-      if(estk){var sv=parseInt(estk.value);if(sv>0){D.ads[i].stock=D.ads[i].stock||sv;D.ads[i].stockLeft=sv;}}
-      var evf=document.getElementById('edit-video');
-      if(evf)D.ads[i].videoUrl=evf.value.trim();
-      var estk2=document.getElementById('edit-stock');
-      if(estk2){var sv=parseInt(estk2.value);D.ads[i].stockLeft=sv>0?sv:null;if(!D.ads[i].stock&&sv>0)D.ads[i].stock=sv;}
-    }
-  }
-  closeModal('edit-ad');
-  toast('Ad updated successfully','suc');
-  render('ads');
-}
-function viewAdAnalytics(id) {
-  go('analytics');
-}
-function pauseAllAds() {
-  for(var _pi=0;_pi<D.ads.length;_pi++){if(D.ads[_pi].status==='live')D.ads[_pi].status='paused';}
-  toast('All ads paused','suc');
-  render('ads');
-}
-function saveProfile() {
-  D.brand.name = document.getElementById('s-name').value || D.brand.name;
-  D.brand.handle = document.getElementById('s-handle').value || D.brand.handle;
-  D.brand.email = document.getElementById('s-email').value || D.brand.email;
-  D.brand.website = document.getElementById('s-website').value || D.brand.website;
-  toast('Profile saved','suc');
-  render('settings');
-}
-function markAllRead() {
-  for(var _ni=0;_ni<D.notifs.length;_ni++){D.notifs[_ni].read=true;}
-  toast('All notifications read','suc');
-  render('alerts');
-}
-function confirmTopup() {
-  var amt = parseFloat(document.getElementById('topup-amount').value)||100;
-  D.balance += amt;
-  closeModal('topup');
-  toast('£'+amt.toFixed(0)+' added to balance. New balance: '+fm(D.balance),'suc');
-  render('billing');
-}
-function updateBudgetSlider(val) {
-  document.getElementById('budget-val').textContent = val;
-  var pct = (val-5)/(500-5)*100;
-  var sl=document.getElementById('budget-slider');
-  if(sl){
-    if(sl.style.setProperty)sl.style.setProperty('--pct',pct+'%');
-    else sl.style.background='linear-gradient(90deg,var(--red) '+pct+'%,var(--border) '+pct+'%)';
-  }
-}
-function saveBudget() {
-  var val = parseInt(document.getElementById('budget-val').textContent)||D.dailyCap;
-  D.dailyCap = val;
-  closeModal('budget');
-  toast('Daily cap set to £'+val+'/day','suc');
-  render('billing');
-}
-function submitNewAd() {
-  var title = document.getElementById('create-title').value.trim();
-  var url = document.getElementById('create-url').value.trim();
-  var vidEl = document.getElementById('create-video');
-  var videoUrl = vidEl ? vidEl.value.trim() : '';
-  if (!title || !url) {toast('Please fill in title and URL','err');return;}
-  var newId = D.ads.length + 1;
-  D.ads.push({
-    id:newId,em:'\u2B50',bg:'linear-gradient(135deg,#1a2040,#2a3060)',
-    title:title,url:url,videoUrl:videoUrl,status:'pending',
-    stock:(function(){var s=document.getElementById('create-stock');var v=s?parseInt(s.value):0;return v>0?v:null;})(),
-    stockLeft:(function(){var s=document.getElementById('create-stock');var v=s?parseInt(s.value):0;return v>0?v:null;})(),
-    clicks:0,ctr:0,spend:0,heat:0,appr:0,views:0,
-    rxn:{fire:0,funny:0,wow:0,deal:0},
-    budget:parseInt(document.getElementById('create-budget').value)||D.dailyCap,
-    desc:document.getElementById('create-desc').value
-  });
-  var msg=videoUrl?'Video ad submitted for review! &#x1F4F9; Usually approved within 24 hours.':'Ad submitted for review! Usually approved within 24 hours.';
-  toast(msg,'suc');
-  go('ads');
-}
-function aiQuickTitle(){
-  var name=D.brand.name||'Your Brand';
-  var plan=D.brand.plan||'growth';
-  var titles=[
-    name+' — New Drop Just Landed',
-    'Exclusive '+name+' · Addtok Only',
-    name+' | Limited Time Offer',
-    'Shop '+name+' · Tap to See Why Everyone Loves It',
-    'New from '+name+' · Only Available Here'
-  ];
-  var stored=parseInt(sessionStorage.getItem('dashTitleIdx')||'0');
-  var pick=titles[stored%titles.length];
-  sessionStorage.setItem('dashTitleIdx',(stored+1)+'');
-  var el=document.getElementById('create-title');
-  if(el){el.value=pick;el.focus();}
-  toast('✨ AI title generated! Tap again for another option.','suc');
-}
-function aiQuickDesc(){
-  var name=D.brand.name||'us';
-  var plan=D.brand.plan||'growth';
-  var descs=[
-    'Premium quality, fast shipping. Tap to shop '+name+' latest collection.',
-    'Exclusive to Addtok users — limited stock. Grab yours before it sells out.',
-    'Join thousands of happy '+name+' customers. Tap to visit the store today.',
-    'Trusted by thousands. Loved by all. See what the hype is about.',
-    'New drop alert — tap to be among the first to shop it.'
-  ];
-  if(plan==='pro'){
-    descs.unshift('VIP Addtok offer — exclusive pricing for Addtok users only. Tap to claim.');
-  }
-  var stored=parseInt(sessionStorage.getItem('dashDescIdx')||'0');
-  var desc=descs[stored%descs.length];
-  sessionStorage.setItem('dashDescIdx',(stored+1)+'');
-  var el=document.getElementById('create-desc');
-  if(el){el.value=desc;el.focus();}
-  toast('✨ AI description written! Tap again for another option.','suc');
-}
-
-// ── VIDEO URL PREVIEW ──
-function checkVideoUrl(inputId, previewId) {
-  var input = document.getElementById(inputId);
-  var preview = document.getElementById(previewId);
-  if(!input||!preview)return;
-  var url = input.value.trim();
-  if(!url){preview.innerHTML='';return;}
-  var platform='';
-  var icon='&#x1F4F9;';
-  var valid=false;
-  if(url.indexOf('youtube.com')>=0||url.indexOf('youtu.be')>=0){platform='YouTube';icon='&#x25B6;&#xFE0F;';valid=true;}
-  else if(url.indexOf('tiktok.com')>=0){platform='TikTok';icon='&#x1F3B5;';valid=true;}
-  else if(url.indexOf('vimeo.com')>=0){platform='Vimeo';icon='&#x25B6;';valid=true;}
-  else if(url.match(/\.(mp4|webm)/)){platform='Video File';icon='&#x1F4F9;';valid=true;}
-  if(valid){
-    preview.innerHTML='<div style="padding:5px 10px;background:rgba(48,209,88,.08);border:1px solid rgba(48,209,88,.2);border-radius:8px;font-size:11px;color:var(--gr);display:flex;align-items:center;gap:5px">'+icon+' '+platform+' detected &mdash; will show as Video Ad in feed</div>';
-  } else if(url.length>8){
-    preview.innerHTML='<div style="padding:5px 10px;background:rgba(255,214,10,.06);border:1px solid rgba(255,214,10,.2);border-radius:8px;font-size:11px;color:var(--t2)">Paste a YouTube, TikTok or Vimeo URL for best results</div>';
-  }
-}
-window.checkVideoUrl=checkVideoUrl;
-window.pauseAd=pauseAd;window.resumeAd=resumeAd;window.editAd=editAd;
-window.saveEditAd=saveEditAd;window.viewAdAnalytics=viewAdAnalytics;
-window.pauseAllAds=pauseAllAds;window.saveProfile=saveProfile;
-window.markAllRead=markAllRead;window.confirmTopup=confirmTopup;
-window.updateBudgetSlider=updateBudgetSlider;window.saveBudget=saveBudget;
-window.submitNewAd=submitNewAd;window.aiQuickTitle=aiQuickTitle;
-window.aiQuickDesc=aiQuickDesc;window.go=go;
-
-// ── READ URL PARAMS FROM ONBOARDING HANDOFF ──
-function readOnboardingParams(){
-  var qs = window.location.search;
-  if(!qs) return;
-  var params = {};
-  var _pairs=qs.substring(1).split('&');
-  for(var _pi=0;_pi<_pairs.length;_pi++){
-    var parts=_pairs[_pi].split('=');
-    if(parts.length===2)params[decodeURIComponent(parts[0])]=decodeURIComponent(parts[1].replace(/\+/g,' '));
-  }
-  if(params.name)  D.brand.name    = params.name;
-  if(params.handle)D.brand.handle  = params.handle;
-  if(params.email) D.brand.email   = params.email;
-  if(params.plan)  D.brand.plan    = params.plan;
-  if(params.budget)D.dailyCap      = parseInt(params.budget)||D.dailyCap;
-  // If they just signed up, add their first ad as pending
-  if(params.new==='1' && params.adTitle){
-    D.ads.unshift({
-      id:99,
-      em:params.adType==='merch'?'👟':params.adType==='influencer'?'🎬':params.adType==='sponsor'?'📢':'🏢',
-      bg:'linear-gradient(135deg,#1a2040,#2a3060)',
-      title:params.adTitle,
-      url:params.adUrl||'',
-      status:'pending',
-      clicks:0,ctr:0,spend:0,heat:0,appr:0,views:0,
-      rxn:{fire:0,funny:0,wow:0,deal:0},
-      budget:parseInt(params.budget)||20,
-      desc:''
-    });
-  }
-  // Show welcome toast if new signup
-  if(params.new==='1'){
-    setTimeout(function(){
-      toast('🎉 Welcome to Addtok, '+D.brand.name+'! Your ad is under review.','suc');
-    },600);
-  }
-}
-
-
-// ── INIT ──
-readOnboardingParams();
-go('overview')
-// ── INIT ──
-readOnboardingParams();
-go('overview');
-
 </script>
 </body>
 </html>
