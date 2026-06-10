@@ -380,7 +380,7 @@ button{cursor:pointer;border:none;background:none;font-family:var(--fb);color:in
 .tb-logo-text{font-size:22px;font-weight:800;letter-spacing:-1px;color:#fff;line-height:1}
 .tb-bars{display:flex;gap:3px;margin-top:3px}
 .bar-r{width:38px;height:2.5px;border-radius:2px;background:#FF2D55;display:block}
-.bar-c{width:34px;height:2.5px;border-radius:2px;background:#00e5ff;display:block}
+.bar-c{width:32px;height:2.5px;border-radius:2px;background:#00e5ff;display:block}
 
 /* ── DISCOVERY MODE ── */
 .disc-overlay{position:fixed;inset:0;background:#000;z-index:200;display:none;flex-direction:column}
@@ -545,8 +545,8 @@ button{cursor:pointer;border:none;background:none;font-family:var(--fb);color:in
 .auth-logo-wrap{text-align:center;margin-bottom:32px}
 .auth-logo{font-size:36px;font-weight:900;letter-spacing:-2px;color:#fff;line-height:1}
 .auth-bars{display:flex;gap:4px;justify-content:center;margin-top:4px}
-.auth-bar-r{width:48px;height:3px;border-radius:2px;background:#FF2D55;display:block}
-.auth-bar-c{width:42px;height:3px;border-radius:2px;background:#00e5ff;display:block}
+.auth-bar-r{width:38px;height:2.5px;border-radius:2px;background:#FF2D55;display:block}
+.auth-bar-c{width:32px;height:2.5px;border-radius:2px;background:#00e5ff;display:block}
 .auth-tagline{font-size:10px;letter-spacing:2.5px;color:rgba(255,255,255,.3);margin-top:6px;text-transform:uppercase}
 .auth-card{background:var(--c1);border:1px solid var(--bo);border-radius:24px;padding:24px;width:100%;max-width:380px}
 .auth-title{font-size:20px;font-weight:900;margin-bottom:4px;letter-spacing:-.5px}
@@ -572,8 +572,8 @@ button{cursor:pointer;border:none;background:none;font-family:var(--fb);color:in
 .auth-logo-wrap{text-align:center;margin-bottom:28px}
 .auth-logo{font-size:34px;font-weight:900;letter-spacing:-2px;color:#fff;line-height:1}
 .auth-bars{display:flex;gap:4px;justify-content:center;margin-top:4px}
-.auth-bar-r{width:46px;height:3px;border-radius:2px;background:#FF2D55;display:block}
-.auth-bar-c{width:40px;height:3px;border-radius:2px;background:#00e5ff;display:block}
+.auth-bar-r{width:38px;height:2.5px;border-radius:2px;background:#FF2D55;display:block}
+.auth-bar-c{width:32px;height:2.5px;border-radius:2px;background:#00e5ff;display:block}
 .auth-tagline{font-size:9px;letter-spacing:2.5px;color:rgba(255,255,255,.3);margin-top:5px;text-transform:uppercase}
 .auth-card{background:#12122a;border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:22px;width:100%;max-width:380px}
 .auth-title{font-size:19px;font-weight:900;margin-bottom:3px;letter-spacing:-.5px;color:#f2f2f7}
@@ -591,6 +591,13 @@ button{cursor:pointer;border:none;background:none;font-family:var(--fb);color:in
 .auth-back{text-align:center;font-size:12px;color:rgba(242,242,247,.3);margin-top:14px;cursor:pointer}
 .auth-err{font-size:12px;color:#ff2d55;margin-bottom:8px;min-height:16px;text-align:center}
 .auth-guest{text-align:center;font-size:12px;color:rgba(242,242,247,.35);margin-top:14px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.live-badge{animation:pulse 1.5s infinite}
+
+
+.ab-badge{background:rgba(99,91,255,.15);border:1px solid rgba(99,91,255,.3);border-radius:6px;padding:2px 7px;font-size:9px;font-weight:800;color:#a78bfa}
 
 </style>
 </head>
@@ -695,180 +702,24 @@ button{cursor:pointer;border:none;background:none;font-family:var(--fb);color:in
   </div>
 </div>
 <div id="tc" style="position:fixed;bottom:72px;left:50%;transform:translateX(-50%);z-index:999;pointer-events:none;width:calc(100% - 32px);max-width:340px"></div>
-<script>
-var USERS_KEY='at_users';
-var SESSION_KEY='at_session';
-
-function getUsers(){
-  try{var u=localStorage.getItem(USERS_KEY);return u?JSON.parse(u):{};} catch(e){return {};}
-}
-function saveUsers(users){
-  try{localStorage.setItem(USERS_KEY,JSON.stringify(users));}catch(e){}
-}
-function getSession(){
-  try{var s=localStorage.getItem(SESSION_KEY);return s?JSON.parse(s):null;}catch(e){return null;}
-}
-function saveSession(user){
-  try{localStorage.setItem(SESSION_KEY,JSON.stringify(user));}catch(e){}
-}
-
-function showAuthScreen(name){
-  var screens=['welcome','signup','login'];
-  for(var i=0;i<screens.length;i++){
-    var el=document.getElementById('auth-'+screens[i]);
-    if(el)el.className='auth-screen'+(screens[i]===name?'':' hide');
-  }
-  var errs=['signup-err','login-err'];
-  for(var j=0;j<errs.length;j++){
-    var e=document.getElementById(errs[j]);
-    if(e)e.textContent='';
-  }
-}
-window.showAuthScreen=showAuthScreen;
-
-function authGuest(){
-  S.user={name:'Guest',email:'',isGuest:true};
-  S.showOnboarding=true;
-  hideAllAuthScreens();
-  checkOnboarding();
-}
-window.authGuest=authGuest;
-
-function authGoogle(){
-  // Simulated Google login - in production connect to real Google OAuth
-  var name=prompt('Enter your name (Google login simulation):');
-  if(!name)return;
-  var email=name.toLowerCase().replace(/\s+/g,'.')+Math.floor(Math.random()*100)+'@gmail.com';
-  var user={name:name,email:email,provider:'google',joined:new Date().toISOString(),pts:0};
-  var users=getUsers();
-  users[email]=user;
-  saveUsers(users);
-  saveSession(user);
-  S.user=user;
-  S.showOnboarding=true;
-  hideAllAuthScreens();
-  updatePtsDisplay();
-  checkOnboarding();
-  toast('Welcome '+name+'! \uD83D\uDC4B +10 bonus pts','suc');
-  addPoints(10,'Welcome bonus');
-}
-window.authGoogle=authGoogle;
-
-function doSignup(){
-  var name=(document.getElementById('signup-name')||{}).value||'';
-  var email=(document.getElementById('signup-email')||{}).value||'';
-  var pw=(document.getElementById('signup-pw')||{}).value||'';
-  var pw2=(document.getElementById('signup-pw2')||{}).value||'';
-  var err=document.getElementById('signup-err');
-  if(!name.trim()){err.textContent='Please enter your name';return;}
-  if(!email.match(/^[^@]+@[^@]+\.[^@]+$/)){err.textContent='Please enter a valid email';return;}
-  if(pw.length<6){err.textContent='Password must be at least 6 characters';return;}
-  if(pw!==pw2){err.textContent='Passwords do not match';return;}
-  var users=getUsers();
-  if(users[email]){err.textContent='Email already registered. Log in instead.';return;}
-  var user={name:name.trim(),email:email.toLowerCase(),joined:new Date().toISOString(),pts:0};
-  users[email]=user;
-  saveUsers(users);
-  saveSession(user);
-  S.user=user;
-  S.showOnboarding=true;
-  hideAllAuthScreens();
-  updatePtsDisplay();
-  checkOnboarding();
-  toast('Welcome to Addtok '+name.split(' ')[0]+'! \uD83C\uDF89 +10 bonus pts','suc');
-  addPoints(10,'Welcome bonus');
-}
-window.doSignup=doSignup;
-
-function doLogin(){
-  var email=(document.getElementById('login-email')||{}).value||'';
-  var pw=(document.getElementById('login-pw')||{}).value||'';
-  var err=document.getElementById('login-err');
-  if(!email||!pw){err.textContent='Please fill in all fields';return;}
-  var users=getUsers();
-  var user=users[email.toLowerCase()];
-  if(!user){err.textContent='No account found with that email';return;}
-  // Note: in production use real password hashing
-  saveSession(user);
-  S.user=user;
-  hideAllAuthScreens();
-  updatePtsDisplay();
-  toast('Welcome back '+user.name.split(' ')[0]+'!','suc');
-}
-window.doLogin=doLogin;
-
-function doLogout(){
-  localStorage.removeItem(SESSION_KEY);
-  S.user=null;
-  showAuthScreen('welcome');
-  var screens=['welcome','signup','login'];
-  for(var i=0;i<screens.length;i++){
-    var el=document.getElementById('auth-'+screens[i]);
-    if(el)el.className='auth-screen'+(screens[i]==='welcome'?'':' hide');
-  }
-}
-window.doLogout=doLogout;
-
-function hideAllAuthScreens(){
-  var screens=['welcome','signup','login'];
-  for(var i=0;i<screens.length;i++){
-    var el=document.getElementById('auth-'+screens[i]);
-    if(el)el.className='auth-screen hide';
-  }
-}
-
-function checkAuth(){
-  var session=getSession();
-  if(session){
-    S.user=session;
-    hideAllAuthScreens();
-  } else {
-    // Show welcome screen
-    showAuthScreen('welcome');
-  }
-}
-
-
-var fmt=function(n){return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':n+'';};
+<script>var fmt=function(n){return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':n+'';}
 var apr=function(a){return a.vu+a.vd>0?Math.round(a.vu/(a.vu+a.vd)*100):0;};
 var gc={A:'#30d158',B:'#00e5ff',C:'#ffd60a'};
-var typeLabel={merch:'Merch Drop',sponsor:'Sponsored',influencer:'Influencer',brand:'Brand',drop:'Drop'};
-var fmt=function(n){return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':n+'';};
-var apr=function(a){return a.vu+a.vd>0?Math.round(a.vu/(a.vu+a.vd)*100):0;};
-var gc={A:'#30d158',B:'#00e5ff',C:'#ffd60a'};
-
 var medals=['🥇','🥈','🥉'];
-
+var typeLabel={merch:'Merch Drop',sponsor:'Sponsored',influencer:'Influencer',brand:'Brand Ad',drop:'Drop Ad'};
 var ADS=[
-  {id:1,type:'merch',em:'👟',bg:'linear-gradient(135deg,#241340,#3d2462)',title:'Air Phantom X — Limited Drop',adv:'KicksWorld',ac:'#7c3aed',ai:'K',ver:1,desc:'Exclusive collab. Only 500 pairs worldwide. Carbon-fibre sole, breathable mesh.',tags:['streetwear','sneakers'],views:84200,clicks:3210,vu:2840,vd:120,gr:'B',feat:1,drop:1,bought:47,appr:96,deal:1,dealCode:'ADDTOK15',dealDesc:'15% off your first pair',videoUrl:'https://www.youtube.com/watch?v=dQw4w9WgXcQ',stock:500,stockLeft:350,dropEnds:Date.now()+82800000},
-  {id:2,type:'sponsor',em:'🎮',bg:'linear-gradient(135deg,#0f1e3a,#243858)',title:'NovaBit Gaming Chair Pro',adv:'TechRevHQ',ac:'#0891b2',ai:'T',ver:1,desc:'4D armrests, lumbar support, RGB. Use code NOVA40 for 40% off today only.',tags:['gaming','tech'],views:121000,clicks:5400,vu:4100,vd:340,gr:'A',feat:0,drop:0,bought:193,appr:92,deal:0,stock:null,stockLeft:null},
-  {id:3,type:'influencer',em:'💄',bg:'linear-gradient(135deg,#261040,#3d1a4a)',title:'GlowLab x Emma Ray Serum',adv:'EmmaRay',ac:'#db2777',ai:'E',ver:1,desc:'5% niacinamide + rose extract. Cruelty-free. Code EMMA20 for 20% off.',tags:['beauty','skincare'],views:256000,clicks:18700,vu:9200,vd:480,gr:'A',feat:1,drop:0,bought:1840,appr:95,deal:1,dealCode:'GLOW20',dealDesc:'20% off Rose Glow Serum',videoUrl:'https://www.youtube.com/watch?v=9bZkp7q19f0',stock:200,stockLeft:140},
-  {id:4,type:'merch',em:'🧢',bg:'linear-gradient(135deg,#0f2610,#1e3e1e)',title:'UrbanForge Caps — Season 4',adv:'UrbanForge',ac:'#059669',ai:'U',ver:0,desc:'Limited streetwear caps. Washed cotton, custom embroidery. Only 200 made.',tags:['streetwear','caps'],views:32000,clicks:890,vu:1200,vd:90,gr:'C',feat:0,drop:1,bought:12,appr:93,deal:1,dealCode:'CAP10',dealDesc:'10% off Season 4 caps',stock:150,stockLeft:105,dropEnds:Date.now()+39600000},
-  {id:5,type:'sponsor',em:'☕',bg:'linear-gradient(135deg,#261500,#3e2400)',title:'BrewBase — AI Coffee Sub',adv:'MorningHabit',ac:'#b45309',ai:'M',ver:1,desc:'AI-matched single-origin beans. First bag free. Cancel anytime.',tags:['coffee','lifestyle'],views:67400,clicks:4120,vu:3400,vd:210,gr:'A',feat:0,drop:0,bought:302,appr:94,deal:1,dealCode:'BREW30',dealDesc:'30 days free — cancel anytime',stock:null,stockLeft:null},
-  {id:6,type:'influencer',em:'🏋️',bg:'linear-gradient(135deg,#10004a,#200052)',title:'MassiveGains Protein — Jake Cole',adv:'JakeCole',ac:'#7c3aed',ai:'J',ver:1,desc:'35g protein, 0g sugar. Code JAKE15 for discount. Natural flavours only.',tags:['fitness','protein'],views:198000,clicks:12300,vu:6800,vd:720,gr:'A',feat:0,drop:0,bought:891,appr:90,deal:0,stock:500,stockLeft:380},
-  {id:7,type:'brand',em:'🚗',bg:'linear-gradient(135deg,#10101e,#1c1c38)',title:'ElectraRide EV — Pre-Order',adv:'ElectraMotors',ac:'#06b6d4',ai:'E',ver:1,desc:'0-60 in 3.2s. 320 mile range. Pre-order now — save £2,000.',tags:['ev','automotive'],views:412000,clicks:8900,vu:12400,vd:1200,gr:'B',feat:1,drop:0,bought:437,appr:91,deal:1,dealCode:'EV2000',dealDesc:'£2,000 off pre-order price',videoUrl:'https://www.youtube.com/watch?v=ZZ5LpwO-An4',stock:48,stockLeft:34},
-  {id:8,type:'merch',em:'🎧',bg:'linear-gradient(135deg,#001830,#003060)',title:'SonicPulse X3 Audio',adv:'AudioHeads',ac:'#3b82f6',ai:'A',ver:0,desc:'40hr battery, ANC, spatial audio. Code STUDENT = 15% off.',tags:['tech','audio'],views:54000,clicks:2800,vu:2100,vd:160,gr:'B',feat:0,drop:0,bought:89,appr:93,deal:1,dealCode:'STUDENT',dealDesc:'15% off for students',stock:200,stockLeft:167}
+  {id:1,type:'merch',em:'👟',bg:'linear-gradient(135deg,#241340,#3d2462)',title:'Air Phantom X — Limited Drop',adv:'KicksWorld',ac:'#7c3aed',ai:'K',ver:1,desc:'Exclusive collab. Only 500 pairs worldwide.',tags:['streetwear','sneakers'],views:84200,clicks:3210,vu:2840,vd:310,gr:1,feat:1,drop:1,bought:193,appr:1,deal:1,dealCode:'ADDTOK15',dealDesc:'15% off your first pair',videoUrl:'https://www.youtube.com/watch?v=dQw4w9WgXcQ',stock:500,stockLeft:350,dropEnds:Date.now()+82800000},
+  {id:2,type:'sponsor',em:'🎮',bg:'linear-gradient(135deg,#0f1e3a,#243858)',title:'NovaBit Gaming Chair Pro',adv:'TechRevHQ',ac:'#0891b2',ai:'T',ver:1,desc:'4D armrests, lumbar support, RGB. NOVA40 for 40% off.',tags:['gaming','tech'],views:67400,clicks:2840,vu:1920,vd:280,gr:0,feat:0,drop:0,bought:0,appr:1,deal:1,dealCode:'NOVA40',dealDesc:'40% off today',videoUrl:'',stock:null,stockLeft:null},
+  {id:3,type:'influencer',em:'💄',bg:'linear-gradient(135deg,#2d1020,#4a1535)',title:'GlowLab x Emma Ray Serum',adv:'EmmaRay',ac:'#9d174d',ai:'E',ver:1,desc:'Sold out twice. Vitamin C + retinol. Limited restock.',tags:['beauty','skincare'],views:124000,clicks:8920,vu:3840,vd:210,gr:1,feat:0,drop:0,bought:0,appr:1,deal:0,dealCode:'',dealDesc:'',videoUrl:'https://www.youtube.com/watch?v=dQw4w9WgXcQ',stock:200,stockLeft:140},
+  {id:4,type:'merch',em:'🧢',bg:'linear-gradient(135deg,#1a1a2e,#16213e)',title:'UrbanForge Caps Season 4',adv:'UrbanForge',ac:'#1d4ed8',ai:'U',ver:1,desc:'12 colourways. Drop ends tonight.',tags:['streetwear','fashion'],views:45600,clicks:1840,vu:1240,vd:180,gr:0,feat:1,drop:1,bought:0,appr:1,deal:0,dealCode:'',dealDesc:'',videoUrl:'',stock:150,stockLeft:105,dropEnds:Date.now()+39600000},
+  {id:5,type:'sponsor',em:'☕',bg:'linear-gradient(135deg,#1a0a00,#2d1500)',title:'BrewBase — AI Coffee Sub',adv:'MorningHabit',ac:'#92400e',ai:'M',ver:1,desc:'AI picks your roast. First box free with BREWFREE.',tags:['coffee','lifestyle'],views:38200,clicks:1240,vu:980,vd:120,gr:0,feat:0,drop:0,bought:0,appr:1,deal:1,dealCode:'BREWFREE',dealDesc:'First box free',videoUrl:'',stock:null,stockLeft:null},
+  {id:6,type:'influencer',em:'💪',bg:'linear-gradient(135deg,#0a1628,#162844)',title:'MassiveGains Protein — Jake Cole',adv:'JakeCole',ac:'#1e40af',ai:'J',ver:1,desc:'My 90-day bulk results. JAKE20 for 20% off.',tags:['fitness','protein'],views:198000,clicks:12400,vu:4920,vd:380,gr:1,feat:0,drop:0,bought:0,appr:1,deal:1,dealCode:'JAKE20',dealDesc:'20% off all products',videoUrl:'',stock:500,stockLeft:380},
+  {id:7,type:'brand',em:'🚗',bg:'linear-gradient(135deg,#0a1628,#0d2137)',title:'ElectraRide EV — Pre-Order',adv:'ElectraMotors',ac:'#0369a1',ai:'EL',ver:1,desc:'300mi range. Full charge in 22min. Pre-order now.',tags:['ev','automotive'],views:312000,clicks:18400,vu:12400,vd:1240,gr:1,feat:1,drop:1,bought:32,appr:1,deal:0,dealCode:'',dealDesc:'',videoUrl:'https://www.youtube.com/watch?v=dQw4w9WgXcQ',stock:48,stockLeft:34,dropEnds:Date.now()+7200000},
+  {id:8,type:'merch',em:'🎧',bg:'linear-gradient(135deg,#0f172a,#1e293b)',title:'SonicPulse X3 Headphones',adv:'AudioHeads',ac:'#334155',ai:'A',ver:1,desc:'40hr battery, ANC, foldable. Community price: £89.',tags:['audio','tech'],views:56800,clicks:3240,vu:2840,vd:380,gr:0,feat:0,drop:0,bought:0,appr:1,deal:1,dealCode:'SONIC30',dealDesc:'£30 off RRP',videoUrl:'',stock:200,stockLeft:167}
 ];
+var S={pg:'feed',ff:'all',lt:'voted',sq:'',saved:[],voted:{},bought:[],shared:[],ap:null,pts:0,streak:1,rxn:{},rxnVoted:{},reported:{},lastVisit:new Date().toDateString(),dailyVotes:0,dailyVoteDate:'',dailyVisits:{},user:null,showOnboarding:false,pushEnabled:false,notifPrefs:{}};
+var SEASON={num:1,name:'Season 1',prize:'Top voter wins £50 Amazon voucher',daysLeft:function(){var e=new Date('2025-06-30');return Math.max(0,Math.ceil((e-new Date())/(864e5)));}};
 
-
-// Add appr field to ADS from vu/vd ratio
-for(var _i=0;_i<ADS.length;_i++){
-  var _a=ADS[_i];
-  if(_a.appr===undefined){
-    _a.appr=(_a.vu+_a.vd)>0?Math.round(_a.vu/(_a.vu+_a.vd)*100):0;
-  }
-}
-
-
-var ADVS={
-  KicksWorld:{name:'KicksWorld',handle:'@kicksworld',bio:'Exclusive trainer drops. Limited pairs, verified authentic.',color:'#7c3aed',init:'K',ver:1,type:'MERCH'},
-  EmmaRay:{name:'Emma Ray',handle:'@emmaray',bio:'Beauty creator. Honest reviews only.',color:'#db2777',init:'E',ver:1,type:'INFLUENCER'},
-  TechRevHQ:{name:'TechRevHQ',handle:'@techrevhq',bio:'Tech deals, reviews and gaming gear.',color:'#0891b2',init:'T',ver:1,type:'BRAND'},
-  ElectraMotors:{name:'ElectraMotors',handle:'@electramotors',bio:'Electric vehicles for the next generation.',color:'#06b6d4',init:'E',ver:1,type:'BRAND'},
-  JakeCole:{name:'Jake Cole',handle:'@jakecole',bio:'Fitness influencer. No BS, just results.',color:'#7c3aed',init:'J',ver:1,type:'INFLUENCER'}
-};
-
-var S={pg:'feed',ff:'all',lt:'voted',sq:'',saved:[],voted:{},bought:[],shared:[],ap:null,pts:0,streak:1,rxn:{},rxnVoted:{},reported:{},lastVisit:new Date().toDateString(),dailyVotes:0,dailyVoteDate:'',dailyVisits:{},user:null};
 function updatePtsDisplay(){
   var pv=document.getElementById('pts-val');
   var sv=document.getElementById('streak-val');
@@ -935,7 +786,7 @@ function doReact(adId,rkey,btnEl){
     delete S.rxnVoted[key];
   }else{
     S.rxn[key]=(S.rxn[key]||0)+1;
-    S.rxnVoted[key]=1;
+    S.rxnVoted[key]=true;
     addPoints(5);
     spawnRxnBurst(r.em,btnEl);
   }
@@ -990,6 +841,14 @@ function rp(p){
   startTimers();
 }
 
+
+function getTrendingScore(ad){
+  var base=ad.vu-ad.vd;
+  var recency=ad.views>0?Math.log(ad.views+1):0;
+  var rxnBoost=(ad.rxn?(ad.rxn.fire||0)+(ad.rxn.deal||0):0)*0.5;
+  return base+recency+rxnBoost;
+}
+window.getTrendingScore=getTrendingScore;
 function filtered(){
   var a=ADS.slice();
   // Apply AI personalisation only on the main feed (no active filter/search)
@@ -997,12 +856,22 @@ function filtered(){
     a = aiPersonalisedFeed(a);
   }
   if(S.sq){var q=S.sq.toLowerCase();a=a.filter(function(x){return x.title.toLowerCase().indexOf(q)>=0||x.adv.toLowerCase().indexOf(q)>=0||x.tags.some(function(t){return t.indexOf(q)>=0;});});}
-  if(S.ff==='trending')a.sort(function(x,y){return(y.vu-y.vd)-(x.vu-x.vd);});
+  if(S.ff==='trending')a.sort(function(x,y){return getTrendingScore(y)-getTrendingScore(x);});
   else if(S.ff==='drops'){a=a.filter(function(x){return !!x.drop;});}
   else if(S.ff==='featured'){a=a.filter(function(x){return !!x.feat;});}
   else if(S.ff==='clicked')a.sort(function(x,y){return y.clicks-x.clicks;});
   else if(S.ff==='featured')a=a.filter(function(x){return x.feat;});
   else if(S.ff!=='all')a=a.filter(function(x){return x.type===S.ff;});
+  // Trending boost - ads gaining votes quickly float to top
+  if(S.ff==='all'||S.ff==='trending'){
+    a.sort(function(x,y){
+      var xMom=(x.vu+x.vd)/Math.max(1,x.views)*100;
+      var yMom=(y.vu+y.vd)/Math.max(1,y.views)*100;
+      if(x.feat&&!y.feat)return -1;
+      if(!x.feat&&y.feat)return 1;
+      return yMom-xMom;
+    });
+  }
   return a;
 }
 
@@ -1126,6 +995,14 @@ function adCard(ad){
   }
   var hasVideo=!!(ad.videoUrl&&ad.videoUrl.length>5);
   var soldOut=isSoldOut(ad);
+  var approvalPct=ad.vu+ad.vd>10?Math.round(ad.vu/(ad.vu+ad.vd)*100):100;
+  var vetoed=approvalPct<30&&(ad.vu+ad.vd)>20;
+  if(vetoed)return '<div style="background:rgba(255,45,85,.06);border:1px solid rgba(255,45,85,.2);border-radius:16px;padding:14px;margin-bottom:10px;opacity:.7">'+
+    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">'+
+    '<span style="font-size:18px">&#x26D4;</span>'+
+    '<div><div style="font-size:13px;font-weight:800;color:var(--rd)">Ad Paused by Community</div>'+
+    '<div style="font-size:11px;color:var(--t2)">This ad fell below 30% community approval and is under review.</div></div>'+
+    '</div></div>';
   return '<div class="ac'+(ad.feat?' feat':'')+(hasVideo?' vid-ac':'')+(soldOut?' sold-out':'')+'">'+
     (hasVideo?
       '<div class="vid-wrap">'+videoCardHtml(ad)+'</div>'
@@ -1236,7 +1113,14 @@ function rLB(){
   }
   shameHtml+='</div>';
 
-  return '<div class="lbp">'+
+  var _now=new Date();
+  var _dl=Math.ceil((new Date(_now.getFullYear(),_now.getMonth()+1,1)-_now)/86400000);
+  var _sn='<div style="background:linear-gradient(135deg,rgba(255,214,10,.1),rgba(191,90,242,.08));border:1px solid rgba(255,214,10,.25);border-radius:14px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between">'+
+    '<div><div style="font-size:12px;font-weight:800;color:var(--gd)">&#x1F3C6; Season '+(_now.getMonth()+1)+' Leaderboard</div>'+
+    '<div style="font-size:11px;color:var(--t2)">Top 3 earn 500, 250, 100 bonus pts when season ends</div></div>'+
+    '<div style="text-align:right"><div style="font-size:18px;font-weight:900;color:var(--gd)">'+_dl+'</div>'+
+    '<div style="font-size:9px;color:var(--t3);font-weight:700">DAYS LEFT</div></div></div>';
+  return '<div class="lbp">'+_sn+
     '<div style="font-size:20px;font-weight:800;margin-bottom:14px">&#127942; Leaderboard</div>'+
     podHtml+tabHtml+listHtml+shameHtml+
   '</div>';
@@ -1417,10 +1301,22 @@ function rProfile(){
   // ── NOTIFICATIONS ──
   var notifHtml='<div style="background:var(--c1);border:1px solid var(--bo);border-radius:14px;padding:14px;margin-bottom:12px">'+
     '<div style="font-size:13px;font-weight:800;margin-bottom:10px">&#x1F514; Notifications</div>'+
+    notifToggle('notif-push','Push Notifications','Get notified about drops & challenges',(S.notifPrefs&&S.notifPrefs.push))+"<div onclick='requestPushPermission()' style='font-size:11px;color:var(--cy);cursor:pointer;padding:4px 0;margin-bottom:8px'>Tap to enable push alerts &#8594;</div>"+
+    '<button onclick="requestPushNotifications()" style="width:100%;background:rgba(191,90,242,.1);border:1px solid rgba(191,90,242,.25);border-radius:12px;padding:10px 14px;font-size:12px;font-weight:700;color:var(--pu);cursor:pointer;font-family:var(--f);display:flex;align-items:center;gap:8px;margin-bottom:10px">'+
+    '<span style="font-size:16px">\uD83D\uDD14</span>'+
+    '<div style="text-align:left"><div>Enable Push Notifications</div><div style="font-size:10px;font-weight:400;color:rgba(191,90,242,.7)">Get alerted about new drops &amp; your weekly challenge</div></div>'+
+  '</button>'+
     notifToggle('notif-drops','New Drops','Alert me when limited drops go live',(S.notifPrefs&&S.notifPrefs.drops!==false))+
     notifToggle('notif-challenge','Weekly Challenge','Remind me about the weekly ad challenge',(S.notifPrefs&&S.notifPrefs.challenge!==false))+
     notifToggle('notif-points','Points Updates','Notify me when I earn bonus points',(S.notifPrefs&&S.notifPrefs.points!==false))+
     notifToggle('notif-deals','Exclusive Deals','Alert me about deals expiring soon',(S.notifPrefs&&S.notifPrefs.deals!==false))+
+    '<div style="padding:10px 0;display:flex;align-items:center;justify-content:space-between">'+
+      '<div><div style="font-size:12px;font-weight:700">&#x1F4F1; Push Notifications</div>'+
+      '<div style="font-size:10px;color:var(--t3)">Get drop alerts on your device</div></div>'+
+      '<button onclick="requestPushPermission()" style="background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.25);border-radius:9px;padding:5px 12px;font-size:11px;font-weight:700;color:var(--cy);cursor:pointer;font-family:var(--f)">'+
+        'Enable'+
+      '</button>'+
+    '</div>'+
   '</div>';
 
   // ── ACCOUNT SETTINGS ──
@@ -1455,6 +1351,25 @@ function notifToggle(id,title,desc,on){
     '</div>'+
   '</div>';
 }
+
+
+function requestPushPermission(){
+  if('Notification' in window){
+    Notification.requestPermission().then(function(p){
+      if(p==='granted'){
+        toast('Push notifications enabled! \uD83D\uDD14','suc');
+        if(S.notifPrefs)S.notifPrefs.push=true;
+        saveState();
+        rp('profile');
+      } else {
+        toast('Notifications blocked. Enable in browser settings.','w');
+      }
+    });
+  } else {
+    toast('Push notifications not supported on this browser','w');
+  }
+}
+window.requestPushPermission=requestPushPermission;
 
 function toggleNotif(id){
   if(!S.notifPrefs)S.notifPrefs={};
@@ -1670,6 +1585,14 @@ function closeSheet(){(function(){var _s=document.getElementById('sbo');if(_s)_s
 
 function setFF(f){S.ff=f;saveState();rp('feed');}
 function setLT(t){S.lt=t;rp('leaderboard');}
+
+function checkCommunityVeto(ad){
+  if(!ad||typeof ad!=='object')return false;
+  if((ad.vu+ad.vd)<10)return false;
+  return Math.round(ad.vu/(ad.vu+ad.vd)*100)<30;
+}
+
+window.checkCommunityVeto=checkCommunityVeto;
 function vote(id,dir){
   var ad=ADS.filter(function(a){return a.id===id;})[0];if(!ad)return;
   // Reset daily vote count if new day
@@ -1689,6 +1612,10 @@ function vote(id,dir){
     if(!S.voted[id]){}else S.dailyVotes++;
     if(dir==='up'){
       addPointsMult(2,'Voted on ad');
+      // Check if ad is trending
+      if((ad.vu-ad.vd)>200&&(ad.vu+ad.vd)%50===0){
+        sendPushNotif('Trending on Addtok',''+ad.title+' is blowing up right now!');
+      }
       ad.appr=(ad.vu+ad.vd)>0?Math.round(ad.vu/(ad.vu+ad.vd)*100):0;
       if(!S.challengeDone){
         S.challengeProgress=(S.challengeProgress||0)+1;
@@ -3154,7 +3081,32 @@ window.startTicker=startTicker;
 startTicker();
 
 // ── FOR YOU MATCH SCORE ──
+
+function scheduleLabel(ad){
+  if(!ad.scheduleStart&&!ad.scheduleEnd)return '';
+  return '<span style="background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.2);border-radius:6px;padding:1px 6px;font-size:9px;font-weight:700;color:var(--cy)">&#x23F0; '+
+    (ad.scheduleStart||'')+'\u2013'+(ad.scheduleEnd||'')+
+  '</span>';
+}
+window.scheduleLabel=scheduleLabel;
 function matchScore(ad){
+  var interests=buildInterestProfile();
+  if(!interests||interests.length===0)return 72+Math.floor(Math.random()*20);
+  var score=50;
+  var adTags=ad.tags||[];
+  for(var i=0;i<interests.length;i++){
+    for(var j=0;j<adTags.length;j++){
+      if(adTags[j].toLowerCase().indexOf(interests[i].toLowerCase())>=0||
+         interests[i].toLowerCase().indexOf(adTags[j].toLowerCase())>=0){
+        score+=15;
+      }
+    }
+  }
+  // Boost for voted-up similar ads
+  if(S.voted[ad.id]==='up')score+=10;
+  return Math.min(99,Math.max(45,score));
+}
+function _old_matchScore(ad){
   var interests=buildInterestProfile();
   if(!interests||interests.length===0||!ad.tags)return 50;
   var score=0;
@@ -3344,6 +3296,77 @@ function requestCollab(adId){
 window.requestCollab=requestCollab;
 
 // ── FLOATING EMOJI REACTIONS ──
+
+
+function getTrendBoost(ad){
+  // Rising fast = lots of votes relative to views
+  var engRate=ad.views>0?(ad.vu+ad.vd)/ad.views:0;
+  if(engRate>0.05&&ad.vu>50)return 'rising';
+  if(ad.vu>500)return 'trending';
+  return null;
+}
+window.getTrendBoost=getTrendBoost;
+function sentimentBar(ad){
+  var total=(ad.rxn&&(ad.rxn.fire||0)+(ad.rxn.funny||0)+(ad.rxn.wow||0)+(ad.rxn.deal||0))||0;
+  if(total<3)return '';
+  var pcts={
+    fire:Math.round(((ad.rxn&&ad.rxn.fire)||0)/total*100),
+    funny:Math.round(((ad.rxn&&ad.rxn.funny)||0)/total*100),
+    wow:Math.round(((ad.rxn&&ad.rxn.wow)||0)/total*100),
+    deal:Math.round(((ad.rxn&&ad.rxn.deal)||0)/total*100)
+  };
+  return '<div style="display:flex;height:3px;border-radius:2px;overflow:hidden;margin-top:4px;gap:1px">'+
+    (pcts.fire?'<div style="flex:'+pcts.fire+';background:var(--rd)" title="'+pcts.fire+'% fire"></div>':'')+
+    (pcts.funny?'<div style="flex:'+pcts.funny+';background:var(--gd)" title="'+pcts.funny+'% funny"></div>':'')+
+    (pcts.wow?'<div style="flex:'+pcts.wow+';background:var(--cy)" title="'+pcts.wow+'% wow"></div>':'')+
+    (pcts.deal?'<div style="flex:'+pcts.deal+';background:var(--gr)" title="'+pcts.deal+'% deal"></div>':'')+
+  '</div>'+
+  '<div style="display:flex;gap:8px;margin-top:3px;font-size:9px;color:var(--t3)">'+
+    (pcts.fire?'<span>&#x1F525;'+pcts.fire+'%</span>':'')+
+    (pcts.funny?'<span>&#x1F602;'+pcts.funny+'%</span>':'')+
+    (pcts.wow?'<span>&#x1F92F;'+pcts.wow+'%</span>':'')+
+    (pcts.deal?'<span>&#x1F3F7;'+pcts.deal+'%</span>':'')+
+  '</div>';
+}
+window.sentimentBar=sentimentBar;
+
+function sentimentBar(ad){
+  var r=(ad.rxn&&ad.rxn.fire)||0,f=(ad.rxn&&ad.rxn.funny)||0,w=(ad.rxn&&ad.rxn.wow)||0,d=(ad.rxn&&ad.rxn.deal)||0;
+  var total=r+f+w+d;
+  if(total<3)return '';
+  var rp=Math.round(r/total*100),fp=Math.round(f/total*100),wp=Math.round(w/total*100),dp=Math.round(d/total*100);
+  return '<div style="display:flex;height:3px;border-radius:2px;overflow:hidden;margin-top:6px;gap:1px">'+
+    (rp?'<div style="flex:'+rp+';background:var(--rd)"></div>':'')+
+    (fp?'<div style="flex:'+fp+';background:var(--gd)"></div>':'')+
+    (wp?'<div style="flex:'+wp+';background:var(--cy)"></div>':'')+
+    (dp?'<div style="flex:'+dp+';background:var(--gr)"></div>':'')+
+  '</div>'+
+  '<div style="display:flex;gap:8px;margin-top:3px;font-size:9px;color:var(--t3)">'+
+    (rp?'<span>\uD83D\uDD25'+rp+'%</span>':'')+
+    (fp?'<span>\uD83D\uDE02'+fp+'%</span>':'')+
+    (wp?'<span>\uD83E\uDD2F'+wp+'%</span>':'')+
+    (dp?'<span>\uD83C\uDFF7'+dp+'%</span>':'')+
+  '</div>';
+}
+window.sentimentBar=sentimentBar;
+
+function getTrendBoost(ad){
+  var engRate=ad.views>0?(ad.vu+ad.vd)/ad.views:0;
+  if(engRate>0.05&&ad.vu>50)return 'rising';
+  if(ad.vu>500)return 'trending';
+  return null;
+}
+window.getTrendBoost=getTrendBoost;
+
+function requestPushPermission(){
+  if('Notification' in window){
+    Notification.requestPermission().then(function(p){
+      if(p==='granted'){toast('Push notifications enabled! \uD83D\uDD14','suc');if(S.notifPrefs)S.notifPrefs.push=true;saveState();rp('profile');}
+      else{toast('Notifications blocked in browser settings','w');}
+    });
+  } else {toast('Push notifications not supported on this browser','w');}
+}
+window.requestPushPermission=requestPushPermission;
 function doReactAnimated(adId,rkey,btnEl){
   doReact(adId,rkey,btnEl);
   var emojis={fire:'\uD83D\uDD25',funny:'\uD83D\uDE02',wow:'\uD83E\uDD2F',deal:'\uD83C\uDFF7\uFE0F'};
@@ -3588,9 +3611,423 @@ function checkOnboarding(){
   }
 }
 
+
+// ── AUTH SYSTEM ──
+var USERS_KEY='at_users';
+var SESSION_KEY='at_session';
+
+function getUsers(){
+  try{var u=localStorage.getItem(USERS_KEY);return u?JSON.parse(u):{};}catch(e){return {};}
+}
+function saveUsers(users){
+  try{localStorage.setItem(USERS_KEY,JSON.stringify(users));}catch(e){}
+}
+function getSession(){
+  try{var s=localStorage.getItem(SESSION_KEY);return s?JSON.parse(s):null;}catch(e){return null;}
+}
+function saveSession(user){
+  try{localStorage.setItem(SESSION_KEY,JSON.stringify(user));}catch(e){}
+}
+
+function showAuthScreen(name){
+  var screens=['welcome','signup','login'];
+  for(var i=0;i<screens.length;i++){
+    var el=document.getElementById('auth-'+screens[i]);
+    if(el)el.className='auth-screen'+(screens[i]===name?'':' hide');
+  }
+  var errs=['signup-err','login-err'];
+  for(var j=0;j<errs.length;j++){
+    var e=document.getElementById(errs[j]);
+    if(e)e.textContent='';
+  }
+}
+window.showAuthScreen=showAuthScreen;
+
+function hideAllAuthScreens(){
+  var screens=['welcome','signup','login'];
+  for(var i=0;i<screens.length;i++){
+    var el=document.getElementById('auth-'+screens[i]);
+    if(el)el.className='auth-screen hide';
+  }
+}
+window.hideAllAuthScreens=hideAllAuthScreens;
+
+function authGuest(){
+  S.user={name:'Guest',email:'',isGuest:true};
+  S.showOnboarding=true;
+  hideAllAuthScreens();
+  checkOnboarding();
+}
+window.authGuest=authGuest;
+
+function authGoogle(){
+  var name=prompt('Enter your name:');
+  if(!name)return;
+  var email=name.toLowerCase().replace(/\s+/g,'.')+Math.floor(Math.random()*100)+'@gmail.com';
+  var user={name:name,email:email,provider:'google',joined:new Date().toISOString(),pts:0};
+  var users=getUsers();
+  users[email]=user;
+  saveUsers(users);
+  saveSession(user);
+  S.user=user;
+  S.showOnboarding=true;
+  hideAllAuthScreens();
+  updatePtsDisplay();
+  checkOnboarding();
+  toast('Welcome '+name+'! \uD83D\uDC4B +10 bonus pts','suc');
+  addPoints(10,'Welcome bonus');
+}
+window.authGoogle=authGoogle;
+
+function doSignup(){
+  var name=(document.getElementById('signup-name')||{}).value||'';
+  var email=(document.getElementById('signup-email')||{}).value||'';
+  var pw=(document.getElementById('signup-pw')||{}).value||'';
+  var pw2=(document.getElementById('signup-pw2')||{}).value||'';
+  var err=document.getElementById('signup-err');
+  if(!name.trim()){if(err)err.textContent='Please enter your name';return;}
+  if(!email.match(/^[^@]+@[^@]+\.[^@]+$/)){if(err)err.textContent='Please enter a valid email';return;}
+  if(pw.length<6){if(err)err.textContent='Password must be at least 6 characters';return;}
+  if(pw!==pw2){if(err)err.textContent='Passwords do not match';return;}
+  var users=getUsers();
+  if(users[email]){if(err)err.textContent='Email already registered. Log in instead.';return;}
+  var user={name:name.trim(),email:email.toLowerCase(),joined:new Date().toISOString(),pts:0};
+  users[email]=user;
+  saveUsers(users);
+  saveSession(user);
+  S.user=user;
+  S.showOnboarding=true;
+  hideAllAuthScreens();
+  updatePtsDisplay();
+  checkOnboarding();
+  toast('Welcome to Addtok '+name.split(' ')[0]+'! \uD83C\uDF89 +10 pts','suc');
+  addPoints(10,'Welcome bonus');
+}
+window.doSignup=doSignup;
+
+function doLogin(){
+  var email=(document.getElementById('login-email')||{}).value||'';
+  var pw=(document.getElementById('login-pw')||{}).value||'';
+  var err=document.getElementById('login-err');
+  if(!email||!pw){if(err)err.textContent='Please fill in all fields';return;}
+  var users=getUsers();
+  var user=users[email.toLowerCase()];
+  if(!user){if(err)err.textContent='No account found with that email';return;}
+  saveSession(user);
+  S.user=user;
+  hideAllAuthScreens();
+  updatePtsDisplay();
+  toast('Welcome back '+user.name.split(' ')[0]+'!','suc');
+}
+window.doLogin=doLogin;
+
+function doLogout(){
+  localStorage.removeItem(SESSION_KEY);
+  S.user=null;
+  showAuthScreen('welcome');
+}
+window.doLogout=doLogout;
+
+function checkAuth(){
+  var session=getSession();
+  if(session){
+    S.user=session;
+    hideAllAuthScreens();
+  } else {
+    showAuthScreen('welcome');
+  }
+}
+window.checkAuth=checkAuth;
+
+function getReferralCode(user){
+  if(!user||!user.name)return 'ADDTOK50';
+  var base=user.name.toUpperCase().replace(/[^A-Z]/g,'').slice(0,5)||'USER';
+  return base+(user.joined?user.joined.slice(2,4).replace(/-/g,''):'25');
+}
+window.getReferralCode=getReferralCode;
+
+function shareReferral(){
+  var user=S.user||{};
+  var code=getReferralCode(user);
+  var msg='Join Addtok and earn points voting on ads! Use my code '+code+' for 50 bonus pts: https://addtok.online';
+  if(navigator.share){navigator.share({title:'Addtok',text:msg});}
+  else{toast('Code '+code+' — share it to earn 50 pts each!','i');}
+}
+window.shareReferral=shareReferral;
+
+function openEditProfile(){
+  var user=S.user||{};
+  var name=prompt('Edit display name:',user.name||'');
+  if(name&&name.trim()){
+    S.user.name=name.trim();
+    var users=getUsers();
+    if(users[user.email]){users[user.email].name=name.trim();saveUsers(users);}
+    saveSession(S.user);
+    rp('profile');
+    toast('Profile updated!','suc');
+  }
+}
+window.openEditProfile=openEditProfile;
+
+var AVATAR_COLORS=[
+  'linear-gradient(135deg,#ff2d55,#bf5af2)',
+  'linear-gradient(135deg,#00e5ff,#30d158)',
+  'linear-gradient(135deg,#ffd60a,#ff9f0a)',
+  'linear-gradient(135deg,#0891b2,#635bff)',
+  'linear-gradient(135deg,#ff6b00,#ff2d55)',
+  'linear-gradient(135deg,#30d158,#00e5ff)',
+];
+
+function openAvatarPicker(){
+  var html='<div style="padding:16px"><div style="font-size:14px;font-weight:800;margin-bottom:12px">Choose avatar colour</div><div style="display:flex;gap:10px;flex-wrap:wrap">';
+  for(var ai=0;ai<AVATAR_COLORS.length;ai++){
+    html+='<div onclick="setAvatarColor('+ai+')" style="width:44px;height:44px;border-radius:50%;background:'+AVATAR_COLORS[ai]+';cursor:pointer;border:2px solid '+(S.user&&S.user.avatarColor===AVATAR_COLORS[ai]?'#fff':'transparent')+'"></div>';
+  }
+  html+='</div></div>';
+  var sb=document.getElementById('sb');
+  var sbo=document.getElementById('sbo');
+  if(sb&&sbo){sb.innerHTML=html;sb.style.transform='translateY(0)';sbo.style.opacity='1';sbo.style.pointerEvents='auto';}
+}
+window.openAvatarPicker=openAvatarPicker;
+
+function setAvatarColor(idx){
+  if(!S.user)return;
+  S.user.avatarColor=AVATAR_COLORS[idx];
+  var users=getUsers();
+  if(users[S.user.email]){users[S.user.email].avatarColor=AVATAR_COLORS[idx];saveUsers(users);}
+  saveSession(S.user);
+  closeSheet();
+  rp('profile');
+}
+window.setAvatarColor=setAvatarColor;
+
 checkAuth();
 updatePtsDisplay();
 go('feed');
+
+
+function requestPushNotifications(){
+  if(!('Notification' in window)){
+    toast('Push notifications not supported on this browser','w');
+    return;
+  }
+  if(Notification.permission==='granted'){
+    toast('You already have notifications enabled! \u2705','suc');
+    return;
+  }
+  Notification.requestPermission(function(perm){
+    if(perm==='granted'){
+      toast('\uD83D\uDD14 Notifications enabled! We\'ll alert you about new drops.','suc');
+      addPoints(10,'Enabled notifications');
+      if(S.notifPrefs)S.notifPrefs.pushEnabled=true;
+      saveState();
+    } else {
+      toast('Notifications blocked. Enable in browser settings.','w');
+    }
+  });
+}
+window.requestPushNotifications=requestPushNotifications;
+function checkOnboarding(){
+  if(S.showOnboarding){
+    S.showOnboarding=false;
+    setTimeout(obShow,1000);
+  }
+}
+
+
+// ── AUTH SYSTEM ──
+var USERS_KEY='at_users';
+var SESSION_KEY='at_session';
+
+function getUsers(){
+  try{var u=localStorage.getItem(USERS_KEY);return u?JSON.parse(u):{};}catch(e){return {};}
+}
+function saveUsers(users){
+  try{localStorage.setItem(USERS_KEY,JSON.stringify(users));}catch(e){}
+}
+function getSession(){
+  try{var s=localStorage.getItem(SESSION_KEY);return s?JSON.parse(s):null;}catch(e){return null;}
+}
+function saveSession(user){
+  try{localStorage.setItem(SESSION_KEY,JSON.stringify(user));}catch(e){}
+}
+
+function showAuthScreen(name){
+  var screens=['welcome','signup','login'];
+  for(var i=0;i<screens.length;i++){
+    var el=document.getElementById('auth-'+screens[i]);
+    if(el)el.className='auth-screen'+(screens[i]===name?'':' hide');
+  }
+  var errs=['signup-err','login-err'];
+  for(var j=0;j<errs.length;j++){
+    var e=document.getElementById(errs[j]);
+    if(e)e.textContent='';
+  }
+}
+window.showAuthScreen=showAuthScreen;
+
+function hideAllAuthScreens(){
+  var screens=['welcome','signup','login'];
+  for(var i=0;i<screens.length;i++){
+    var el=document.getElementById('auth-'+screens[i]);
+    if(el)el.className='auth-screen hide';
+  }
+}
+window.hideAllAuthScreens=hideAllAuthScreens;
+
+function authGuest(){
+  S.user={name:'Guest',email:'',isGuest:true};
+  S.showOnboarding=true;
+  hideAllAuthScreens();
+  checkOnboarding();
+}
+window.authGuest=authGuest;
+
+function authGoogle(){
+  var name=prompt('Enter your name:');
+  if(!name)return;
+  var email=name.toLowerCase().replace(/\s+/g,'.')+Math.floor(Math.random()*100)+'@gmail.com';
+  var user={name:name,email:email,provider:'google',joined:new Date().toISOString(),pts:0};
+  var users=getUsers();
+  users[email]=user;
+  saveUsers(users);
+  saveSession(user);
+  S.user=user;
+  S.showOnboarding=true;
+  hideAllAuthScreens();
+  updatePtsDisplay();
+  checkOnboarding();
+  toast('Welcome '+name+'! \uD83D\uDC4B +10 bonus pts','suc');
+  addPoints(10,'Welcome bonus');
+}
+window.authGoogle=authGoogle;
+
+function doSignup(){
+  var name=(document.getElementById('signup-name')||{}).value||'';
+  var email=(document.getElementById('signup-email')||{}).value||'';
+  var pw=(document.getElementById('signup-pw')||{}).value||'';
+  var pw2=(document.getElementById('signup-pw2')||{}).value||'';
+  var err=document.getElementById('signup-err');
+  if(!name.trim()){if(err)err.textContent='Please enter your name';return;}
+  if(!email.match(/^[^@]+@[^@]+\.[^@]+$/)){if(err)err.textContent='Please enter a valid email';return;}
+  if(pw.length<6){if(err)err.textContent='Password must be at least 6 characters';return;}
+  if(pw!==pw2){if(err)err.textContent='Passwords do not match';return;}
+  var users=getUsers();
+  if(users[email]){if(err)err.textContent='Email already registered. Log in instead.';return;}
+  var user={name:name.trim(),email:email.toLowerCase(),joined:new Date().toISOString(),pts:0};
+  users[email]=user;
+  saveUsers(users);
+  saveSession(user);
+  S.user=user;
+  S.showOnboarding=true;
+  hideAllAuthScreens();
+  updatePtsDisplay();
+  checkOnboarding();
+  toast('Welcome to Addtok '+name.split(' ')[0]+'! \uD83C\uDF89 +10 pts','suc');
+  addPoints(10,'Welcome bonus');
+}
+window.doSignup=doSignup;
+
+function doLogin(){
+  var email=(document.getElementById('login-email')||{}).value||'';
+  var pw=(document.getElementById('login-pw')||{}).value||'';
+  var err=document.getElementById('login-err');
+  if(!email||!pw){if(err)err.textContent='Please fill in all fields';return;}
+  var users=getUsers();
+  var user=users[email.toLowerCase()];
+  if(!user){if(err)err.textContent='No account found with that email';return;}
+  saveSession(user);
+  S.user=user;
+  hideAllAuthScreens();
+  updatePtsDisplay();
+  toast('Welcome back '+user.name.split(' ')[0]+'!','suc');
+}
+window.doLogin=doLogin;
+
+function doLogout(){
+  localStorage.removeItem(SESSION_KEY);
+  S.user=null;
+  showAuthScreen('welcome');
+}
+window.doLogout=doLogout;
+
+function checkAuth(){
+  var session=getSession();
+  if(session){
+    S.user=session;
+    hideAllAuthScreens();
+  } else {
+    showAuthScreen('welcome');
+  }
+}
+window.checkAuth=checkAuth;
+
+function getReferralCode(user){
+  if(!user||!user.name)return 'ADDTOK50';
+  var base=user.name.toUpperCase().replace(/[^A-Z]/g,'').slice(0,5)||'USER';
+  return base+(user.joined?user.joined.slice(2,4).replace(/-/g,''):'25');
+}
+window.getReferralCode=getReferralCode;
+
+function shareReferral(){
+  var user=S.user||{};
+  var code=getReferralCode(user);
+  var msg='Join Addtok and earn points voting on ads! Use my code '+code+' for 50 bonus pts: https://addtok.online';
+  if(navigator.share){navigator.share({title:'Addtok',text:msg});}
+  else{toast('Code '+code+' — share it to earn 50 pts each!','i');}
+}
+window.shareReferral=shareReferral;
+
+function openEditProfile(){
+  var user=S.user||{};
+  var name=prompt('Edit display name:',user.name||'');
+  if(name&&name.trim()){
+    S.user.name=name.trim();
+    var users=getUsers();
+    if(users[user.email]){users[user.email].name=name.trim();saveUsers(users);}
+    saveSession(S.user);
+    rp('profile');
+    toast('Profile updated!','suc');
+  }
+}
+window.openEditProfile=openEditProfile;
+
+var AVATAR_COLORS=[
+  'linear-gradient(135deg,#ff2d55,#bf5af2)',
+  'linear-gradient(135deg,#00e5ff,#30d158)',
+  'linear-gradient(135deg,#ffd60a,#ff9f0a)',
+  'linear-gradient(135deg,#0891b2,#635bff)',
+  'linear-gradient(135deg,#ff6b00,#ff2d55)',
+  'linear-gradient(135deg,#30d158,#00e5ff)',
+];
+
+function openAvatarPicker(){
+  var html='<div style="padding:16px"><div style="font-size:14px;font-weight:800;margin-bottom:12px">Choose avatar colour</div><div style="display:flex;gap:10px;flex-wrap:wrap">';
+  for(var ai=0;ai<AVATAR_COLORS.length;ai++){
+    html+='<div onclick="setAvatarColor('+ai+')" style="width:44px;height:44px;border-radius:50%;background:'+AVATAR_COLORS[ai]+';cursor:pointer;border:2px solid '+(S.user&&S.user.avatarColor===AVATAR_COLORS[ai]?'#fff':'transparent')+'"></div>';
+  }
+  html+='</div></div>';
+  var sb=document.getElementById('sb');
+  var sbo=document.getElementById('sbo');
+  if(sb&&sbo){sb.innerHTML=html;sb.style.transform='translateY(0)';sbo.style.opacity='1';sbo.style.pointerEvents='auto';}
+}
+window.openAvatarPicker=openAvatarPicker;
+
+function setAvatarColor(idx){
+  if(!S.user)return;
+  S.user.avatarColor=AVATAR_COLORS[idx];
+  var users=getUsers();
+  if(users[S.user.email]){users[S.user.email].avatarColor=AVATAR_COLORS[idx];saveUsers(users);}
+  saveSession(S.user);
+  closeSheet();
+  rp('profile');
+}
+window.setAvatarColor=setAvatarColor;
+
+checkAuth();
+updatePtsDisplay();
+go('feed');
+
 </script>
 </body>
   </html>
